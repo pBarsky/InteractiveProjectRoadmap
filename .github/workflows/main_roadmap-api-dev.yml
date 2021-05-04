@@ -5,12 +5,18 @@ name: Azure App Service - roadmap-api-dev(Production), Build and deploy DotnetCo
 
 on:
   push:
+  pull_request:
     branches:
       - master
+    paths-ignore:
+      - 'web/**'
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: api
 
     steps:
     # checkout the repo
