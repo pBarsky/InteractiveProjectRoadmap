@@ -10,8 +10,13 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
+using Application.Mapper;
+using Application.Services.Milestones;
+using Application.Services.Projects;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Persistance;
 
 namespace API
@@ -50,11 +55,24 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddDbContext<DataContext>(options =>
+            {
+                options.UseSqlite(Configuration.GetConnectionString("localdb"));
+            });
+
+            services.AddControllers().AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
             });
+            services.AddAutoMapper(typeof(MappingProfile).Assembly);
+
+            services.AddScoped<IProjectsService, ProjectsService>();
+            services.AddScoped<IMilestoneService, MilestoneService>();
         }
     }
 }
