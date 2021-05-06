@@ -5,35 +5,38 @@ name: Azure App Service - roadmap-web-dev(Production), Build and deploy NodeJS a
 
 on:
   push:
+  pull_request:
     branches:
       - master
+    paths-ignore:
+      - 'api/**'
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        working-directory: web
     steps:
-    # checkout the repo
-    - name: 'Checkout Github Action'
-      uses: actions/checkout@master
+      # checkout the repo
+      - name: 'Checkout Github Action'
+        uses: actions/checkout@master
 
+      - name: Set up Node.js version
+        uses: actions/setup-node@v1
+        with:
+          node-version: '14.x'
 
-    - name: Set up Node.js version
-      uses: actions/setup-node@v1
-      with:
-        node-version: '14.x'
+      - name: npm install, build, and test
+        run: |
+          npm install
+          npm run build --if-present
+          npm run test --if-present
 
-    - name: npm install, build, and test
-      run: |
-        npm install
-        npm run build --if-present
-        npm run test --if-present
-
-    - name: Run Azure webapp deploy action using publish profile credentials
-      uses: azure/webapps-deploy@v2
-      with:
-        app-name: roadmap-web-dev
-        slot-name: Production
-        publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_90A50E30E21F42239AE0C20652A8B4CE }}
-        package: .
-
+      - name: Run Azure webapp deploy action using publish profile credentials
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: roadmap-web-dev
+          slot-name: Production
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_90A50E30E21F42239AE0C20652A8B4CE }}
+          package: /home/runner/work/InteractiveProjectRoadmap/InteractiveProjectRoadmap/web/build
