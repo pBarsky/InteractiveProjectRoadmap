@@ -10,6 +10,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using Roadmap.API.Extensions;
+using Roadmap.Domain;
+using Roadmap.Services.Token;
 
 namespace Roadmap.API
 {
@@ -22,30 +29,37 @@ namespace Roadmap.API
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddControllers();
-        }
-
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
             }
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+        }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddControllers(opts =>
             {
-                endpoints.MapControllers();
+                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                opts.Filters.Add(new AuthorizeFilter(policy));
             });
+            services.AddApplicationServices(Configuration);
+            services.AddIdentityServices(Configuration);
+            services.AddScoped<ITokenService, TokenService>();
         }
     }
 }
