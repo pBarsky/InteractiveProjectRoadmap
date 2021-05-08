@@ -4,15 +4,16 @@
 name: Azure App Service - roadmap-web-dev(Production), Build and deploy NodeJS app
 
 on:
-  push:
+  workflow_dispatch:
   pull_request:
     branches:
       - master
     paths-ignore:
       - 'api/**'
+      - '.github/**'
 
 jobs:
-  build-and-deploy:
+  build-test-and-deploy-web:
     runs-on: ubuntu-latest
     defaults:
       run:

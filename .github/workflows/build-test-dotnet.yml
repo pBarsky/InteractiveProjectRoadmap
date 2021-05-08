@@ -1,0 +1,33 @@
+name: Build and test DotnetCore app
+
+on:
+  push:
+  pull_request:
+    branches-ignore:
+      - 'master'
+    paths-ignore:
+      - 'web/**'
+      - '.github/**'
+
+jobs:
+  build-and-test-api:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: api
+
+    steps:
+      # checkout the repo
+      - name: 'Checkout Github Action'
+        uses: actions/checkout@master
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '3.1.301'
+
+      - name: Build with dotnet
+        run: dotnet build --configuration Release
+
+      - name: Test with dotnet
+        run: dotnet test --configuration Release --no-build
