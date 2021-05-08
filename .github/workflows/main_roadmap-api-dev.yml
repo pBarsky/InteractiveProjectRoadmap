@@ -1,11 +1,7 @@
-# Docs for the Azure Web Apps Deploy action: https://go.microsoft.com/fwlink/?linkid=2134798
-# More GitHub Actions for Azure: https://go.microsoft.com/fwlink/?linkid=2135048
-
 name: Azure App Service - roadmap-api-dev(Production), Build and deploy DotnetCore app
 
 on:
   workflow_dispatch:
-  push:
   pull_request:
     branches:
       - master
@@ -14,37 +10,35 @@ on:
       - '.github/**'
 
 jobs:
-  build-test-and-deploy:
+  build-test-and-deploy-api:
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: api
 
     steps:
-    # checkout the repo
-    - name: 'Checkout Github Action'
-      uses: actions/checkout@master
+      # checkout the repo
+      - name: 'Checkout Github Action'
+        uses: actions/checkout@master
 
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '3.1.301'
 
-    - name: Set up .NET Core
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '3.1.301'
+      - name: Build with dotnet
+        run: dotnet build --configuration Release
 
-    - name: Build with dotnet
-      run: dotnet build --configuration Release
-      
-    - name: Test with dotnet
-      run: dotnet test --configuration Release --no-build
+      - name: Test with dotnet
+        run: dotnet test --configuration Release --no-build
 
-    - name: dotnet publish
-      run: dotnet publish -c Release --no-build -o ${{env.DOTNET_ROOT}}/myapp
+      - name: dotnet publish
+        run: dotnet publish -c Release --no-build -o ${{env.DOTNET_ROOT}}/myapp
 
-    - name: Run Azure webapp deploy action using publish profile credentials
-      uses: azure/webapps-deploy@v2
-      with:
-        app-name: roadmap-api-dev
-        slot-name: Production
-        publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_7694DE9FF7774D2D8CEF547620C73776 }}
-        package: ${{env.DOTNET_ROOT}}/myapp
-
+      - name: Run Azure webapp deploy action using publish profile credentials
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: roadmap-api-dev
+          slot-name: Production
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_7694DE9FF7774D2D8CEF547620C73776 }}
+          package: ${{env.DOTNET_ROOT}}/myapp
