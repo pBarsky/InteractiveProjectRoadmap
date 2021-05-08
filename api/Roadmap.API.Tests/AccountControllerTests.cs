@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -5,6 +8,7 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using MockQueryable.Moq;
 using Moq;
 using Roadmap.API.Controllers;
 using Roadmap.API.DTOs;
@@ -24,21 +28,24 @@ namespace Roadmap.API.Tests
             // Arrange
             var signInManager = new FakeSignInManagerBuilder().Build();
             var tokenService = new Mock<ITokenService>();
+            var users = new List<AppUser>
+            {
+                new AppUser()
+                {
+                    UserName = "test",
+                    Email = "test@test.com",
+                    DisplayName = "Test"
+                }
+            };
+            var userStore = users.AsQueryable().BuildMock();
             var userManager = new FakeUserManagerBuilder()
-                .With(x => x.Setup(s => s.FindByEmailAsync(It.IsAny<string>()))
-                    .Returns(Task.FromResult(new AppUser
-                    {
-                        DisplayName = "Test",
-                        UserName = "test",
-                        Id = "testId",
-                        Email = "test@test.com"
-                    })))
-                .Build();
+                .With(x => x.SetupGet(u => u.Users).Returns(userStore.Object)).Build();
 
             var controller = new AccountController(userManager.Object, signInManager.Object, tokenService.Object);
             var principalUser = new ClaimsPrincipal(new ClaimsIdentity(new[]
             {
                 new Claim(ClaimTypes.Name, "test"),
+                new Claim(ClaimTypes.Email, "test@test.com")
             }, "mock"));
             controller.ControllerContext = new ControllerContext
             {
@@ -58,19 +65,29 @@ namespace Roadmap.API.Tests
         [Fact]
         public async Task Login__ReturnsUnauthorized_WhenPasswordDoesNotMatch()
         {
+            // Arrange
             var signInManager = new FakeSignInManagerBuilder()
                 .With(s => s.Setup(sim =>
                         sim.CheckPasswordSignInAsync(It.IsAny<AppUser>(), It.IsAny<string>(), It.IsAny<bool>()))
                     .ReturnsAsync(SignInResult.Failed))
                 .Build();
             var tokenService = new Mock<ITokenService>();
+            var users = new List<AppUser>
+            {
+                new AppUser
+                {
+                    UserName = "taken",
+                    Email = "taken@test.com",
+                    DisplayName = "Test"
+                }
+            };
+            var userStore = users.AsQueryable().BuildMock();
             var userManager = new FakeUserManagerBuilder()
-                .With(s => s.Setup(u => u.FindByEmailAsync("notTaken@test.com"))
-                    .ReturnsAsync(new AppUser()))
+                .With(s => s.SetupGet(x => x.Users).Returns(userStore.Object))
                 .Build();
 
             var controller = new AccountController(userManager.Object, signInManager.Object, tokenService.Object);
-            var loginDto = new LoginDto { Email = "notTaken@test.com", Password = "Random password123@" };
+            var loginDto = new LoginDto { Email = "taken@test.com", Password = "Random password123@" };
             // Act
             var result = await controller.Login(loginDto);
 
@@ -88,13 +105,33 @@ namespace Roadmap.API.Tests
                     .ReturnsAsync(SignInResult.Success))
                 .Build();
             var tokenService = new Mock<ITokenService>();
+            tokenService.Setup(s => s.GenerateRefreshToken()).Returns(new RefreshToken() { Token = "test" });
+            var users = new List<AppUser>()
+            {
+                new AppUser()
+                {
+                    UserName = "taken",
+                    Email = "taken@test.com",
+                    DisplayName = "Test",
+                }
+            };
+            var userStore = users.AsQueryable().BuildMock();
             var userManager = new FakeUserManagerBuilder()
-                .With(s => s.Setup(u => u.FindByEmailAsync("notTaken@test.com"))
-                    .ReturnsAsync(new AppUser()))
+                .With(s => s.SetupGet(x => x.Users).Returns(userStore.Object))
                 .Build();
 
-            var controller = new AccountController(userManager.Object, signInManager.Object, tokenService.Object);
-            var loginDto = new LoginDto { Email = "notTaken@test.com", Password = "Random password123@" };
+            var httpContext = new DefaultHttpContext();
+            var controllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            var controller = new AccountController(userManager.Object, signInManager.Object, tokenService.Object)
+            {
+                ControllerContext = controllerContext
+            };
+
+            var loginDto = new LoginDto { Email = "taken@test.com", Password = "Random password123@" };
             // Act
             var result = await controller.Login(loginDto);
 
@@ -108,9 +145,18 @@ namespace Roadmap.API.Tests
         {
             var signInManager = new FakeSignInManagerBuilder().Build();
             var tokenService = new Mock<ITokenService>();
+            var users = new List<AppUser>()
+            {
+                new AppUser()
+                {
+                    UserName = "taken",
+                    Email = "taken@test.com",
+                    DisplayName = "Test",
+                }
+            };
+            var userStore = users.AsQueryable().BuildMock();
             var userManager = new FakeUserManagerBuilder()
-                .With(s => s.Setup(u => u.FindByEmailAsync("notTaken@test.com"))
-                    .ReturnsAsync((AppUser)null))
+                .With(s => s.SetupGet(x => x.Users).Returns(userStore.Object))
                 .Build();
 
             var controller = new AccountController(userManager.Object, signInManager.Object, tokenService.Object);
@@ -121,6 +167,148 @@ namespace Roadmap.API.Tests
             // Assert
             result.Result.Should().BeOfType<UnauthorizedResult>().Which.StatusCode.Should()
                 .Be((int)HttpStatusCode.Unauthorized);
+        }
+
+        [Fact]
+        public async Task RefreshToken_OkObjectResultWithUserDto_UserIsAuthorizedSuccessfuly()
+        {
+            var signInManager = new FakeSignInManagerBuilder().Build();
+            var tokenService = new Mock<ITokenService>();
+            var users = new List<AppUser>()
+            {
+                new AppUser()
+                {
+                    UserName = "taken",
+                    Email = "taken@test.com",
+                    DisplayName = "Test",
+                    RefreshTokens = new List<RefreshToken>()
+                    {
+                        new RefreshToken()
+                        {
+                            Expires = DateTime.UtcNow.AddMinutes(10)
+                        }
+                    }
+                }
+            };
+
+            var userStore = users.AsQueryable().BuildMock();
+            var userManager = new FakeUserManagerBuilder()
+                .With(s => s.SetupGet(x => x.Users).Returns(userStore.Object))
+                .Build();
+
+            var principalUser = new ClaimsPrincipal(new ClaimsIdentity(new[]
+            {
+                new Claim(ClaimTypes.Name, "taken"),
+                new Claim(ClaimTypes.Email, "taken@test.com")
+            }, "mock"));
+
+            var controllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = principalUser
+                }
+            };
+
+            var controller = new AccountController(userManager.Object, signInManager.Object, tokenService.Object)
+            {
+                ControllerContext = controllerContext
+            };
+
+            var result = await controller.RefreshToken();
+            result.Result.Should().BeOfType<OkObjectResult>().Which.StatusCode.Should().Be((int)HttpStatusCode.OK);
+        }
+
+        [Fact]
+        public async Task RefreshToken_Unauthorized_NoUserFound()
+        {
+            var signInManager = new FakeSignInManagerBuilder().Build();
+            var tokenService = new Mock<ITokenService>();
+            var users = new List<AppUser>()
+            {
+                new AppUser()
+                {
+                    UserName = "taken",
+                    Email = "taken@test.com",
+                    DisplayName = "Test",
+                }
+            };
+            var userStore = users.AsQueryable().BuildMock();
+            var userManager = new FakeUserManagerBuilder()
+                .With(s => s.SetupGet(x => x.Users).Returns(userStore.Object))
+                .Build();
+
+            var principalUser = new ClaimsPrincipal(new ClaimsIdentity(new[]
+            {
+                new Claim(ClaimTypes.Name, "test"),
+                new Claim(ClaimTypes.Email, "test@test.com")
+            }, "mock"));
+
+            var controllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = principalUser
+                }
+            };
+
+            var controller = new AccountController(userManager.Object, signInManager.Object, tokenService.Object)
+            {
+                ControllerContext = controllerContext
+            };
+
+            var result = await controller.RefreshToken();
+            result.Result.Should().BeOfType<UnauthorizedResult>().Which.StatusCode.Should().Be((int)HttpStatusCode.Unauthorized);
+        }
+
+        [Fact]
+        public async Task RefreshToken_Unauthorized_UsersRefreshTokenIsNotActive()
+        {
+            var signInManager = new FakeSignInManagerBuilder().Build();
+            var tokenService = new Mock<ITokenService>();
+            var users = new List<AppUser>()
+            {
+                new AppUser()
+                {
+                    UserName = "taken",
+                    Email = "taken@test.com",
+                    DisplayName = "Test",
+                    RefreshTokens = new List<RefreshToken>()
+                    {
+                        new RefreshToken()
+                        {
+                            Revoked = DateTime.UtcNow
+                        }
+                    }
+                }
+            };
+
+            var userStore = users.AsQueryable().BuildMock();
+            var userManager = new FakeUserManagerBuilder()
+                .With(s => s.SetupGet(x => x.Users).Returns(userStore.Object))
+                .Build();
+
+            var principalUser = new ClaimsPrincipal(new ClaimsIdentity(new[]
+            {
+                new Claim(ClaimTypes.Name, "taken"),
+                new Claim(ClaimTypes.Email, "taken@test.com")
+            }, "mock"));
+
+            var controllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext
+                {
+                    User = principalUser
+                }
+            };
+
+            var controller = new AccountController(userManager.Object, signInManager.Object, tokenService.Object)
+            {
+                ControllerContext = controllerContext
+            };
+
+            var result = await controller.RefreshToken();
+            result.Result.Should().BeOfType<UnauthorizedResult>().Which.StatusCode.Should().Be((int)HttpStatusCode.Unauthorized);
         }
 
         [Theory]
@@ -175,13 +363,23 @@ namespace Roadmap.API.Tests
         {
             var signInManager = new FakeSignInManagerBuilder().Build();
             var tokenService = new Mock<ITokenService>();
+            tokenService.Setup(s => s.GenerateRefreshToken()).Returns(new RefreshToken() { Token = "Test" });
             var userManager = new FakeUserManagerBuilder()
                 .With(s => s
                     .Setup(u => u.CreateAsync(It.IsAny<AppUser>(), It.IsAny<string>()))
                     .ReturnsAsync(() => IdentityResult.Success))
                 .Build();
 
-            var controller = new AccountController(userManager.Object, signInManager.Object, tokenService.Object);
+            var httpContext = new DefaultHttpContext();
+            var controllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+
+            var controller = new AccountController(userManager.Object, signInManager.Object, tokenService.Object)
+            {
+                ControllerContext = controllerContext
+            };
 
             var registerDto = FilledRegisterDto();
 

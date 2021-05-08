@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -29,7 +30,8 @@ namespace Roadmap.API.Extensions
                         IssuerSigningKey = key,
                         ValidateIssuer = false,
                         ValidateAudience = false,
-                        ValidateLifetime = true
+                        ValidateLifetime = true,
+                        ClockSkew = TimeSpan.Zero
                     };
                 });
             return services;

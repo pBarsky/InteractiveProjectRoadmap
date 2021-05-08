@@ -15,6 +15,18 @@ namespace Roadmap.API.Extensions
             {
                 opt.UseSqlServer(config.GetConnectionString("DefaultConnection"));
             });
+            services.AddCors(opt =>
+            {
+                opt.AddPolicy("CorsPolicy",
+                    policy =>
+                    {
+                        policy
+                            .AllowAnyMethod()
+                            .AllowAnyHeader()
+                            .WithExposedHeaders("WWW-Authenticate")
+                            .WithOrigins(config["CorsOrigin"]);
+                    });
+            });
             return services;
         }
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using FluentAssertions;
 using Microsoft.Extensions.Configuration;
+using Moq;
 using Roadmap.Domain.Models;
 using Roadmap.Services.Token;
 using Xunit;
@@ -11,7 +12,9 @@ namespace Roadmap.Services.Tests
 {
     public class TokenServiceTests
     {
-        private IConfiguration _config;
+        private readonly IConfiguration _config;
+
+        private readonly ITokenService _tokenService;
 
         public TokenServiceTests()
         {
@@ -20,14 +23,13 @@ namespace Roadmap.Services.Tests
                 {"TokenKey", "HarnaœPer³aTyskieKasztelanTatra"}
             };
             _config = new ConfigurationBuilder().AddInMemoryCollection(testConfig).Build();
+            _tokenService = new TokenService(_config);
         }
 
         [Fact]
         public void CreateToken_IsTokenValidForADay()
         {
             // Arrange
-            var tokenService = new TokenService(_config);
-
             var testAppUser = new AppUser()
             {
                 UserName = "testuser",
@@ -36,7 +38,7 @@ namespace Roadmap.Services.Tests
             };
 
             // Act
-            var token = tokenService.CreateToken(testAppUser);
+            var token = _tokenService.CreateToken(testAppUser);
 
             var handler = new JwtSecurityTokenHandler();
             var jsonToken = handler.ReadToken(token);
@@ -47,7 +49,18 @@ namespace Roadmap.Services.Tests
             var decodedTokenValidTo = decodedToken?.ValidTo;
 
             // Assert
-            decodedTokenValidTo.Should().BeCloseTo(DateTime.Now.AddDays(1).ToUniversalTime(), 60_000);
+            decodedTokenValidTo.Should().BeCloseTo(DateTime.UtcNow.AddMinutes(5), 60_000);
+        }
+
+        [Fact]
+        public void GenerateRefreshToken_AnyString_Always()
+        {
+            // Act
+            var refreshToken = _tokenService.GenerateRefreshToken();
+
+            // Assert
+            refreshToken.Should().BeOfType(typeof(RefreshToken));
+            refreshToken.Token.Should().NotBeNullOrEmpty();
         }
     }
 }
