@@ -2,11 +2,9 @@ name: Build and test NodeJS app
 
 on:
   push:
-  pull_request:
     branches-ignore:
       - 'master'
     paths-ignore:
-      - 'api/**'
       - '.github/**'
 
 jobs:
@@ -17,7 +15,6 @@ jobs:
         working-directory: web
 
     steps:
-      # checkout the repo
       - name: 'Checkout Github Action'
         uses: actions/checkout@master
 
