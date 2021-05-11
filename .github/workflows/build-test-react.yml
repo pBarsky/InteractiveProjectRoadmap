@@ -5,6 +5,7 @@ on:
     branches-ignore:
       - 'master'
     paths-ignore:
+      - 'api/**'
       - '.github/**'
 
 jobs:
@@ -28,3 +29,5 @@ jobs:
           npm install
           npm run build --if-present
           npm run test --if-present
+        env:
+          REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}

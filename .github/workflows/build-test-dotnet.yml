@@ -5,6 +5,7 @@ on:
     branches-ignore:
       - 'master'
     paths-ignore:
+      - 'web/**'
       - '.github/**'
 
 jobs:
