@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosResponse } from 'axios'
-import { browserHistory } from '../..'
+import { browserHistory } from '../../app/layout/App'
 import { User, UserFormValues } from '../models/user'
 import { store } from '../stores/store'
 

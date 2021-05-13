@@ -1,22 +1,13 @@
-import { createBrowserHistory } from 'history'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Router } from 'react-router-dom'
 import 'semantic-ui-css/semantic.min.css'
 import App from './app/layout/App'
-import { store, StoreContext } from './app/stores/store'
 import './index.css'
 import reportWebVitals from './reportWebVitals'
 
-export const browserHistory = createBrowserHistory()
-
 ReactDOM.render(
-  <StoreContext.Provider value={store}>
-    <Router history={browserHistory}>
-      <App />
-    </Router>
-  </StoreContext.Provider>,
-  document.getElementById('root')
+  <App />,
+  document.getElementById('root') || document.createElement('div')
 )
 
 // If you want to start measuring performance in your app, pass a function

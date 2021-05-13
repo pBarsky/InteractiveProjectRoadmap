@@ -1,5 +1,5 @@
 import { makeAutoObservable } from 'mobx'
-import { browserHistory } from '../..'
+import { browserHistory } from '../../app/layout/App'
 import agent from '../api/agent'
 import { User, UserFormValues } from '../models/user'
 import { store } from './store'

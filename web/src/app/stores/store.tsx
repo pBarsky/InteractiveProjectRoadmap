@@ -2,7 +2,7 @@ import { createContext, useContext } from 'react'
 import CommonStore from './commonStore'
 import UserStore from './userStore'
 
-interface Store {
+export interface Store {
   userStore: UserStore
   commonStore: CommonStore
 }
@@ -14,6 +14,10 @@ export const store: Store = {
 
 export const StoreContext = createContext(store)
 
-export function useStore () {
+export const useStore = () => {
   return useContext(StoreContext)
 }
+
+export const StoreProvider = ({ children }: any) => (
+  <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
+)
