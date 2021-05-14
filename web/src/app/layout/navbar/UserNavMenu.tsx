@@ -1,7 +1,8 @@
 import { observer } from 'mobx-react-lite'
 import React from 'react'
-import { Link } from 'react-router-dom'
-import { Dropdown } from 'semantic-ui-react'
+import { Link, NavLink } from 'react-router-dom'
+import { Button, Dropdown, Menu } from 'semantic-ui-react'
+import routes from '../../common/routing/routes'
 import { useStore } from '../../stores/store'
 
 const UserNavMenu = () => {
@@ -9,13 +10,13 @@ const UserNavMenu = () => {
     userStore: { user, logout, isLoggedIn }
   } = useStore()
 
-  if (!isLoggedIn) {
-    return <></>
-  }
-
-  return (
-    <Dropdown pointing='top left' text={user?.displayName}>
-      <Dropdown.Menu>
+  const element = isLoggedIn
+    ? (
+    <Dropdown
+      pointing='top left'
+      text={user?.displayName}
+      data-testid='dropdown'>
+      <Dropdown.Menu data-testid='menu'>
         <Dropdown.Item
           as={Link}
           text='Dashboard'
@@ -31,6 +32,21 @@ const UserNavMenu = () => {
         <Dropdown.Item text='Logout' icon='log out' onClick={logout} />
       </Dropdown.Menu>
     </Dropdown>
+      )
+    : (
+    <Button
+      as={NavLink}
+      to={routes.auth.login}
+      basic
+      inverted
+      content='login'
+    />
+      )
+
+  return (
+    <Menu.Item position='right' data-testid='menu'>
+      {element}
+    </Menu.Item>
   )
 }
 

@@ -3,7 +3,7 @@ import React from 'react'
 import { Container, Header, Segment } from 'semantic-ui-react'
 import { useStore } from '../../app/stores/store'
 
-const UserDashboard = () => {
+const Dashboard = () => {
   const { userStore } = useStore()
   const { user } = userStore
   return (
@@ -24,4 +24,4 @@ const UserDashboard = () => {
   )
 }
 
-export default observer(UserDashboard)
+export default observer(Dashboard)

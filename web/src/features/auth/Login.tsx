@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Button, Container, FormField, Label } from 'semantic-ui-react'
+import routes from '../../app/common/routing/routes'
 import { browserHistory } from '../../app/layout/App'
 import { UserFormValues } from '../../app/models/user'
 import { useStore } from '../../app/stores/store'
@@ -82,7 +83,12 @@ const InnerForm = ({
           type='submit'>
           Login
         </Button>
-        <Button basic color='black' floated='right' as={Link} to='/register'>
+        <Button
+          basic
+          color='black'
+          floated='right'
+          as={Link}
+          to={routes.auth.register}>
           or Register
         </Button>
       </Container>
@@ -99,7 +105,7 @@ const Login = () => {
   ) => {
     try {
       await userStore.login(values)
-      browserHistory.push('/userdashboard')
+      browserHistory.push(routes.user.dashboard)
     } catch {
       setErrors({ commonFormError: 'Invalid email or password.' })
     }

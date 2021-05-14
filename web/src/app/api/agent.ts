@@ -1,5 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from 'axios'
 import { browserHistory } from '../../app/layout/App'
+import routes from '../common/routing/routes'
 import { User, UserFormValues } from '../models/user'
 import { store } from '../stores/store'
 
@@ -61,7 +62,7 @@ instance.interceptors.response.use(
         handle401(headers)
         break
       case 404:
-        browserHistory.push('/not-found')
+        browserHistory.push(routes.common.notFound)
         break
     }
     return Promise.reject(error)
@@ -69,11 +70,12 @@ instance.interceptors.response.use(
 )
 
 const Account = {
-  current: () => requests.get<User>('/account'),
-  login: (user: UserFormValues) => requests.post<User>('/account/login', user),
+  current: () => requests.get<User>(routes.api.account.current),
+  login: (user: UserFormValues) =>
+    requests.post<User>(routes.api.account.login, user),
   register: (user: UserFormValues) =>
-    requests.post<User>('/account/register', user),
-  refreshToken: () => requests.post<User>('/account/refreshToken', {})
+    requests.post<User>(routes.api.account.register, user),
+  refreshToken: () => requests.post<User>(routes.api.account.refreshToken, {})
 }
 
 const agent = {

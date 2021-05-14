@@ -5,11 +5,28 @@ import { User, UserFormValues } from '../models/user'
 import { store } from './store'
 
 export default class UserStore {
-  user: User | null = null
-  refreshTokenTimeout: any
+  private _user: User | null = null
+
+  private _refreshTokenTimeout: any
 
   constructor () {
     makeAutoObservable(this)
+  }
+
+  public get refreshTokenTimeout (): any {
+    return this._refreshTokenTimeout
+  }
+
+  public set refreshTokenTimeout (value: any) {
+    this._refreshTokenTimeout = value
+  }
+
+  public get user (): User | null {
+    return this._user
+  }
+
+  public set user (value: User | null) {
+    this._user = value
   }
 
   get isLoggedIn () {

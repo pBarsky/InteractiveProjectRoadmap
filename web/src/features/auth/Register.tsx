@@ -1,8 +1,10 @@
 import { ErrorMessage, Formik, FormikHelpers, FormikProps } from 'formik'
 import { Form, Input } from 'formik-semantic-ui-react'
+import { observer } from 'mobx-react-lite'
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { Button, Container, FormField, Label } from 'semantic-ui-react'
+import routes from '../../app/common/routing/routes'
 import { browserHistory } from '../../app/layout/App'
 import { UserFormValues } from '../../app/models/user'
 import { useStore } from '../../app/stores/store'
@@ -117,7 +119,7 @@ const Register = () => {
       values.displayName =
         values.username!.charAt(0).toUpperCase() + values.username!.slice(1)
       await userStore.register(values)
-      browserHistory.push('/userdashboard')
+      browserHistory.push(routes.user.dashboard)
     } catch {
       setErrors({ commonFormError: 'Invalid email or password.' })
     }
@@ -133,4 +135,4 @@ const Register = () => {
   )
 }
 
-export default Register
+export default observer(Register)

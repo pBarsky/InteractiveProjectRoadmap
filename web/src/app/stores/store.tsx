@@ -18,6 +18,17 @@ export const useStore = () => {
   return useContext(StoreContext)
 }
 
-export const StoreProvider = ({ children }: any) => (
-  <StoreContext.Provider value={store}>{children}</StoreContext.Provider>
-)
+interface StoreProviderProps {
+  store?: Store
+  children: JSX.Element | JSX.Element[]
+}
+
+export const StoreProvider = (props: StoreProviderProps) => {
+  return (
+    <StoreContext.Provider value={props.store ?? store}>
+      {props.children}
+    </StoreContext.Provider>
+  )
+}
+
+export default Store

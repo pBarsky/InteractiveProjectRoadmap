@@ -6,8 +6,9 @@ import { Container } from 'semantic-ui-react'
 import Login from '../../features/auth/Login'
 import Register from '../../features/auth/Register'
 import Homepage from '../../features/home/Homepage'
-import UserDashboard from '../../features/users/UserDashboard'
+import Dashboard from '../../features/users/Dashboard'
 import ProtectedRoute from '../common/routing/ProtectedRoute'
+import routes from '../common/routing/routes'
 import { StoreProvider, useStore } from '../stores/store'
 import './App.css'
 import LoadingComponent from './LoadingComponent'
@@ -42,11 +43,14 @@ function App () {
           }}
           as='main'>
           <Switch>
-            <Route path='/login' component={Login} />
-            <Route path='/register' component={Register} />
-            <ProtectedRoute path='/dashboard' component={UserDashboard} />
-            <Route exact path='/' component={Homepage} />
-            <Redirect to='/' />
+            <Route path={routes.auth.login} component={Login} />
+            <Route path={routes.auth.register} component={Register} />
+            <ProtectedRoute
+              path={routes.user.dashboard}
+              component={Dashboard}
+            />
+            <Route exact path={routes.common.home} component={Homepage} />
+            <Redirect to={routes.common.notFound} />
           </Switch>
         </Container>
       </Router>

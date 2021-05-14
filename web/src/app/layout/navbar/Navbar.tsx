@@ -5,18 +5,15 @@ import UserNavMenu from './UserNavMenu'
 
 const Navbar = () => {
   return (
-    <>
-      <Menu inverted size='massive'>
-        <Container as='nav'>
-          <Menu.Item as={NavLink} to='/' exact header>
-            Roadmap
-          </Menu.Item>
-          <Menu.Item position='right'>
-            <UserNavMenu />
-          </Menu.Item>
-        </Container>
-      </Menu>
-    </>
+    <Menu inverted size='massive'>
+      <Container as='nav'>
+        <Menu.Item as={NavLink} to='/' exact header data-testid='rootLink'>
+          Roadmap
+        </Menu.Item>
+
+        <UserNavMenu />
+      </Container>
+    </Menu>
   )
 }
 
