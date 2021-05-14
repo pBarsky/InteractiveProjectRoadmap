@@ -23,12 +23,6 @@ const UserNavMenu = () => {
           to='/dashboard'
           icon='dashboard'
         />
-        <Dropdown.Item
-          as={Link}
-          text='My profile'
-          to={`/profile/${user?.username}`}
-          icon='user'
-        />
         <Dropdown.Item text='Logout' icon='log out' onClick={logout} />
       </Dropdown.Menu>
     </Dropdown>
