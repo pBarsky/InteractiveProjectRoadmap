@@ -20,7 +20,7 @@ const UserNavMenu = () => {
         <Dropdown.Item
           as={Link}
           text='Dashboard'
-          to='/dashboard'
+          to={routes.user.dashboard}
           icon='dashboard'
         />
         <Dropdown.Item text='Logout' icon='log out' onClick={logout} />

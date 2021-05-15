@@ -1,6 +1,7 @@
 import { makeAutoObservable } from 'mobx'
 import { browserHistory } from '../../app/layout/App'
 import agent from '../api/agent'
+import routes from '../common/routing/routes'
 import { User, UserFormValues } from '../models/user'
 import { store } from './store'
 
@@ -39,7 +40,7 @@ export default class UserStore {
       store.commonStore.setToken(user.token)
       this.setUser(user)
       this.startRefreshTokenTimer(user)
-      browserHistory.push('/dashboard')
+      browserHistory.push(routes.user.dashboard)
     } catch (error) {
       console.log(error)
       throw error
@@ -52,7 +53,7 @@ export default class UserStore {
       store.commonStore.setToken(user.token)
       this.setUser(user)
       this.startRefreshTokenTimer(user)
-      browserHistory.push('/dashboard')
+      browserHistory.push(routes.user.dashboard)
     } catch (error) {
       console.log(error)
       throw error

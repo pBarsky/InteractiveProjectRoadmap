@@ -38,39 +38,36 @@ const InnerForm = ({
         padding: '20px'
       }}>
       <FormField required>
-        <label>Email</label>
+        <label id='email'>Email</label>
         <Input
           name='email'
+          aria-labelledby='email'
           placeholder='Email'
           required
           icon='user'
           iconPosition='left'
         />
-        {touched.email && errors.email && (
-          <Label prompt pointing>
-            {errors.email}
-          </Label>
-        )}
+        {touched.email && errors.email && <Label prompt>{errors.email}</Label>}
       </FormField>
       <FormField required>
-        <label>Username</label>
+        <label id='username'>Username</label>
         <Input
           name='username'
+          aria-labelledby='username'
           placeholder='Username'
           required
           icon='user'
           iconPosition='left'
         />
         {touched.username && errors.username && (
-          <Label prompt pointing>
-            {errors.username}
-          </Label>
+          <Label prompt>{errors.username}</Label>
         )}
       </FormField>
       <FormField required>
-        <label>Password</label>
+        <label id='password'>Password</label>
         <Input
           name='password'
+          aria-labelledby='password'
           required
           placeholder='Password'
           type='password'
@@ -108,7 +105,14 @@ const InnerForm = ({
   )
 }
 
-const Register = () => {
+interface Props {
+  onSubmit?: (
+    values: UserFormValues,
+    actions: FormikHelpers<UserFormValues>
+  ) => Promise<void>
+}
+
+const Register = ({ onSubmit }: Props) => {
   const { userStore } = useStore()
 
   const handleSubmit = async (
@@ -127,7 +131,7 @@ const Register = () => {
   return (
     <Formik
       initialValues={registerInitialValues}
-      onSubmit={handleSubmit}
+      onSubmit={onSubmit ?? handleSubmit}
       validateOnMount
       validationSchema={userRegisterFormValuesSchema}
       component={InnerForm}
