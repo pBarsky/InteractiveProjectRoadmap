@@ -8,6 +8,7 @@ import routes from '../../app/common/routing/routes'
 import { browserHistory } from '../../app/layout/App'
 import { UserFormValues } from '../../app/models/user'
 import { useStore } from '../../app/stores/store'
+import customErrorMessages from '../../app/validationSchemas/customErrorMessages'
 import { userLoginFormValuesSchema } from '../../app/validationSchemas/userSchemas'
 
 // forma na logowanie, po zalogowaniu przenosi na dashboard usera z jego danymi (jakos ladnie pokazane, jakkolwiek)
@@ -36,23 +37,21 @@ const InnerForm = ({
         padding: '20px'
       }}>
       <FormField required>
-        <label>Email</label>
+        <label id='email'>Email</label>
         <Input
+          aria-labelledby='email'
           name='email'
           placeholder='Email'
           required
           icon='user'
           iconPosition='left'
         />
-        {touched.email && errors.email && (
-          <Label prompt pointing>
-            {errors.email}
-          </Label>
-        )}
+        {touched.email && errors.email && <Label prompt>{errors.email}</Label>}
       </FormField>
       <FormField required>
-        <label>Password</label>
+        <label id='password'>Password</label>
         <Input
+          aria-labelledby='password'
           name='password'
           required
           placeholder='Password'
@@ -96,7 +95,14 @@ const InnerForm = ({
   )
 }
 
-const Login = () => {
+interface Props {
+  onSubmit?: (
+    values: UserFormValues,
+    actions: FormikHelpers<UserFormValues>
+  ) => Promise<void>
+}
+
+const Login = ({ onSubmit }: Props) => {
   const { userStore } = useStore()
 
   const handleSubmit = async (
@@ -107,14 +113,14 @@ const Login = () => {
       await userStore.login(values)
       browserHistory.push(routes.user.dashboard)
     } catch {
-      setErrors({ commonFormError: 'Invalid email or password.' })
+      setErrors({ commonFormError: customErrorMessages.common.failedLogin })
     }
   }
 
   return (
     <Formik
       initialValues={loginInitialValues}
-      onSubmit={handleSubmit}
+      onSubmit={onSubmit ?? handleSubmit}
       validateOnMount
       validationSchema={userLoginFormValuesSchema}
       component={InnerForm}

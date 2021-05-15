@@ -1,16 +1,16 @@
 import { object, SchemaOf, string } from 'yup'
 import { UserFormValues } from '../models/user'
+import validationErrorMessages from './customErrorMessages'
 
 export const userLoginFormValuesSchema: SchemaOf<UserFormValues> = object()
   .shape({
-    email: string().required('required').email(),
+    email: string().required(validationErrorMessages.email.required).email(),
     displayName: string().notRequired(),
     password: string()
-      .required('required')
+      .required(validationErrorMessages.password.required)
       .min(8)
       .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/, {
-        message:
-          'Password must contain at least one uppercase letter, one lowercase letter and one number'
+        message: validationErrorMessages.password.complex
       }),
     username: string().notRequired()
   })
@@ -18,15 +18,14 @@ export const userLoginFormValuesSchema: SchemaOf<UserFormValues> = object()
 
 export const userRegisterFormValuesSchema: SchemaOf<UserFormValues> = object()
   .shape({
-    email: string().required('required').email(),
+    email: string().required(validationErrorMessages.email.required).email(),
     displayName: string().notRequired(),
     password: string()
-      .required('required')
+      .required(validationErrorMessages.password.required)
       .min(8)
       .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/, {
-        message:
-          'Password must contain at least one uppercase letter, one lowercase letter and one number'
+        message: validationErrorMessages.password.complex
       }),
-    username: string().required()
+    username: string().required(validationErrorMessages.username.required)
   })
   .defined()

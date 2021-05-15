@@ -11,7 +11,9 @@ const NotFound = () => {
         alignItems: 'center'
       }}>
       <Container>
-        <Header as='h1'>We could not find what you were looking for :(</Header>
+        <Header as='h1'>
+          Sorry. We could not find what you were looking for 😟.
+        </Header>
       </Container>
     </Segment>
   )

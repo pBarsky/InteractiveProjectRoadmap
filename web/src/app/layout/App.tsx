@@ -5,6 +5,7 @@ import { Redirect, Route, Router, Switch } from 'react-router-dom'
 import { Container } from 'semantic-ui-react'
 import Login from '../../features/auth/Login'
 import Register from '../../features/auth/Register'
+import NotFound from '../../features/errors/NotFound'
 import Homepage from '../../features/home/Homepage'
 import Dashboard from '../../features/users/Dashboard'
 import ProtectedRoute from '../common/routing/ProtectedRoute'
@@ -50,6 +51,7 @@ function App () {
               component={Dashboard}
             />
             <Route exact path={routes.common.home} component={Homepage} />
+            <Route path={routes.common.notFound} component={NotFound} />
             <Redirect to={routes.common.notFound} />
           </Switch>
         </Container>
