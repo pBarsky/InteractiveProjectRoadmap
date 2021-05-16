@@ -1,7 +1,10 @@
 import React from 'react'
 import { Container, Header, Segment } from 'semantic-ui-react'
 
-const NotFound = () => {
+interface Props {
+  message?: string
+}
+const NotFound = ({ message }: Props) => {
   return (
     <Segment
       textAlign='center'
@@ -12,7 +15,7 @@ const NotFound = () => {
       }}>
       <Container>
         <Header as='h1'>
-          Sorry. We could not find what you were looking for 😟.
+          {message ?? 'Sorry. We could not find what you were looking for 😟.'}
         </Header>
       </Container>
     </Segment>
