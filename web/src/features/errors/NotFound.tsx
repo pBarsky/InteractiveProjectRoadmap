@@ -1,10 +1,11 @@
-import React from 'react'
-import { Container, Header, Segment } from 'semantic-ui-react'
+import React from 'react';
+import { Container, Header, Segment } from 'semantic-ui-react';
+import defaultDict from '../../app/dictionaries/defaultDict';
 
-interface Props {
-  message?: string
+interface NotFoundProps {
+  message?: string;
 }
-const NotFound = ({ message }: Props) => {
+const NotFound = ({ message }: NotFoundProps) => {
   return (
     <Segment
       textAlign='center'
@@ -14,12 +15,10 @@ const NotFound = ({ message }: Props) => {
         alignItems: 'center'
       }}>
       <Container>
-        <Header as='h1'>
-          {message ?? 'Sorry. We could not find what you were looking for 😟.'}
-        </Header>
+        <Header as='h1'>{message ?? defaultDict.pages.notFound.message}</Header>
       </Container>
     </Segment>
-  )
-}
+  );
+};
 
-export default NotFound
+export default NotFound;

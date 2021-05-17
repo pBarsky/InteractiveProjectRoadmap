@@ -1,26 +1,26 @@
-import { createContext, useContext } from 'react'
-import CommonStore from './commonStore'
-import UserStore from './userStore'
+import { createContext, useContext } from 'react';
+import DefaultAuthStore, { AuthStore } from './authStore';
+import DefaultCommonStore, { CommonStore } from './commonStore';
 
 export interface Store {
-  userStore: UserStore
-  commonStore: CommonStore
+  authStore: AuthStore;
+  commonStore: CommonStore;
 }
 
 export const store: Store = {
-  userStore: new UserStore(),
-  commonStore: new CommonStore()
-}
+  authStore: DefaultAuthStore,
+  commonStore: DefaultCommonStore
+};
 
-export const StoreContext = createContext(store)
+export const StoreContext = createContext(store);
 
 export const useStore = () => {
-  return useContext(StoreContext)
-}
+  return useContext(StoreContext);
+};
 
 interface StoreProviderProps {
-  store?: Store
-  children: JSX.Element | JSX.Element[]
+  store?: Store;
+  children: JSX.Element | JSX.Element[];
 }
 
 export const StoreProvider = (props: StoreProviderProps) => {
@@ -28,7 +28,7 @@ export const StoreProvider = (props: StoreProviderProps) => {
     <StoreContext.Provider value={props.store ?? store}>
       {props.children}
     </StoreContext.Provider>
-  )
-}
+  );
+};
 
-export default Store
+export default Store;

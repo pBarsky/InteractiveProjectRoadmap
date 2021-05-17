@@ -15,6 +15,8 @@ module.exports = {
   },
   plugins: ['react', '@typescript-eslint', 'jest'],
   rules: {
+    'no-useless-constructor': 'off',
+    semi: ['error', 'always'],
     'react/react-in-jsx-scope': 'off',
     'no-use-before-define': 'off',
     '@typescript-eslint/no-use-before-define': ['error']
@@ -22,5 +24,18 @@ module.exports = {
   globals: {
     React: true,
     JSX: true
-  }
-}
+  },
+  settings: {
+    react: {
+      version: 'detect'
+    }
+  },
+  overrides: [
+    {
+      files: ['*.ts', '*.tsx'],
+      parserOptions: {
+        project: ['./tsconfig.json']
+      }
+    }
+  ]
+};

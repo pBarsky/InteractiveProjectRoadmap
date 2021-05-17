@@ -1,6 +1,6 @@
-import { object, SchemaOf, string } from 'yup'
-import { UserFormValues } from '../models/user'
-import validationErrorMessages from './customErrorMessages'
+import { object, SchemaOf, string } from 'yup';
+import { UserFormValues } from '../models/user';
+import validationErrorMessages from './customErrorMessages';
 
 export const userLoginFormValuesSchema: SchemaOf<UserFormValues> = object()
   .shape({
@@ -14,7 +14,7 @@ export const userLoginFormValuesSchema: SchemaOf<UserFormValues> = object()
       }),
     username: string().notRequired()
   })
-  .defined()
+  .defined();
 
 export const userRegisterFormValuesSchema: SchemaOf<UserFormValues> = object()
   .shape({
@@ -28,4 +28,4 @@ export const userRegisterFormValuesSchema: SchemaOf<UserFormValues> = object()
       }),
     username: string().required(validationErrorMessages.username.required)
   })
-  .defined()
+  .defined();
