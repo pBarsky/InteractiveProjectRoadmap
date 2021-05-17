@@ -9,9 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Roadmap.Services", "Roadmap
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Roadmap.Domain", "Roadmap.Domain\Roadmap.Domain.csproj", "{420F607E-7B61-4B3F-8401-A1300636DA47}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Roadmap.Services.Tests", "Roadmap.Services.Tests\Roadmap.Services.Tests.csproj", "{8243C0D6-995E-4A96-9555-E1844744AED3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Roadmap.Services.Tests", "Roadmap.Services.Tests\Roadmap.Services.Tests.csproj", "{8243C0D6-995E-4A96-9555-E1844744AED3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Roadmap.API.Tests", "Roadmap.API.Tests\Roadmap.API.Tests.csproj", "{C72B9E76-28B6-456A-8A08-1082F85616B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Roadmap.API.Tests", "Roadmap.API.Tests\Roadmap.API.Tests.csproj", "{C72B9E76-28B6-456A-8A08-1082F85616B5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Roadmap.Domain.Tests", "Roadmap.Domain.Tests\Roadmap.Domain.Tests.csproj", "{7F6D91E5-D0C7-4345-B98A-45AD0DD424FA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{C72B9E76-28B6-456A-8A08-1082F85616B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C72B9E76-28B6-456A-8A08-1082F85616B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C72B9E76-28B6-456A-8A08-1082F85616B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F6D91E5-D0C7-4345-B98A-45AD0DD424FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F6D91E5-D0C7-4345-B98A-45AD0DD424FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F6D91E5-D0C7-4345-B98A-45AD0DD424FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F6D91E5-D0C7-4345-B98A-45AD0DD424FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

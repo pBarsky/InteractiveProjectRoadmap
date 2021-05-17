@@ -32,9 +32,7 @@ namespace Roadmap.API.Controllers
         [HttpGet]
         public async Task<ActionResult<UserDto>> GetCurrentUser()
         {
-            var user = await _userManager.Users
-                .Include(u => u.RefreshTokens)
-                .FirstOrDefaultAsync(x => x.Email == User.FindFirstValue(ClaimTypes.Email));
+            var user = await _userManager.GetUserAsync(User);
 
             return Ok(CreateUserObject(user));
         }

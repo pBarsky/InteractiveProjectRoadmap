@@ -28,24 +28,20 @@ namespace Roadmap.API.Tests
             // Arrange
             var signInManager = new FakeSignInManagerBuilder().Build();
             var tokenService = new Mock<ITokenService>();
-            var users = new List<AppUser>
+            var user = new AppUser()
             {
-                new AppUser()
-                {
-                    UserName = "test",
-                    Email = "test@test.com",
-                    DisplayName = "Test"
-                }
+                UserName = "test",
+                Email = "test@test.com",
+                DisplayName = "Test",
             };
-            var userStore = users.AsQueryable().BuildMock();
             var userManager = new FakeUserManagerBuilder()
-                .With(x => x.SetupGet(u => u.Users).Returns(userStore.Object)).Build();
+                .With(s => s.Setup(x => x.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user)).Build();
 
             var controller = new AccountController(userManager.Object, signInManager.Object, tokenService.Object);
             var principalUser = new ClaimsPrincipal(new ClaimsIdentity(new[]
             {
                 new Claim(ClaimTypes.Name, "test"),
-                new Claim(ClaimTypes.Email, "test@test.com")
+                new Claim(ClaimTypes.Email, "test@test.com"),
             }, "mock"));
             controller.ControllerContext = new ControllerContext
             {
