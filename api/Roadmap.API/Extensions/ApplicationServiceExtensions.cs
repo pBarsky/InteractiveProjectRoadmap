@@ -24,6 +24,7 @@ namespace Roadmap.API.Extensions
                             .AllowAnyMethod()
                             .AllowAnyHeader()
                             .WithExposedHeaders("WWW-Authenticate")
+                            .AllowCredentials()
                             .WithOrigins(config["CorsOrigin"]);
                     });
             });
