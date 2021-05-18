@@ -46,13 +46,13 @@ namespace Roadmap.API.Controllers
                 .FirstOrDefaultAsync(x => x.Email == loginDto.Email);
             if (user == null)
             {
-                return Unauthorized();
+                return BadRequest();
             }
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
 
             if (!result.Succeeded)
-                return Unauthorized();
+                return BadRequest();
 
             await SetRefreshToken(user);
             return Ok(CreateUserObject(user));
@@ -138,7 +138,10 @@ namespace Roadmap.API.Controllers
             var cookieOptions = new CookieOptions
             {
                 HttpOnly = true,
-                Expires = DateTime.UtcNow.AddDays(7)
+                Expires = DateTime.UtcNow.AddDays(7),
+                IsEssential = true,
+                SameSite = SameSiteMode.None,
+                Secure = true
             };
 
             Response.Cookies.Append("refreshToken", refreshToken.Token, cookieOptions);

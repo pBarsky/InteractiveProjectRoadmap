@@ -2,7 +2,6 @@ import { AxiosPromise } from 'axios';
 import { ApiClient, createApiClient } from '../api/apiClient';
 import routes from '../common/routing/routes';
 import { User, UserFormValues } from '../models/user';
-import commonStore from '../stores/commonStore';
 
 export interface AuthService {
   currentUser(): AxiosPromise<User>;
@@ -31,4 +30,4 @@ export class DefaultAuthService implements AuthService {
   }
 }
 
-export default new DefaultAuthService(createApiClient(commonStore.token));
+export default new DefaultAuthService(createApiClient());
