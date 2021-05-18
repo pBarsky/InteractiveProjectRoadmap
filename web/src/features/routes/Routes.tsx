@@ -6,6 +6,7 @@ import Login from '../auth/Login';
 import Register from '../auth/Register';
 import NotFound from '../errors/NotFound';
 import Homepage from '../home/Homepage';
+import RoadmapDetails from '../roadmaps/RoadmapDetails';
 import Dashboard from '../users/Dashboard';
 
 const Routes = () => {
@@ -14,6 +15,10 @@ const Routes = () => {
       <Route path={routes.auth.login} component={Login} />
       <Route path={routes.auth.register} component={Register} />
       <ProtectedRoute path={routes.user.dashboard} component={Dashboard} />
+      <ProtectedRoute
+        path={routes.roadmaps.roadmapDetails}
+        component={RoadmapDetails}
+      />
       <Route exact path={routes.common.home} component={Homepage} />
       <Route path={routes.common.notFound} component={NotFound} />
       <Redirect to={routes.common.notFound} />

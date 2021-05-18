@@ -54,7 +54,8 @@ const pages = {
     message: 'Sorry. We could not find what you were looking for 😟.'
   },
   dashboard: {
-    greeting: 'Hello, '
+    greeting: 'Hello, ',
+    loading: 'Loading roadmaps...'
   }
 };
 
