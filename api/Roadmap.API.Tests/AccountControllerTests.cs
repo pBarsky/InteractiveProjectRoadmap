@@ -92,8 +92,8 @@ namespace Roadmap.API.Tests
             var result = await controller.Login(loginDto);
 
             // Assert
-            result.Result.Should().BeOfType<UnauthorizedResult>().Which.StatusCode.Should()
-                .Be((int)HttpStatusCode.Unauthorized);
+            result.Result.Should().BeOfType<BadRequestResult>().Which.StatusCode.Should()
+                .Be((int)HttpStatusCode.BadRequest);
         }
 
         [Fact]
@@ -165,8 +165,8 @@ namespace Roadmap.API.Tests
             var result = await controller.Login(loginDto);
 
             // Assert
-            result.Result.Should().BeOfType<UnauthorizedResult>().Which.StatusCode.Should()
-                .Be((int)HttpStatusCode.Unauthorized);
+            result.Result.Should().BeOfType<BadRequestResult>().Which.StatusCode.Should()
+                .Be((int)HttpStatusCode.BadRequest);
         }
 
         [Fact]

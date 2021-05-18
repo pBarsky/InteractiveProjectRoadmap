@@ -3,9 +3,9 @@ import { browserHistory } from '../../App';
 import routes from '../common/routing/routes';
 import { User, UserFormValues } from '../models/user';
 import authService from '../services/authService';
-import { store } from './store';
 
 export interface AuthStore {
+  token: string | null;
   user: User | null;
   refreshTokenTimeout: ReturnType<typeof setTimeout> | null;
   isLoggedIn: boolean;
@@ -19,6 +19,7 @@ export interface AuthStore {
 export class DefaultAuthStore implements AuthStore {
   private _user: User | null = null;
   private _refreshTokenTimeout: ReturnType<typeof setTimeout> | null = null;
+  private _token: string | null = window.localStorage.getItem('jwt');
 
   constructor () {
     makeAutoObservable(this);
@@ -44,34 +45,50 @@ export class DefaultAuthStore implements AuthStore {
     return !!this.user;
   }
 
+  public get token (): string | null {
+    return this._token;
+  }
+
+  public set token (value: string | null) {
+    this._token = value;
+  }
+
+  setToken = (token: string | null) => {
+    this.token = token;
+    if (token) {
+      window.localStorage.setItem('jwt', token);
+    } else {
+      window.localStorage.removeItem('jwt');
+    }
+  };
+
   public login = async (creds: UserFormValues) => {
     try {
       const { data: user } = await authService.login(creds);
-      store.commonStore.setToken(user.token);
+      this.setToken(user.token);
       this.setUser(user);
       this.startRefreshTokenTimer(user);
       browserHistory.push(routes.user.dashboard);
     } catch (error) {
-      console.log(error);
-      throw error;
+      console.error(error);
     }
   };
 
   public register = async (creds: UserFormValues) => {
     try {
       const { data: user } = await authService.register(creds);
-      store.commonStore.setToken(user.token);
+      this.setToken(user.token);
       this.setUser(user);
       this.startRefreshTokenTimer(user);
       browserHistory.push(routes.user.dashboard);
     } catch (error) {
-      console.log(error);
-      throw error;
+      console.error(error);
     }
   };
 
   public logout = () => {
-    store.commonStore.setToken(null);
+    this.stopRefreshTokenTimer();
+    this.setToken(null);
     window.localStorage.removeItem('jwt');
     this.setUser(null);
     browserHistory.push('/');
@@ -85,10 +102,10 @@ export class DefaultAuthStore implements AuthStore {
     try {
       const { data: user } = await authService.currentUser();
       this.setUser(user);
-      store.commonStore.setToken(user.token);
+      this.setToken(user.token);
       this.startRefreshTokenTimer(user);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -97,18 +114,18 @@ export class DefaultAuthStore implements AuthStore {
     try {
       const { data: user } = await authService.refreshToken();
       this.setUser(user);
-      store.commonStore.setToken(user.token);
+      this.setToken(user.token);
       this.startRefreshTokenTimer(user);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
   private startRefreshTokenTimer = (user: User) => {
-    const jwtToken = JSON.parse(atob(user.token.split('.')[1]));
-    const expires = new Date(jwtToken.exp * 1000);
-    const timeout = expires.getTime() - Date.now() - 60 * 1000;
-    this.refreshTokenTimeout = setTimeout(this.refreshToken, timeout);
+    // const jwtToken = JSON.parse(atob(user.token.split('.')[1]));
+    // const expires = new Date(jwtToken.exp * 1000);
+    // const timeout = expires.getTime() - Date.now() - 60 * 1000;
+    this.refreshTokenTimeout = setTimeout(this.refreshToken, 5000);
   };
 
   private stopRefreshTokenTimer = () => {
