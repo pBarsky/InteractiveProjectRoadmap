@@ -31,6 +31,30 @@ const forms = {
       label: 'displayName',
       placeholder: 'Display Name',
       labelText: 'Display name'
+    },
+    name: {
+      name: 'name',
+      label: 'name',
+      placeholder: 'Name',
+      labelText: 'Name'
+    },
+    description: {
+      name: 'description',
+      label: 'description',
+      placeholder: 'Description',
+      labelText: 'Description'
+    },
+    startsOn: {
+      name: 'startsOn',
+      label: 'startsOn',
+      placeholder: 'Starts On',
+      labelText: 'Starts On'
+    },
+    endsOn: {
+      name: 'endsOn',
+      label: 'endsOn',
+      placeholder: 'Ends On',
+      labelText: 'Ends On'
     }
   },
   buttons: {
@@ -45,6 +69,9 @@ const forms = {
     },
     logout: {
       text: 'Logout'
+    },
+    add: {
+      text: 'Add'
     }
   }
 };
