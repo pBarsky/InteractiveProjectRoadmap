@@ -7,12 +7,14 @@ import Register from '../auth/Register';
 import NotFound from '../errors/NotFound';
 import Homepage from '../home/Homepage';
 import Dashboard from '../users/Dashboard';
+import AddRoadmap from '../roadmap/AddRoadmap';
 
 const Routes = () => {
   return (
     <Switch>
       <Route path={routes.auth.login} component={Login} />
       <Route path={routes.auth.register} component={Register} />
+      <Route path={routes.api.roadmap.add} component={AddRoadmap} />
       <ProtectedRoute path={routes.user.dashboard} component={Dashboard} />
       <Route exact path={routes.common.home} component={Homepage} />
       <Route path={routes.common.notFound} component={NotFound} />

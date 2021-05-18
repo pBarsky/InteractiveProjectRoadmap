@@ -72,6 +72,9 @@ const forms = {
     },
     add: {
       text: 'Add'
+    },
+    addNew: {
+      text: 'Add New Roadmap'
     }
   }
 };

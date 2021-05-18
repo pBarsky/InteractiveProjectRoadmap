@@ -7,9 +7,9 @@ export default {
       current: '/api/account'
     },
     roadmap: {
-      get: (id: number) => `/api/roadmap/get/${id}`,
-      getAll: '/api/roadmap/getAll',
-      add: '/api/roadmap/add'
+      get: (id: number) => `/api/roadmap/${id}`,
+      getAll: '/api/roadmap',
+      add: '/api/roadmap'
     }
   },
   common: {
@@ -22,5 +22,11 @@ export default {
   auth: {
     login: '/login',
     register: '/register'
+  },
+  roadmap: {
+    add: '/roadmap/app',
+    list: '/roadmap',
+    details: '/roadmap/:id'
+
   }
 };

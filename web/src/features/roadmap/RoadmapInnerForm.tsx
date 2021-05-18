@@ -3,14 +3,14 @@ import { Form, Input } from 'formik-semantic-ui-react';
 import React from 'react';
 import { Button, Container, FormField, Label } from 'semantic-ui-react';
 import defaultDict from '../../app/dictionaries/defaultDict';
-import { Roadmap } from '../../app/models/roadmap';
+import { RoadmapFormValues } from '../../app/models/roadmap';
 
 const RoadmapInnerForm = ({
   isValid,
   errors,
   isSubmitting,
   touched
-}: FormikProps<Roadmap>) => {
+}: FormikProps<RoadmapFormValues>) => {
   return (
     <Form
       loading={isSubmitting}
@@ -31,12 +31,12 @@ const RoadmapInnerForm = ({
           name={defaultDict.forms.inputs.name.name}
           placeholder={defaultDict.forms.inputs.name.placeholder}
           required
-          icon='user'
+          icon='edit outline'
           iconPosition='left'
         />
         {touched.name && errors.name && <Label prompt>{errors.name}</Label>}
       </FormField>
-      <FormField required>
+      <FormField>
         <label id={defaultDict.forms.inputs.description.label}>
           {defaultDict.forms.inputs.description.labelText}
         </label>
@@ -44,8 +44,7 @@ const RoadmapInnerForm = ({
           aria-labelledby={defaultDict.forms.inputs.description.label}
           name={defaultDict.forms.inputs.description.name}
           placeholder={defaultDict.forms.inputs.description.placeholder}
-          required
-          icon='user'
+          icon='edit outline'
           iconPosition='left'
         />
         {touched.description && errors.description && <Label prompt>{errors.description}</Label>}
@@ -57,14 +56,15 @@ const RoadmapInnerForm = ({
         <Input
           aria-labelledby={defaultDict.forms.inputs.startsOn.label}
           name={defaultDict.forms.inputs.startsOn.name}
+          type='datetime-local'
           placeholder={defaultDict.forms.inputs.startsOn.placeholder}
           required
-          icon='user'
+          icon='calendar alternate outline'
           iconPosition='left'
         />
         {touched.startsOn && errors.startsOn && <Label prompt>{errors.startsOn}</Label>}
       </FormField>
-      <FormField required>
+      <FormField>
         <label id={defaultDict.forms.inputs.endsOn.label}>
           {defaultDict.forms.inputs.endsOn.labelText}
         </label>
@@ -72,8 +72,8 @@ const RoadmapInnerForm = ({
           aria-labelledby={defaultDict.forms.inputs.endsOn.label}
           name={defaultDict.forms.inputs.endsOn.name}
           placeholder={defaultDict.forms.inputs.endsOn.placeholder}
-          required
-          icon='user'
+          type='datetime-local'
+          icon='calendar alternate outline'
           iconPosition='left'
         />
         {touched.endsOn && errors.endsOn && <Label prompt>{errors.endsOn}</Label>}

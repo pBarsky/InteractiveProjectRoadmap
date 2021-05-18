@@ -1,5 +1,7 @@
-import { makeAutoObservable, runInAction } from 'mobx';
-import { Roadmap } from '../models/roadmap';
+import { makeAutoObservable } from 'mobx';
+import { browserHistory } from '../../App';
+import routes from '../common/routing/routes';
+import { Roadmap, RoadmapFormValues } from '../models/roadmap';
 import roadmapService from '../services/roadmapService';
 
 export interface RoadmapStore {
@@ -8,8 +10,8 @@ export interface RoadmapStore {
   loadRoadmaps(): Promise<void>;
   selectRoadmap(id: number): Promise<void>;
   setRoadmaps(roadmaps: Roadmap[]): Promise<void>;
-  addRoadmap(roadmap: Roadmap): Promise<void>;
-};
+  addRoadmap(roadmap: RoadmapFormValues): Promise<void>;
+}
 
 export class DefaultRoadmapStore implements RoadmapStore {
   private _roadmaps: Roadmap[] = [];
@@ -42,10 +44,10 @@ export class DefaultRoadmapStore implements RoadmapStore {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   public selectRoadmap = async (id: number) => {
-    const roadmap = this.roadmaps.find(x => x.id === id);
+    const roadmap = this.roadmaps.find((x) => x.id === id);
     if (roadmap) {
       this.selectedRoadmap = roadmap;
       return;
@@ -56,21 +58,27 @@ export class DefaultRoadmapStore implements RoadmapStore {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   public setRoadmaps = async (roadmaps: Roadmap[]) => {
     this.roadmaps = [...roadmaps];
-  }
+  };
 
-  public addRoadmap = async (roadmap: Roadmap) => {
+  public addRoadmap = async (values: RoadmapFormValues): Promise<void> => {
     try {
-      const { data: id } = await roadmapService.add(roadmap);
-      roadmap.id = id;
-      runInAction(() => {
-        this.roadmaps.push(roadmap);
-      });
+      const { data: id } = await roadmapService.add(values);
+      const roadmap: Roadmap = {
+        ...values,
+        id: id,
+        startsOn: new Date(values.startsOn),
+        endsOn: values.endsOn ? new Date(values.endsOn) : null
+      };
+      this.roadmaps.push(roadmap);
+      browserHistory.push(`${routes.roadmap.list}/${id}`);
     } catch (error) {
       console.log(error);
     }
-  }
-};
+  };
+}
+
+export default new DefaultRoadmapStore();

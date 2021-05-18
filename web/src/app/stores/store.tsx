@@ -5,8 +5,8 @@ import DefaultRoadmapStore, { RoadmapStore } from './roadmapStore';
 
 export interface Store {
   authStore: AuthStore;
-  commonStore: CommonStore;
   roadmapStore: RoadmapStore;
+  commonStore: CommonStore;
 }
 
 export const store: Store = {
