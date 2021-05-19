@@ -27,6 +27,5 @@ export default {
     add: '/roadmap/app',
     list: '/roadmap',
     details: '/roadmap/:id'
-
   }
 };

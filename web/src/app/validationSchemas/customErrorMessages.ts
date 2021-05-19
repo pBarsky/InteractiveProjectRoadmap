@@ -19,5 +19,8 @@ export default {
   },
   startsOn: {
     required: 'Roadmap start date is required'
+  },
+  endsOn: {
+    failedTime: 'Roadmap end date is before roadmap start date'
   }
 };
