@@ -13,7 +13,7 @@ const UserNavMenu = () => {
 
   const dropDown = (
     <Dropdown
-      pointing='top left'
+      pointing='top right'
       text={user?.displayName}
       data-testid='dropdown'>
       <Dropdown.Menu data-testid='menu'>
