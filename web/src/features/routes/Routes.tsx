@@ -8,12 +8,14 @@ import NotFound from '../errors/NotFound';
 import Homepage from '../home/Homepage';
 import RoadmapDetails from '../roadmaps/RoadmapDetails';
 import Dashboard from '../users/Dashboard';
+import AddRoadmap from '../roadmap/AddRoadmap';
 
 const Routes = () => {
   return (
     <Switch>
       <Route path={routes.auth.login} component={Login} />
       <Route path={routes.auth.register} component={Register} />
+      <Route path={routes.api.roadmap.add} component={AddRoadmap} />
       <ProtectedRoute path={routes.user.dashboard} component={Dashboard} />
       <ProtectedRoute
         path={routes.roadmap.details}

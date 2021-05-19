@@ -1,4 +1,5 @@
 import { render } from '@testing-library/react';
+import React from 'react';
 import { store, StoreProvider } from '../../../app/stores/store';
 import Dashboard from '../Dashboard';
 

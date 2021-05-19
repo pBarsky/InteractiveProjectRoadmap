@@ -10,6 +10,7 @@ export interface RoadmapStore {
   loadRoadmaps(): Promise<void>;
   loadRoadmap(id: number): Promise<void>;
   loading: boolean;
+  addRoadmap(roadmap: RoadmapFormValues): Promise<void>;
 }
 
 export class DefaultRoadmapStore implements RoadmapStore {
@@ -80,6 +81,20 @@ export class DefaultRoadmapStore implements RoadmapStore {
   setRoadmaps = (roadmaps: Roadmap[]) => {
     this.roadmaps = roadmaps.map((roadmap) => this.dtoToRoadmap(roadmap));
   };
+  addRoadmap = async (values: RoadmapFormValues): Promise<void> => {
+    try {
+      const { data: id } = await roadmapService.add(values);
+      const roadmap: Roadmap = {
+        ...values,
+        id: id,
+        startsOn: new Date(values.startsOn),
+        endsOn: values.endsOn ? new Date(values.endsOn) : null
+      };
+      this.roadmaps.push(roadmap);
+      browserHistory.push(`${routes.roadmap.list}/${id}`);
+    } catch (error) {
+      console.log(error);
+    }
 
   private dtoToRoadmap: (dto: Roadmap) => Roadmap = (dto: Roadmap) => {
     return {
@@ -101,3 +116,4 @@ export class DefaultRoadmapStore implements RoadmapStore {
 }
 
 export default new DefaultRoadmapStore();
+
