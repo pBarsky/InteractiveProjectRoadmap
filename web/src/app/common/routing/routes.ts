@@ -23,8 +23,8 @@ export default {
     login: '/login',
     register: '/register'
   },
-  roadmaps: {
-    roadmap: '/roadmap',
-    roadmapDetails: '/roadmap/:id'
+  roadmap: {
+    list: '/roadmap',
+    details: '/roadmap/:id'
   }
 };

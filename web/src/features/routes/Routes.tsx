@@ -16,7 +16,7 @@ const Routes = () => {
       <Route path={routes.auth.register} component={Register} />
       <ProtectedRoute path={routes.user.dashboard} component={Dashboard} />
       <ProtectedRoute
-        path={routes.roadmaps.roadmapDetails}
+        path={routes.roadmap.details}
         component={RoadmapDetails}
       />
       <Route exact path={routes.common.home} component={Homepage} />

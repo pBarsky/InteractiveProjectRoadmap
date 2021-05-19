@@ -1,7 +1,7 @@
 export interface Roadmap{
-    id?: number;
+    id: number;
     name: string;
-    description?: string;
+    description: string | null;
     startsOn: Date;
-    endsOn?: Date;
+    endsOn: Date | null;
 }

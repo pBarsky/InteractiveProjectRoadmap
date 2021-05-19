@@ -5,6 +5,8 @@ import Dashboard from '../Dashboard';
 describe('<Dashboard />', () => {
   it('Should display user displayName', () => {
     const userDisplayName = 'TestDisplayName';
+    store.roadmapStore.roadmaps = [];
+    store.commonStore.setAppLoaded();
     store.authStore.user = {
       displayName: userDisplayName,
       token: '',

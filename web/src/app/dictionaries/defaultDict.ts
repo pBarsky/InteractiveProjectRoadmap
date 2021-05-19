@@ -56,6 +56,12 @@ const pages = {
   dashboard: {
     greeting: 'Hello, ',
     loading: 'Loading roadmaps...'
+  },
+  roadmap: {
+    startsOn: 'Starts on: ',
+    endsOn: 'Ends on: ',
+    noRoadmaps: 'You dont have any roadmaps yet...',
+    proposalOfCreation: 'How about you make a new one? 😸'
   }
 };
 

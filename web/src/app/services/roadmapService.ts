@@ -2,7 +2,6 @@ import { AxiosPromise } from 'axios';
 import { ApiClient, createApiClient } from '../api/apiClient';
 import routes from '../common/routing/routes';
 import { Roadmap } from '../models/roadmap';
-import commonStore from '../stores/commonStore';
 
 export interface RoadmapService {
   fetchRoadmaps(): AxiosPromise<Roadmap[]>;
@@ -25,4 +24,4 @@ export class DefaultRoadmapService implements RoadmapService {
   }
 }
 
-export default new DefaultRoadmapService(createApiClient(commonStore.token));
+export default new DefaultRoadmapService(createApiClient());
