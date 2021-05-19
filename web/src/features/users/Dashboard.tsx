@@ -1,6 +1,8 @@
 import { observer } from 'mobx-react-lite';
 import React from 'react';
-import { Container, Header, Segment } from 'semantic-ui-react';
+import { Button, Container, Header, Segment } from 'semantic-ui-react';
+import { browserHistory } from '../../App';
+import routes from '../../app/common/routing/routes';
 import defaultDict from '../../app/dictionaries/defaultDict';
 import { useStore } from '../../app/stores/store';
 
@@ -20,6 +22,11 @@ const Dashboard = () => {
         <Header as='h1' style={{ fontSize: '3em', marginTop: 0 }}>
           {user?.displayName}
         </Header>
+        <Button
+          color='black'
+          onClick={() => browserHistory.push(routes.api.roadmap.add)}>
+          {defaultDict.forms.buttons.addNew.text}
+        </Button>
       </Container>
     </Segment>
   );

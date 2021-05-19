@@ -1,15 +1,18 @@
 import { createContext, useContext } from 'react';
 import DefaultAuthStore, { AuthStore } from './authStore';
 import DefaultCommonStore, { CommonStore } from './commonStore';
+import DefaultRoadmapStore, { RoadmapStore } from './roadmapStore';
 
 export interface Store {
   authStore: AuthStore;
+  roadmapStore: RoadmapStore;
   commonStore: CommonStore;
 }
 
 export const store: Store = {
   authStore: DefaultAuthStore,
-  commonStore: DefaultCommonStore
+  commonStore: DefaultCommonStore,
+  roadmapStore: DefaultRoadmapStore
 };
 
 export const StoreContext = createContext(store);

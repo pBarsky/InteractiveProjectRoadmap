@@ -20,8 +20,8 @@ export class DefaultCommonStore implements CommonStore {
     this._appLoaded = value;
   }
 
-  setAppLoaded = () => {
-    this.appLoaded = true;
+  setAppLoaded = (val: boolean = true) => {
+    this.appLoaded = val;
   };
 }
 
