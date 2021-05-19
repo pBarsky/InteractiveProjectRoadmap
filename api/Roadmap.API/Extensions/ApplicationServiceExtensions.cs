@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Reflection;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using Roadmap.API.Mapper;
 using Roadmap.Domain;
 
 namespace Roadmap.API.Extensions
@@ -15,6 +17,9 @@ namespace Roadmap.API.Extensions
             {
                 opt.UseSqlServer(config.GetConnectionString("DefaultConnection"));
             });
+
+            services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
+
             services.AddCors(opt =>
             {
                 opt.AddPolicy("CorsPolicy",
@@ -24,6 +29,7 @@ namespace Roadmap.API.Extensions
                             .AllowAnyMethod()
                             .AllowAnyHeader()
                             .WithExposedHeaders("WWW-Authenticate")
+                            .AllowCredentials()
                             .WithOrigins(config["CorsOrigin"]);
                     });
             });

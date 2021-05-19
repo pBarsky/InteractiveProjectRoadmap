@@ -16,6 +16,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Roadmap.API.Extensions;
 using Roadmap.Domain;
+using Roadmap.Domain.Repositories.Implementations;
+using Roadmap.Domain.Repositories.Interfaces;
+using Roadmap.Services.Projects;
 using Roadmap.Services.Token;
 
 namespace Roadmap.API
@@ -62,6 +65,8 @@ namespace Roadmap.API
             services.AddApplicationServices(Configuration);
             services.AddIdentityServices(Configuration);
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IProjectService, ProjectService>();
+            services.AddScoped<IProjectRepository, ProjectRepository>();
         }
     }
 }
