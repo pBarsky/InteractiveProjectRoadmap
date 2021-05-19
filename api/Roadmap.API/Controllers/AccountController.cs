@@ -141,7 +141,8 @@ namespace Roadmap.API.Controllers
                 Expires = DateTime.UtcNow.AddDays(7),
                 IsEssential = true,
                 SameSite = SameSiteMode.None,
-                Secure = true
+                Secure = true,
+                Domain = Request.Host.Host
             };
 
             Response.Cookies.Append("refreshToken", refreshToken.Token, cookieOptions);
