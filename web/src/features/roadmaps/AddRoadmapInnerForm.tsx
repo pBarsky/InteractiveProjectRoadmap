@@ -2,10 +2,11 @@ import { ErrorMessage, FormikProps } from 'formik';
 import { Form, Input } from 'formik-semantic-ui-react';
 import React from 'react';
 import { Button, Container, FormField, Label } from 'semantic-ui-react';
+import BackButton from '../../app/common/buttons/BackButton';
 import defaultDict from '../../app/dictionaries/defaultDict';
 import { RoadmapFormValues } from '../../app/models/roadmap';
 
-const RoadmapInnerForm = ({
+const AddRoadmapInnerForm = ({
   isValid,
   errors,
   isSubmitting,
@@ -47,7 +48,9 @@ const RoadmapInnerForm = ({
           icon='edit outline'
           iconPosition='left'
         />
-        {touched.description && errors.description && <Label prompt>{errors.description}</Label>}
+        {touched.description && errors.description && (
+          <Label prompt>{errors.description}</Label>
+        )}
       </FormField>
       <FormField required>
         <label id={defaultDict.forms.inputs.startsOn.label}>
@@ -62,7 +65,9 @@ const RoadmapInnerForm = ({
           icon='calendar alternate outline'
           iconPosition='left'
         />
-        {touched.startsOn && errors.startsOn && <Label prompt>{errors.startsOn}</Label>}
+        {touched.startsOn && errors.startsOn && (
+          <Label prompt>{errors.startsOn}</Label>
+        )}
       </FormField>
       <FormField>
         <label id={defaultDict.forms.inputs.endsOn.label}>
@@ -76,7 +81,9 @@ const RoadmapInnerForm = ({
           icon='calendar alternate outline'
           iconPosition='left'
         />
-        {touched.endsOn && errors.endsOn && <Label prompt>{errors.endsOn}</Label>}
+        {touched.endsOn && errors.endsOn && (
+          <Label prompt>{errors.endsOn}</Label>
+        )}
       </FormField>
       <ErrorMessage
         name='commonFormError'
@@ -90,10 +97,12 @@ const RoadmapInnerForm = ({
         )}
       />
       <Container>
+        <BackButton />
         <Button
           color='black'
           disabled={!isValid}
           loading={isSubmitting}
+          floated='right'
           type='submit'>
           {defaultDict.forms.buttons.add.text}
         </Button>
@@ -102,4 +111,4 @@ const RoadmapInnerForm = ({
   );
 };
 
-export default RoadmapInnerForm;
+export default AddRoadmapInnerForm;

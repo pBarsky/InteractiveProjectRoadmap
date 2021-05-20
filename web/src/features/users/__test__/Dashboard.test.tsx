@@ -1,11 +1,15 @@
 import { render } from '@testing-library/react';
 import React from 'react';
+import { Router } from 'react-router';
+import { browserHistory } from '../../../App';
 import { store, StoreProvider } from '../../../app/stores/store';
 import Dashboard from '../Dashboard';
 
 describe('<Dashboard />', () => {
   it('Should display user displayName', () => {
     const userDisplayName = 'TestDisplayName';
+    store.roadmapStore.roadmaps = [];
+    store.commonStore.setAppLoaded();
     store.authStore.user = {
       displayName: userDisplayName,
       token: '',
@@ -13,7 +17,9 @@ describe('<Dashboard />', () => {
     };
     const { getByText } = render(
       <StoreProvider store={store}>
-        <Dashboard />
+        <Router history={browserHistory}>
+          <Dashboard />
+        </Router>
       </StoreProvider>
     );
 

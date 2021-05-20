@@ -1,9 +1,8 @@
 const common = {
   appName: 'Roadmap',
-  get welcomeMessage () {
-    return `Welcome to ${this.appName}`;
-  },
-  welcomeButton: 'Go to dashboard'
+  welcomeMessage: 'Welcome to',
+  welcomeButton: 'Go to dashboard',
+  backButton: 'Back'
 };
 
 const forms = {
@@ -74,7 +73,7 @@ const forms = {
       text: 'Add'
     },
     addNew: {
-      text: 'Add New Roadmap'
+      text: 'Add new roadmap'
     }
   }
 };
@@ -84,7 +83,16 @@ const pages = {
     message: 'Sorry. We could not find what you were looking for 😟.'
   },
   dashboard: {
-    greeting: 'Hello, '
+    greeting: 'Hello, ',
+    loading: 'Loading roadmaps...'
+  },
+  roadmap: {
+    startsOn: 'Starts on: ',
+    endsOn: 'Ends on: ',
+    noRoadmaps: 'You dont have any roadmaps yet...',
+    proposalOfCreation: 'How about you make a new one? 😸',
+    roadmapLate: 'You are late... 😥',
+    loadingDetails: 'Loading roadmap...'
   }
 };
 

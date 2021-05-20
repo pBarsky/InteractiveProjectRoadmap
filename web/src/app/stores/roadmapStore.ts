@@ -8,25 +8,25 @@ export interface RoadmapStore {
   roadmaps: Roadmap[];
   selectedRoadmap: Roadmap | null;
   loadRoadmaps(): Promise<void>;
-  selectRoadmap(id: number): Promise<void>;
-  setRoadmaps(roadmaps: Roadmap[]): Promise<void>;
+  loadRoadmap(id: number): Promise<void>;
+  loading: boolean;
   addRoadmap(roadmap: RoadmapFormValues): Promise<void>;
 }
 
 export class DefaultRoadmapStore implements RoadmapStore {
   private _roadmaps: Roadmap[] = [];
   private _selectedRoadmap: Roadmap | null = null;
-
+  private _loading: boolean = false;
   constructor () {
     makeAutoObservable(this);
   }
 
-  public get selectedRoadmap (): Roadmap | null {
-    return this._selectedRoadmap;
+  public get loading (): boolean {
+    return this._loading;
   }
 
-  public set selectedRoadmap (value: Roadmap | null) {
-    this._selectedRoadmap = value;
+  public set loading (value: boolean) {
+    this._loading = value;
   }
 
   public get roadmaps (): Roadmap[] {
@@ -37,34 +37,52 @@ export class DefaultRoadmapStore implements RoadmapStore {
     this._roadmaps = value;
   }
 
-  public loadRoadmaps = async () => {
+  public get selectedRoadmap (): Roadmap | null {
+    return this._selectedRoadmap;
+  }
+
+  public set selectedRoadmap (value: Roadmap | null) {
+    this._selectedRoadmap = value;
+  }
+
+  loadRoadmaps = async () => {
     try {
+      this.loading = true;
       const { data } = await roadmapService.getAll();
       this.setRoadmaps(data);
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      throw error;
+    } finally {
+      this.loading = false;
     }
   };
 
-  public selectRoadmap = async (id: number) => {
-    const roadmap = this.roadmaps.find((x) => x.id === id);
+  loadRoadmap = async (id: number) => {
+    const roadmap: Roadmap | undefined = this.roadmaps.find((x) => x.id === id);
     if (roadmap) {
       this.selectedRoadmap = roadmap;
+      this.loading = false;
       return;
     }
     try {
+      this.loading = true;
       const { data } = await roadmapService.get(id);
-      this.selectedRoadmap = data;
+      const newRoadmap: Roadmap = this.dtoToRoadmap(data);
+      this.roadmaps.push(newRoadmap);
+      this.selectedRoadmap = newRoadmap;
     } catch (error) {
-      console.log(error);
+      browserHistory.push(routes.user.dashboard);
+    } finally {
+      this.loading = false;
     }
   };
 
-  public setRoadmaps = async (roadmaps: Roadmap[]) => {
-    this.roadmaps = [...roadmaps];
+  setRoadmaps = (roadmaps: Roadmap[]) => {
+    this.roadmaps = roadmaps.map((roadmap) => this.dtoToRoadmap(roadmap));
   };
 
-  public addRoadmap = async (values: RoadmapFormValues): Promise<void> => {
+  addRoadmap = async (values: RoadmapFormValues): Promise<void> => {
     try {
       const { data: id } = await roadmapService.add(values);
       const roadmap: Roadmap = {
@@ -78,6 +96,24 @@ export class DefaultRoadmapStore implements RoadmapStore {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  private dtoToRoadmap: (dto: Roadmap) => Roadmap = (dto: Roadmap) => {
+    return {
+      ...dto,
+      startsOn: this.adjustTimezone(dto.startsOn)!,
+      endsOn: this.adjustTimezone(dto.endsOn)
+    };
+  };
+
+  private adjustTimezone = (date: Date | null) => {
+    if (date == null) {
+      return date;
+    }
+    const worker = new Date(date);
+    const timeOffsetInMS: number = worker.getTimezoneOffset() * 60000;
+    worker.setTime(worker.getTime() - timeOffsetInMS);
+    return worker;
   };
 }
 

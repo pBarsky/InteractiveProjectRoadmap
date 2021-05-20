@@ -71,6 +71,7 @@ export class DefaultAuthStore implements AuthStore {
       browserHistory.push(routes.user.dashboard);
     } catch (error) {
       console.error(error);
+      throw error;
     }
   };
 
@@ -83,6 +84,7 @@ export class DefaultAuthStore implements AuthStore {
       browserHistory.push(routes.user.dashboard);
     } catch (error) {
       console.error(error);
+      throw error;
     }
   };
 

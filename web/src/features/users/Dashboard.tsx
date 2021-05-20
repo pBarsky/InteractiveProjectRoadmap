@@ -1,32 +1,46 @@
 import { observer } from 'mobx-react-lite';
-import React from 'react';
-import { Button, Container, Header, Segment } from 'semantic-ui-react';
+import React, { useEffect } from 'react';
+import { Button, Container, Divider, Header, Segment } from 'semantic-ui-react';
 import { browserHistory } from '../../App';
 import routes from '../../app/common/routing/routes';
 import defaultDict from '../../app/dictionaries/defaultDict';
+import Loader from '../../app/layout/Loader';
 import { useStore } from '../../app/stores/store';
+import RoadmapList from '../roadmaps/RoadmapList';
 
 const Dashboard = () => {
-  const { authStore: userStore } = useStore();
-  const { user } = userStore;
+  const { authStore, roadmapStore } = useStore();
+  const { user } = authStore;
+
+  useEffect(() => {
+    roadmapStore.loadRoadmaps();
+  }, [roadmapStore]);
+
   return (
-    <Segment
-      textAlign='center'
-      vertical
-      style={{
-        display: ' flex',
-        alignItems: 'center'
-      }}>
+    <Segment textAlign='center' vertical>
       <Container>
-        <Header as='h2'>{defaultDict.pages.dashboard.greeting}</Header>
+        <Header as='h2' style={{ fontSize: '3em', marginBottom: -10 }}>
+          {defaultDict.pages.dashboard.greeting}
+        </Header>
         <Header as='h1' style={{ fontSize: '3em', marginTop: 0 }}>
           {user?.displayName}
         </Header>
         <Button
           color='black'
-          onClick={() => browserHistory.push(routes.api.roadmap.add)}>
+          onClick={() => browserHistory.push(routes.roadmap.add)}>
           {defaultDict.forms.buttons.addNew.text}
         </Button>
+        <Divider />
+        {roadmapStore.loading
+          ? (
+          <Loader
+            content={defaultDict.pages.dashboard.loading}
+            inline='centered'
+          />
+            )
+          : (
+          <RoadmapList />
+            )}
       </Container>
     </Segment>
   );
