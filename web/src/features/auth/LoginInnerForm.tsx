@@ -75,7 +75,7 @@ const LoginInnerForm = ({
       <Divider />
       <Container>
         <Button basic color='black' as={Link} to={routes.auth.register}>
-          or {defaultDict.forms.buttons.register.text}
+          {defaultDict.common.or} {defaultDict.forms.buttons.register.text}
         </Button>
         <Button
           color='black'

@@ -4,11 +4,13 @@ import validationErrorMessages from './customErrorMessages';
 
 export const userLoginFormValuesSchema: SchemaOf<UserFormValues> = object()
   .shape({
-    email: string().required(validationErrorMessages.email.required).email(),
+    email: string()
+      .required(validationErrorMessages.email.required)
+      .email(validationErrorMessages.email.valid),
     displayName: string().notRequired(),
     password: string()
       .required(validationErrorMessages.password.required)
-      .min(8)
+      .min(8, validationErrorMessages.password.min(8))
       .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/, {
         message: validationErrorMessages.password.complex
       }),
@@ -18,11 +20,13 @@ export const userLoginFormValuesSchema: SchemaOf<UserFormValues> = object()
 
 export const userRegisterFormValuesSchema: SchemaOf<UserFormValues> = object()
   .shape({
-    email: string().required(validationErrorMessages.email.required).email(),
+    email: string()
+      .required(validationErrorMessages.email.required)
+      .email(validationErrorMessages.email.valid),
     displayName: string().notRequired(),
     password: string()
       .required(validationErrorMessages.password.required)
-      .min(8)
+      .min(8, validationErrorMessages.password.min(8))
       .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/, {
         message: validationErrorMessages.password.complex
       }),
