@@ -1,26 +1,33 @@
 export default {
   email: {
-    required: 'Email is required'
+    required: 'Email jest wymagany',
+    valid: 'Email musi być prawidłowym adresem email.'
   },
   password: {
-    required: 'Password is required',
+    required: 'Hasło jest wymagane',
     complex:
-      'Password must contain at least one uppercase letter, one lowercase letter and one number'
+      'Hasło musi zawierać conajmniej jedną małą literę, jedną wielką oraz jedną liczbę.',
+    min: (n: number): string =>
+      `Hasło musi mieć conajmniej ${n} znaków długości.`
   },
   common: {
-    failedLogin: 'Invalid email or password.',
-    failedAdd: 'Invalid name or start date of roadmap'
+    failedLogin: 'Nieprawidłowy email lub hasło.',
+    failedAdd: 'Wystąpił problem przy dodawaniu roadmapy.'
   },
   username: {
-    required: 'Username is required'
+    required: 'Nazwa użytkownika jest wymagana'
   },
   name: {
-    required: 'Roadmap name is required'
+    required: 'Nazwa roadmapy jest wymagana',
+    max: (n: number): string => `Maksymalna długość nazwy to ${n} znaków`
+  },
+  description: {
+    max: (n: number): string => `Maksymalna długość opisu to ${n} znaków`
   },
   startsOn: {
-    required: 'Roadmap start date is required'
+    required: 'Data początku roadmapy jest wymagana'
   },
   endsOn: {
-    failedTime: 'Roadmap end date is before roadmap start date'
+    failedTime: 'Data końca nie może wystąpić przed datą początka.'
   }
 };

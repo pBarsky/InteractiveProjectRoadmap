@@ -1,8 +1,9 @@
 const common = {
   appName: 'Roadmap',
-  welcomeMessage: 'Welcome to',
-  welcomeButton: 'Go to dashboard',
-  backButton: 'Back'
+  welcomeMessage: 'Witaj w',
+  welcomeButton: 'Idź na dashboard',
+  backButton: 'Powrót',
+  or: 'lub'
 };
 
 const forms = {
@@ -16,83 +17,83 @@ const forms = {
     password: {
       name: 'password',
       label: 'password',
-      placeholder: 'Password',
-      labelText: 'Password'
+      placeholder: 'Hasło',
+      labelText: 'Hasło'
     },
     username: {
       name: 'username',
       label: 'username',
-      placeholder: 'Username',
-      labelText: 'Username'
+      placeholder: 'Nazwa użytkownika',
+      labelText: 'Nazwa użytkownika'
     },
     displayName: {
       name: 'displayName',
       label: 'displayName',
-      placeholder: 'Display Name',
-      labelText: 'Display name'
+      placeholder: 'Nazwa wyświetlana',
+      labelText: 'Nazwa wyświetlana'
     },
     name: {
       name: 'name',
       label: 'name',
-      placeholder: 'Name',
-      labelText: 'Name'
+      placeholder: 'Nazwa',
+      labelText: 'Nazwa'
     },
     description: {
       name: 'description',
       label: 'description',
-      placeholder: 'Description',
-      labelText: 'Description'
+      placeholder: 'Opis',
+      labelText: 'Opis'
     },
     startsOn: {
       name: 'startsOn',
       label: 'startsOn',
-      placeholder: 'Starts On',
-      labelText: 'Starts On'
+      placeholder: 'Rozpoczyna się',
+      labelText: 'Rozpoczyna się'
     },
     endsOn: {
       name: 'endsOn',
       label: 'endsOn',
-      placeholder: 'Ends On',
-      labelText: 'Ends On'
+      placeholder: 'Kończy się',
+      labelText: 'Kończy się'
     }
   },
   buttons: {
     register: {
-      text: 'Register'
+      text: 'Zarejestruj'
     },
     login: {
-      text: 'Login'
+      text: 'Zaloguj'
     },
     dashboard: {
       text: 'Dashboard'
     },
     logout: {
-      text: 'Logout'
+      text: 'Wyloguj'
     },
     add: {
-      text: 'Add'
+      text: 'Dodaj'
     },
     addNew: {
-      text: 'Add new roadmap'
+      text: 'Dodaj nową roadmapę'
     }
   }
 };
 
 const pages = {
   notFound: {
-    message: 'Sorry. We could not find what you were looking for 😟.'
+    message: 'Przykro nam. Nie mogliśmy znaleźć tego, czego szukałeś 😟.'
   },
   dashboard: {
-    greeting: 'Hello, ',
-    loading: 'Loading roadmaps...'
+    greeting: 'Witaj, ',
+    loading: 'Wczytywanie roadmap...'
   },
   roadmap: {
-    startsOn: 'Starts on: ',
-    endsOn: 'Ends on: ',
-    noRoadmaps: 'You dont have any roadmaps yet...',
-    proposalOfCreation: 'How about you make a new one? 😸',
-    roadmapLate: 'You are late... 😥',
-    loadingDetails: 'Loading roadmap...'
+    startsOn: 'Rozpoczyna się: ',
+    endsOn: 'Kończy się: ',
+    noRoadmaps: 'Nie masz jeszcze żadnych roadmap...',
+    proposalOfCreation: 'Może chcesz zrobić nową? 😸',
+    roadmapLate: 'Jesteś spóźniony... 😥',
+    loadingDetails: "Wczytywanie roadmap'y..."
   }
 };
 

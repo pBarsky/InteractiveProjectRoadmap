@@ -90,7 +90,7 @@ const RegisterInnerForm = ({
       <Divider />
       <Container>
         <Button basic as={Link} to='/login'>
-          or {defaultDict.forms.buttons.login.text}
+          {defaultDict.common.or} {defaultDict.forms.buttons.login.text}
         </Button>
         <Button
           floated='right'
