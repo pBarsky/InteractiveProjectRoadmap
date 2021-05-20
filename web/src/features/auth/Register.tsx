@@ -18,8 +18,11 @@ interface RegisterProps {
 }
 
 const Register = ({ onSubmit }: RegisterProps) => {
-  const { authStore: userStore } = useStore();
+  const { authStore } = useStore();
 
+  if (authStore.isLoggedIn) {
+    browserHistory.push(routes.user.dashboard);
+  }
   const handleSubmit = async (
     values: UserFormValues,
     { setErrors }: FormikHelpers<UserFormValues>
@@ -27,7 +30,7 @@ const Register = ({ onSubmit }: RegisterProps) => {
     try {
       values.displayName =
         values.username!.charAt(0).toUpperCase() + values.username!.slice(1);
-      await userStore.register(values);
+      await authStore.register(values);
       browserHistory.push(routes.user.dashboard);
     } catch {
       setErrors({ commonFormError: 'Invalid email or password.' });

@@ -16,11 +16,11 @@ const Homepage = () => {
     <Segment textAlign='center' vertical>
       <Container text>
         <Segment basic style={{ fontSize: '2em' }}>
-          <Header size='huge' as='h1' style={{ marginBottom: 0 }}>
-            {defaultDict.common.appName}
-          </Header>
-          <Header size='medium' as='h2' style={{ marginTop: '0.5em' }}>
+          <Header size='medium' as='h2' style={{ marginBottom: -15, textDecoration: 'underline' }}>
             {defaultDict.common.welcomeMessage}
+          </Header>
+          <Header size='huge' as='h1' style={{ marginTop: 0 }}>
+            {defaultDict.common.appName}
           </Header>
         </Segment>
         {userStore.isLoggedIn

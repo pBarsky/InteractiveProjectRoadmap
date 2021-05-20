@@ -5,15 +5,17 @@ interface LoaderProps {
   inverted?: boolean;
   content?: string;
   inline?: boolean | 'centered';
+  page?: boolean;
 }
 
 const Loader = ({
   inverted = true,
   content = 'Loading...',
-  inline
+  inline,
+  page = false
 }: LoaderProps) => {
   return (
-    <Segment style={{ minHeight: '20vh' }}>
+    <Segment style={{ minHeight: page ? '100vh' : '20vh' }}>
       <Dimmer active={true} inverted={inverted}>
         <SemanticLoader content={content} inline={inline} />
       </Dimmer>

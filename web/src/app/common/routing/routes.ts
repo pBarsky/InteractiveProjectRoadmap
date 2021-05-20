@@ -24,7 +24,7 @@ export default {
     register: '/register'
   },
   roadmap: {
-    add: '/roadmap/app',
+    add: '/roadmap/add',
     list: '/roadmap',
     details: '/roadmap/:id'
   }

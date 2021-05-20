@@ -7,12 +7,18 @@ interface RoadmapCardProps {
   onClick?: () => void;
   roadmap: Roadmap;
   fluid?: boolean;
+  testDate?: Date;
 }
 
-const RoadmapCard = ({ onClick, roadmap, fluid = false }: RoadmapCardProps) => {
+const RoadmapCard = ({
+  onClick,
+  roadmap,
+  testDate,
+  fluid = false
+}: RoadmapCardProps) => {
   let isFailing: boolean = false;
   if (roadmap.endsOn) {
-    isFailing = roadmap.startsOn.getTime() > roadmap.endsOn.getTime();
+    isFailing = (testDate ?? new Date()).getTime() > roadmap.endsOn.getTime();
   }
 
   const shortcutDescription = (desc: string | null) => {
@@ -26,6 +32,14 @@ const RoadmapCard = ({ onClick, roadmap, fluid = false }: RoadmapCardProps) => {
     return `${desc.slice(0, 100)}...`;
   };
 
+  const isLate: JSX.Element | null = isFailing
+    ? (
+    <Card.Meta textAlign='center'>
+      {defaultDict.pages.roadmap.roadmapLate}
+    </Card.Meta>
+      )
+    : null;
+
   return (
     <Card
       fluid={fluid}
@@ -34,6 +48,7 @@ const RoadmapCard = ({ onClick, roadmap, fluid = false }: RoadmapCardProps) => {
       style={{ padding: fluid ? '20px' : '' }}>
       <Card.Content>
         <Card.Header textAlign='center'>{roadmap.name}</Card.Header>
+        {isLate}
         <Card.Meta textAlign='center'>
           {defaultDict.pages.roadmap.startsOn}
           {roadmap.startsOn.toLocaleString()}

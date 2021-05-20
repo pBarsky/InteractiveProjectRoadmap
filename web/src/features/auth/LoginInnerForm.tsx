@@ -2,7 +2,13 @@ import { ErrorMessage, FormikProps } from 'formik';
 import { Form, Input } from 'formik-semantic-ui-react';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Container, FormField, Label } from 'semantic-ui-react';
+import {
+  Button,
+  Container,
+  Divider,
+  FormField,
+  Label
+} from 'semantic-ui-react';
 import routes from '../../app/common/routing/routes';
 import defaultDict from '../../app/dictionaries/defaultDict';
 import { UserFormValues } from '../../app/models/user';
@@ -66,21 +72,19 @@ const LoginInnerForm = ({
           />
         )}
       />
+      <Divider />
       <Container>
+        <Button basic color='black' as={Link} to={routes.auth.register}>
+          or {defaultDict.forms.buttons.register.text}
+        </Button>
         <Button
           color='black'
           disabled={!isValid}
+          basic={!isValid}
           loading={isSubmitting}
+          floated='right'
           type='submit'>
           {defaultDict.forms.buttons.login.text}
-        </Button>
-        <Button
-          basic
-          color='black'
-          floated='right'
-          as={Link}
-          to={routes.auth.register}>
-          or {defaultDict.forms.buttons.register.text}
         </Button>
       </Container>
     </Form>

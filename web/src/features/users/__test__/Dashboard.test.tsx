@@ -1,5 +1,7 @@
 import { render } from '@testing-library/react';
 import React from 'react';
+import { Router } from 'react-router';
+import { browserHistory } from '../../../App';
 import { store, StoreProvider } from '../../../app/stores/store';
 import Dashboard from '../Dashboard';
 
@@ -15,7 +17,9 @@ describe('<Dashboard />', () => {
     };
     const { getByText } = render(
       <StoreProvider store={store}>
-        <Dashboard />
+        <Router history={browserHistory}>
+          <Dashboard />
+        </Router>
       </StoreProvider>
     );
 

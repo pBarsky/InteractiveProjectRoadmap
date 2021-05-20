@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx';
 import { browserHistory } from '../../App';
 import routes from '../common/routing/routes';
-import { Roadmap } from '../models/roadmap';
+import { Roadmap, RoadmapFormValues } from '../models/roadmap';
 import roadmapService from '../services/roadmapService';
 
 export interface RoadmapStore {
@@ -48,7 +48,7 @@ export class DefaultRoadmapStore implements RoadmapStore {
   loadRoadmaps = async () => {
     try {
       this.loading = true;
-      const { data } = await roadmapService.fetchRoadmaps();
+      const { data } = await roadmapService.getAll();
       this.setRoadmaps(data);
     } catch (error) {
       console.error(error);
@@ -67,7 +67,7 @@ export class DefaultRoadmapStore implements RoadmapStore {
     }
     try {
       this.loading = true;
-      const { data } = await roadmapService.fetchRoadmap(id);
+      const { data } = await roadmapService.get(id);
       const newRoadmap: Roadmap = this.dtoToRoadmap(data);
       this.roadmaps.push(newRoadmap);
       this.selectedRoadmap = newRoadmap;
@@ -81,6 +81,7 @@ export class DefaultRoadmapStore implements RoadmapStore {
   setRoadmaps = (roadmaps: Roadmap[]) => {
     this.roadmaps = roadmaps.map((roadmap) => this.dtoToRoadmap(roadmap));
   };
+
   addRoadmap = async (values: RoadmapFormValues): Promise<void> => {
     try {
       const { data: id } = await roadmapService.add(values);
@@ -95,6 +96,7 @@ export class DefaultRoadmapStore implements RoadmapStore {
     } catch (error) {
       console.log(error);
     }
+  };
 
   private dtoToRoadmap: (dto: Roadmap) => Roadmap = (dto: Roadmap) => {
     return {
@@ -116,4 +118,3 @@ export class DefaultRoadmapStore implements RoadmapStore {
 }
 
 export default new DefaultRoadmapStore();
-

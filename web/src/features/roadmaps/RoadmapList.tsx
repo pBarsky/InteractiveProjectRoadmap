@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { CardGroup, Header } from 'semantic-ui-react';
 import { browserHistory } from '../../App';
 import routes from '../../app/common/routing/routes';
@@ -13,7 +14,7 @@ const RoadmapList = () => {
     return (
       <Header size='huge'>
         {defaultDict.pages.roadmap.noRoadmaps}
-        <br /> {defaultDict.pages.roadmap.proposalOfCreation}
+        <br /> <Link to={routes.roadmap.add}>{defaultDict.pages.roadmap.proposalOfCreation}</Link>
       </Header>
     );
   }
