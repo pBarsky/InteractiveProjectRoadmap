@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Roadmap.Domain.Models
 {
-    public class Project
+    public class Milestone
     {
         [MaxLength(2048)]
         public string Description { get; set; }
@@ -13,16 +12,15 @@ namespace Roadmap.Domain.Models
 
         public int Id { get; set; }
 
-        public IList<Milestone> Milestones { get; set; } = new List<Milestone>();
-
         [MaxLength(255)]
         [Required]
         public string Name { get; set; }
 
-        [Required]
-        public DateTime StartsOn { get; set; }
+        public Project ParentProject { get; set; }
 
-        public AppUser User { get; set; }
-        public string UserId { get; set; }
+        public int ParentProjectId { get; set; }
+
+        [EnumDataType(typeof(Status))]
+        public Status Status { get; set; } = Status.ToBeStarted;
     }
 }
