@@ -67,6 +67,7 @@ namespace Roadmap.API
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IProjectService, ProjectService>();
             services.AddScoped<IProjectRepository, ProjectRepository>();
+            services.AddScoped<IMilestoneRepository, MilestoneRepository>();
         }
     }
 }
