@@ -88,8 +88,7 @@ export class DefaultMilestoneStore implements MilestoneStore {
       const milestone: Milestone = {
         ...values,
         id: id,
-        startsOn: new Date(values.startsOn),
-        endsOn: values.endsOn ? new Date(values.endsOn) : null,
+        endsOn: new Date(values.endsOn),
         status: values.status
       };
       this.milestones.push(milestone);
@@ -102,8 +101,7 @@ export class DefaultMilestoneStore implements MilestoneStore {
   private dtoToMilestone: (dto: Milestone) => Milestone = (dto: Milestone) => {
     return {
       ...dto,
-      startsOn: this.adjustTimezone(dto.startsOn)!,
-      endsOn: this.adjustTimezone(dto.endsOn)
+      endsOn: this.adjustTimezone(dto.endsOn)!
     };
   };
 

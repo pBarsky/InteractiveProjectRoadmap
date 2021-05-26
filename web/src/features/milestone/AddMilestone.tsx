@@ -27,10 +27,7 @@ const AddMilestone = ({ onSubmit }: MilestoneProps) => {
     { setErrors }: FormikHelpers<MilestoneFormValues>
   ) => {
     try {
-      values.startsOn = new Date(values.startsOn).toISOString();
-      values.endsOn = values.endsOn
-        ? new Date(values.endsOn).toISOString()
-        : null;
+      values.endsOn = new Date(values.endsOn).toISOString();
       await milestoneStore.addMilestone(values);
     } catch {
       setErrors({ commonFormError: customErrorMessages.common.failedAddMilestone });

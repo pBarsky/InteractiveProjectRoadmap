@@ -10,16 +10,14 @@ export interface Milestone{
     id: number;
     name: string;
     description: string | null;
-    startsOn: Date;
-    endsOn: Date | null;
+    endsOn: Date;
     status: Status;
 }
 
 export interface MilestoneFormValues {
     name: string;
     description: string | null;
-    startsOn: string;
-    endsOn: string | null;
+    endsOn: string;
     status: Status;
     commonFormError?: string;
 }
@@ -27,8 +25,7 @@ export interface MilestoneFormValues {
 export class DefaultMilestoneFormValues implements MilestoneFormValues {
     name: string = '';
     description: string | null ='';
-    startsOn: string = format(new Date(), "yyyy-MM-dd'T'hh:mm");
-    endsOn: string | null = '';
+    endsOn: string = format(new Date(), "yyyy-MM-dd'T'hh:mm");
     status: Status = Status.ToBeStarted;
     commonFormError?: string;
 }

@@ -34,18 +34,6 @@ const AddMilestoneInnerForm = ({
           />
           {errors.description && touched.description ? (<div className="error">{errors.description}</div>) : null}
 
-          <label id={defaultDict.forms.inputs.startsOn.label}>
-            {defaultDict.forms.inputs.startsOn.labelText}
-          </label>
-          <Field
-            aria-labelledby={defaultDict.forms.inputs.startsOn.label}
-            name={defaultDict.forms.inputs.startsOn.name}
-            placeholder={defaultDict.forms.inputs.startsOn.placeholder}
-            type='datetime-local'
-            required
-          />
-          {errors.startsOn && touched.startsOn ? (<div className="error">{errors.startsOn}</div>) : null}
-
           <label id={defaultDict.forms.inputs.endsOn.label}>
             {defaultDict.forms.inputs.endsOn.labelText}
           </label>

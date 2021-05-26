@@ -27,10 +27,10 @@ export default {
     max: (n: number): string => `Maksymalna długość opisu to ${n} znaków`
   },
   startsOn: {
-    required: 'Data początku roadmapy jest wymagana',
-    requiredMilestone: 'Data początku milestone jest wymagana'
+    required: 'Data początku roadmapy jest wymagana'
   },
   endsOn: {
-    failedTime: 'Data końca nie może wystąpić przed datą początka.'
+    failedTime: 'Data końca nie może wystąpić przed datą początka.',
+    requiredMilestone: 'Data końca milestone jest wymagana'
   }
 };

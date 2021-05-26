@@ -1,4 +1,4 @@
-import { date, object, ref, SchemaOf, string } from 'yup';
+import { date, object, SchemaOf, string } from 'yup';
 import { MilestoneFormValues } from '../models/milestone';
 import validationErrorMessages from './customErrorMessages';
 
@@ -10,9 +10,7 @@ export const milestoneFormValuesSchema: SchemaOf<MilestoneFormValues> = object()
     description: string()
       .notRequired()
       .max(2048, validationErrorMessages.description.max(2048)),
-    startsOn: date().required(validationErrorMessages.startsOn.requiredMilestone),
     endsOn: date()
-      .notRequired()
-      .min(ref('startsOn'), validationErrorMessages.endsOn.failedTime)
+      .required(validationErrorMessages.endsOn.requiredMilestone)
   })
   .defined();
