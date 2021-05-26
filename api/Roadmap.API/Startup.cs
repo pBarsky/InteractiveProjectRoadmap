@@ -18,6 +18,7 @@ using Roadmap.API.Extensions;
 using Roadmap.Domain;
 using Roadmap.Domain.Repositories.Implementations;
 using Roadmap.Domain.Repositories.Interfaces;
+using Roadmap.Services.Milestones;
 using Roadmap.Services.Projects;
 using Roadmap.Services.Token;
 
@@ -68,6 +69,7 @@ namespace Roadmap.API
             services.AddScoped<IProjectService, ProjectService>();
             services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<IMilestoneRepository, MilestoneRepository>();
+            services.AddScoped<IMilestoneService, MilestoneService>();
         }
     }
 }

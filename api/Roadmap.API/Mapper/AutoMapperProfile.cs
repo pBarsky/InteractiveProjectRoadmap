@@ -14,6 +14,11 @@ namespace Roadmap.API.Mapper
                 .ForMember(dest => dest.EndsOn,
                     opt => opt.MapFrom(src => src.EndsOn.HasValue ? src.EndsOn.Value.ToUniversalTime() : src.EndsOn))
                 .ReverseMap();
+
+            CreateMap<MilestoneDto, Milestone>()
+                .ForMember(x => x.EndsOn,
+                    opt => opt.MapFrom(src => src.EndsOn.HasValue ? src.EndsOn.Value.ToUniversalTime() : src.EndsOn))
+                .ReverseMap();
         }
     }
 }
