@@ -1,10 +1,7 @@
 import { Formik, FormikHelpers } from 'formik';
 import { observer } from 'mobx-react-lite';
 import React from 'react';
-import {
-  DefaultMilestoneFormValues,
-  MilestoneFormValues
-} from '../../app/models/milestone';
+import { DefaultMilestoneFormValues, MilestoneFormValues } from '../../app/models/milestone';
 import { useStore } from '../../app/stores/store';
 import customErrorMessages from '../../app/validationSchemas/customErrorMessages';
 import { milestoneFormValuesSchema } from '../../app/validationSchemas/milestoneSchemas';
@@ -33,7 +30,9 @@ const AddMilestone = ({ onSubmit, roadmapId }: MilestoneProps) => {
       await milestoneStore.addMilestone(values);
       resetForm();
     } catch {
-      setErrors({ commonFormError: customErrorMessages.common.failedAddMilestone });
+      setErrors({
+        commonFormError: customErrorMessages.common.failedAddMilestone
+      });
     }
   };
 

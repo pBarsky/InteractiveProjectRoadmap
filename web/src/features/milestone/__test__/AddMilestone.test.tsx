@@ -1,4 +1,4 @@
-import { fireEvent, render, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { format } from 'date-fns';
 import React from 'react';
@@ -16,18 +16,10 @@ describe('<AddMilestone />', () => {
       </Router>
     );
     await waitFor(() => {
-      expect(
-        getByLabelText(defaultDict.forms.inputs.name.labelText)
-      ).toBeInTheDocument();
-      expect(
-        getByLabelText(defaultDict.forms.inputs.description.labelText)
-      ).toBeInTheDocument();
-      expect(
-        getByLabelText(defaultDict.forms.inputs.endsOn.labelText)
-      ).toBeInTheDocument();
-      expect(
-        getByRole('button', { name: defaultDict.forms.buttons.add.text })
-      ).toBeInTheDocument();
+      expect(getByLabelText(defaultDict.forms.inputs.name.labelText)).toBeInTheDocument();
+      expect(getByLabelText(defaultDict.forms.inputs.description.labelText)).toBeInTheDocument();
+      expect(getByLabelText(defaultDict.forms.inputs.endsOn.labelText)).toBeInTheDocument();
+      expect(getByRole('button', { name: defaultDict.forms.buttons.add.text })).toBeInTheDocument();
     });
   });
 
@@ -40,21 +32,18 @@ describe('<AddMilestone />', () => {
       </Router>
     );
 
-    fireEvent.change(
-      getByLabelText(defaultDict.forms.inputs.endsOn.labelText),
-      {
+    act(() => {
+      fireEvent.change(getByLabelText(defaultDict.forms.inputs.endsOn.labelText), {
         target: {
           value: format(new Date('2021-05-18'), 'yyyy-MM-dd')
         }
-      }
-    );
-    fireEvent.change(getByLabelText(defaultDict.forms.inputs.name.labelText), {
-      target: { value: 'TestMilestone' }
-    });
+      });
+      fireEvent.change(getByLabelText(defaultDict.forms.inputs.name.labelText), {
+        target: { value: 'TestMilestone' }
+      });
 
-    fireEvent.click(
-      getByRole('button', { name: defaultDict.forms.buttons.add.text })
-    );
+      fireEvent.click(getByRole('button', { name: defaultDict.forms.buttons.add.text }));
+    });
 
     waitFor(() => expect(onSubmit).toHaveBeenCalledTimes(1));
   });
@@ -70,14 +59,10 @@ describe('<AddMilestone />', () => {
     userEvent.click(getByLabelText(defaultDict.forms.inputs.name.labelText));
     userEvent.click(getByLabelText(defaultDict.forms.inputs.endsOn.labelText));
 
-    userEvent.click(
-      getByRole('button', { name: defaultDict.forms.buttons.add.text })
-    );
+    userEvent.click(getByRole('button', { name: defaultDict.forms.buttons.add.text }));
 
     await waitFor(() =>
-      expect(
-        getByText(customErrorMessages.name.requiredMilestone)
-      ).toBeInTheDocument()
+      expect(getByText(customErrorMessages.name.requiredMilestone)).toBeInTheDocument()
     );
   });
 });
