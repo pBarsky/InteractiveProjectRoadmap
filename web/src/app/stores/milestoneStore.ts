@@ -8,8 +8,8 @@ import milestoneService from '../services/milestoneService';
 export interface MilestoneStore {
   milestones: Milestone[];
   selectedMilestone: Milestone | null;
-  loadMilestones(roadmap: Roadmap): Promise<void>;
-  loadMilestone(id: number): Promise<void>;
+  getAll(roadmap: Roadmap): Promise<void>;
+  get(id: number): Promise<void>;
   loading: boolean;
   addMilestone(milestone: MilestoneFormValues): Promise<void>;
 }
@@ -46,7 +46,7 @@ export class DefaultMilestoneStore implements MilestoneStore {
     this._selectedMilestone = value;
   }
 
-  loadMilestones = async (roadmap: Roadmap) => {
+  getAll = async (roadmap: Roadmap) => {
     try {
       this.loading = true;
       const { data } = await milestoneService.getAll(roadmap.id);
@@ -59,7 +59,7 @@ export class DefaultMilestoneStore implements MilestoneStore {
     }
   };
 
-  loadMilestone = async (id: number) => {
+  get = async (id: number) => {
     const milestone: Milestone | undefined = this.milestones.find((x) => x.id === id);
     if (milestone) {
       this.selectedMilestone = milestone;

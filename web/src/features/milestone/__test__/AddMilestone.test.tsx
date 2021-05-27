@@ -44,7 +44,7 @@ describe('<AddMilestone />', () => {
       getByLabelText(defaultDict.forms.inputs.endsOn.labelText),
       {
         target: {
-          value: format(new Date('2021-05-18T03:24:00'), "yyyy-MM-dd'T'hh:mm")
+          value: format(new Date('2021-05-18'), 'yyyy-MM-dd')
         }
       }
     );
