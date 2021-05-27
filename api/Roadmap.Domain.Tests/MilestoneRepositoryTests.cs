@@ -161,7 +161,14 @@ namespace Roadmap.Domain.Tests
         public async void GetAsync_Milestone_MilestoneFound()
         {
             // Arrange
-            _mockDbSet.Setup(x => x.FindAsync(It.IsAny<int>())).ReturnsAsync(new Milestone());
+            var data = new List<Milestone>
+            {
+                new Milestone {Id = 1},
+                new Milestone {Id = 2},
+            };
+            var mockData = data.AsQueryable().BuildMockDbSet();
+            _mockContext.Setup(x => x.Milestones).Returns(mockData.Object);
+
             var repository = new MilestoneRepository(_mockContext.Object);
 
             // Act
@@ -175,7 +182,11 @@ namespace Roadmap.Domain.Tests
         public async void GetAsync_Null_NoMilestoneFound()
         {
             // Arrange
-            _mockDbSet.Setup(x => x.FindAsync(It.IsAny<int>())).ReturnsAsync((Milestone)null);
+            var data = new List<Milestone>
+            {
+            };
+            var mockData = data.AsQueryable().BuildMockDbSet();
+            _mockContext.Setup(x => x.Milestones).Returns(mockData.Object);
             var repository = new MilestoneRepository(_mockContext.Object);
 
             // Act
