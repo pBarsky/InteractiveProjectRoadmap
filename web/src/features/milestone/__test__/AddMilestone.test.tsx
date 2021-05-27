@@ -1,7 +1,7 @@
-import { render, waitFor, fireEvent } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import React from 'react';
 import { format } from 'date-fns';
+import React from 'react';
 import { Router } from 'react-router-dom';
 import { browserHistory } from '../../../App';
 import defaultDict from '../../../app/dictionaries/defaultDict';
@@ -9,24 +9,26 @@ import customErrorMessages from '../../../app/validationSchemas/customErrorMessa
 import AddMilestone from '../AddMilestone';
 
 describe('<AddMilestone />', () => {
-  it('Should render form with name, description and endsOn input fields, with a submit button', () => {
+  it('Should render form with name, description and endsOn input fields, with a submit button', async () => {
     const { getByLabelText, getByRole } = render(
       <Router history={browserHistory}>
-        <AddMilestone />
+        <AddMilestone roadmapId={1} />
       </Router>
     );
-    expect(
-      getByLabelText(defaultDict.forms.inputs.name.labelText)
-    ).toBeInTheDocument();
-    expect(
-      getByLabelText(defaultDict.forms.inputs.description.labelText)
-    ).toBeInTheDocument();
-    expect(
-      getByLabelText(defaultDict.forms.inputs.endsOn.labelText)
-    ).toBeInTheDocument();
-    expect(
-      getByRole('button', { name: defaultDict.forms.buttons.add.text })
-    ).toBeInTheDocument();
+    await waitFor(() => {
+      expect(
+        getByLabelText(defaultDict.forms.inputs.name.labelText)
+      ).toBeInTheDocument();
+      expect(
+        getByLabelText(defaultDict.forms.inputs.description.labelText)
+      ).toBeInTheDocument();
+      expect(
+        getByLabelText(defaultDict.forms.inputs.endsOn.labelText)
+      ).toBeInTheDocument();
+      expect(
+        getByRole('button', { name: defaultDict.forms.buttons.add.text })
+      ).toBeInTheDocument();
+    });
   });
 
   it('Should submit when form inputs contain text', async () => {
@@ -34,7 +36,7 @@ describe('<AddMilestone />', () => {
 
     const { getByRole, getByLabelText } = render(
       <Router history={browserHistory}>
-        <AddMilestone onSubmit={onSubmit} />
+        <AddMilestone roadmapId={1} onSubmit={onSubmit} />
       </Router>
     );
 
@@ -54,9 +56,7 @@ describe('<AddMilestone />', () => {
       getByRole('button', { name: defaultDict.forms.buttons.add.text })
     );
 
-    await waitFor(() => {
-      expect(onSubmit).toHaveBeenCalledTimes(1);
-    });
+    waitFor(() => expect(onSubmit).toHaveBeenCalledTimes(1));
   });
 
   it('Should show error messages when user puts wrong input', async () => {
@@ -64,23 +64,20 @@ describe('<AddMilestone />', () => {
 
     const { getByText, getByRole, getByLabelText } = render(
       <Router history={browserHistory}>
-        <AddMilestone onSubmit={onSubmit} />
+        <AddMilestone roadmapId={1} onSubmit={onSubmit} />
       </Router>
     );
-
-    userEvent.click(
-      getByLabelText(defaultDict.forms.inputs.name.labelText)
-    );
-    userEvent.click(
-      getByLabelText(defaultDict.forms.inputs.endsOn.labelText)
-    );
+    userEvent.click(getByLabelText(defaultDict.forms.inputs.name.labelText));
+    userEvent.click(getByLabelText(defaultDict.forms.inputs.endsOn.labelText));
 
     userEvent.click(
       getByRole('button', { name: defaultDict.forms.buttons.add.text })
     );
 
-    await waitFor(() => {
-      expect(getByText(customErrorMessages.name.requiredMilestone)).toBeInTheDocument();
-    });
+    await waitFor(() =>
+      expect(
+        getByText(customErrorMessages.name.requiredMilestone)
+      ).toBeInTheDocument()
+    );
   });
 });

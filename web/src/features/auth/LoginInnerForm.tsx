@@ -1,12 +1,17 @@
-import { ErrorMessage, FormikProps } from 'formik';
-import { Form, Input } from 'formik-semantic-ui-react';
+import {
+  ErrorMessage,
+  Field as FormikField,
+  Form as FormikForm,
+  FormikProps
+} from 'formik';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {
   Button,
   Container,
   Divider,
-  FormField,
+  Form,
+  Input,
   Label
 } from 'semantic-ui-react';
 import routes from '../../app/common/routing/routes';
@@ -17,10 +22,13 @@ const LoginInnerForm = ({
   isValid,
   errors,
   isSubmitting,
-  touched
+  touched,
+  submitForm
 }: FormikProps<UserFormValues>) => {
   return (
     <Form
+      as={FormikForm}
+      onSubmit={submitForm}
       loading={isSubmitting}
       layout='vertical'
       style={{
@@ -29,13 +37,15 @@ const LoginInnerForm = ({
         border: '1px solid rgba(0,0,0,.05)',
         boxShadow: '0 10px 25px rgba(0,0,0,.05)',
         padding: '20px'
-      }}>
-      <FormField required>
-        <label id={defaultDict.forms.inputs.email.label}>
+      }}
+    >
+      <Form.Field required>
+        <label htmlFor={defaultDict.forms.inputs.email.label}>
           {defaultDict.forms.inputs.email.labelText}
         </label>
-        <Input
-          aria-labelledby={defaultDict.forms.inputs.email.label}
+        <FormikField
+          as={Input}
+          id={defaultDict.forms.inputs.email.name}
           name={defaultDict.forms.inputs.email.name}
           placeholder={defaultDict.forms.inputs.email.placeholder}
           required
@@ -43,13 +53,14 @@ const LoginInnerForm = ({
           iconPosition='left'
         />
         {touched.email && errors.email && <Label prompt>{errors.email}</Label>}
-      </FormField>
-      <FormField required>
-        <label id={defaultDict.forms.inputs.password.label}>
+      </Form.Field>
+      <Form.Field required>
+        <label htmlFor={defaultDict.forms.inputs.password.label}>
           {defaultDict.forms.inputs.password.labelText}
         </label>
-        <Input
-          aria-labelledby={defaultDict.forms.inputs.password.label}
+        <FormikField
+          as={Input}
+          id={defaultDict.forms.inputs.password.name}
           name={defaultDict.forms.inputs.password.name}
           required
           placeholder={defaultDict.forms.inputs.password.placeholder}
@@ -60,7 +71,7 @@ const LoginInnerForm = ({
         {touched.password && errors.password && (
           <Label prompt>{errors.password}</Label>
         )}
-      </FormField>
+      </Form.Field>
       <ErrorMessage
         name='commonFormError'
         render={() => (
@@ -83,7 +94,8 @@ const LoginInnerForm = ({
           basic={!isValid}
           loading={isSubmitting}
           floated='right'
-          type='submit'>
+          type='submit'
+        >
           {defaultDict.forms.buttons.login.text}
         </Button>
       </Container>

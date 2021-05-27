@@ -6,7 +6,6 @@ import Login from '../auth/Login';
 import Register from '../auth/Register';
 import NotFound from '../errors/NotFound';
 import Homepage from '../home/Homepage';
-import AddMilestone from '../milestone/AddMilestone';
 import AddRoadmap from '../roadmaps/AddRoadmap';
 import RoadmapDetails from '../roadmaps/RoadmapDetails';
 import Dashboard from '../users/Dashboard';
@@ -17,7 +16,6 @@ const Routes = () => {
       <Route path={routes.auth.login} component={Login} />
       <Route path={routes.auth.register} component={Register} />
       <ProtectedRoute path={routes.roadmap.add} component={AddRoadmap} />
-      <ProtectedRoute path={routes.milestone.add} component={AddMilestone} />
       <ProtectedRoute path={routes.user.dashboard} component={Dashboard} />
       <ProtectedRoute
         path={routes.roadmap.details}

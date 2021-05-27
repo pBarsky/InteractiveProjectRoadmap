@@ -2,12 +2,13 @@ import { makeAutoObservable } from 'mobx';
 import { browserHistory } from '../../App';
 import routes from '../common/routing/routes';
 import { Milestone, MilestoneFormValues } from '../models/milestone';
+import { Roadmap } from '../models/roadmap';
 import milestoneService from '../services/milestoneService';
 
 export interface MilestoneStore {
   milestones: Milestone[];
   selectedMilestone: Milestone | null;
-  loadMilestones(): Promise<void>;
+  loadMilestones(roadmap: Roadmap): Promise<void>;
   loadMilestone(id: number): Promise<void>;
   loading: boolean;
   addMilestone(milestone: MilestoneFormValues): Promise<void>;
@@ -45,10 +46,10 @@ export class DefaultMilestoneStore implements MilestoneStore {
     this._selectedMilestone = value;
   }
 
-  loadMilestones = async () => {
+  loadMilestones = async (roadmap: Roadmap) => {
     try {
       this.loading = true;
-      const { data } = await milestoneService.getAll();
+      const { data } = await milestoneService.getAll(roadmap.id);
       this.setMilestones(data);
     } catch (error) {
       console.error(error);
@@ -88,11 +89,9 @@ export class DefaultMilestoneStore implements MilestoneStore {
       const milestone: Milestone = {
         ...values,
         id: id,
-        endsOn: new Date(values.endsOn),
-        status: values.status
+        endsOn: new Date(values.endsOn)
       };
       this.milestones.push(milestone);
-      browserHistory.push(`${routes.milestone.list}/${id}`);
     } catch (error) {
       console.log(error);
     }

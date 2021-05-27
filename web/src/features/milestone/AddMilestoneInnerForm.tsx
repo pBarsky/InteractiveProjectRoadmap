@@ -1,59 +1,41 @@
-import { Field, Form, FormikProps } from 'formik';
+import { FormikProps } from 'formik';
 import React from 'react';
-import BackButton from '../../app/common/buttons/BackButton';
 import defaultDict from '../../app/dictionaries/defaultDict';
 import { MilestoneFormValues } from '../../app/models/milestone';
+import styles from './AddMilestone.module.scss';
+import Field from '../../app/common/inputs/Field';
 
 const AddMilestoneInnerForm = ({
-  errors,
   isSubmitting,
-  touched,
   handleSubmit
 }: FormikProps<MilestoneFormValues>) => {
   return (
-    <Form onSubmit={handleSubmit}>
-          <label id={defaultDict.forms.inputs.name.label}>
-            {defaultDict.forms.inputs.name.labelText}
-          </label>
-          <Field
-            aria-labelledby={defaultDict.forms.inputs.name.label}
-            name={defaultDict.forms.inputs.name.name}
-            placeholder={defaultDict.forms.inputs.name.placeholder}
-            required
-          />
-          {errors.name && touched.name ? (<div className="error">{errors.name}</div>) : null}
-
-          <label id={defaultDict.forms.inputs.description.label}>
-            {defaultDict.forms.inputs.description.labelText}
-          </label>
-          <Field
-            aria-labelledby={defaultDict.forms.inputs.description.label}
-            name={defaultDict.forms.inputs.description.name}
-            placeholder={defaultDict.forms.inputs.description.placeholder}
-            required
-          />
-          {errors.description && touched.description ? (<div className="error">{errors.description}</div>) : null}
-
-          <label id={defaultDict.forms.inputs.endsOn.label}>
-            {defaultDict.forms.inputs.endsOn.labelText}
-          </label>
-          <Field
-            aria-labelledby={defaultDict.forms.inputs.endsOn.label}
-            name={defaultDict.forms.inputs.endsOn.name}
-            placeholder={defaultDict.forms.inputs.endsOn.placeholder}
-            type='datetime-local'
-            required
-          />
-          {errors.endsOn && touched.endsOn ? (<div className="error">{errors.endsOn}</div>) : null}
-
-          <BackButton />
-            <button
-              color='black'
-              disabled={isSubmitting}
-              type='submit'>
-              {defaultDict.forms.buttons.add.text}
-            </button>
-        </Form>
+    <div className={styles.wrapper}>
+      <form onSubmit={handleSubmit}>
+        <Field
+          label={defaultDict.forms.inputs.name.labelText}
+          name={defaultDict.forms.inputs.name.name}
+          required/>
+        <Field
+          label={defaultDict.forms.inputs.description.labelText}
+          name={defaultDict.forms.inputs.description.name}/>
+        <Field
+          label={defaultDict.forms.inputs.endsOn.labelText}
+          name={defaultDict.forms.inputs.endsOn.name}
+          required
+          type='date'
+        />
+        <div className={styles.buttonDiv}>
+          <button
+            className={styles.submitButton}
+            disabled={isSubmitting}
+            type="submit"
+          >
+            {defaultDict.forms.buttons.add.text}
+          </button>
+        </div>
+      </form>
+    </div>
   );
 };
 

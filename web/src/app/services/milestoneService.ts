@@ -5,7 +5,7 @@ import { Milestone, MilestoneFormValues } from '../models/milestone';
 
 export interface MilestoneService {
   get(id: number): AxiosPromise<Milestone>;
-  getAll(): AxiosPromise<Milestone[]>;
+  getAll(idRoadmap: number): AxiosPromise<Milestone[]>;
   add(milestone: MilestoneFormValues): AxiosPromise<number>;
 }
 
@@ -16,8 +16,8 @@ export class DefaultMilestoneService implements MilestoneService {
     return this.api.get<Milestone>(routes.api.milestone.get(id));
   }
 
-  getAll (): AxiosPromise<Milestone[]> {
-    return this.api.get<Milestone[]>(routes.api.milestone.getAll);
+  getAll (roadmapId: number): AxiosPromise<Milestone[]> {
+    return this.api.get<Milestone[]>(routes.api.milestone.getAll(roadmapId));
   }
 
   add (milestone: MilestoneFormValues): AxiosPromise<number> {

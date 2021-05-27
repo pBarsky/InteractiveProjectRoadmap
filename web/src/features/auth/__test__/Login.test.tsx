@@ -1,4 +1,4 @@
-import { render, waitFor } from '@testing-library/react';
+import { act, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { Router } from 'react-router-dom';
@@ -9,26 +9,28 @@ import customErrorMessages from '../../../app/validationSchemas/customErrorMessa
 import Login from '../Login';
 
 describe('<Login />', () => {
-  it('Should render form with email and password input fields, with a submit button and a button with link to register', () => {
+  it('Should render form with email and password input fields, with a submit button and a button with link to register', async () => {
     const { getByLabelText, getByRole } = render(
       <Router history={browserHistory}>
         <Login />
       </Router>
     );
-    expect(
-      getByLabelText(defaultDict.forms.inputs.email.labelText)
-    ).toBeInTheDocument();
-    expect(
-      getByLabelText(defaultDict.forms.inputs.password.labelText)
-    ).toBeInTheDocument();
-    expect(
-      getByRole('button', { name: defaultDict.forms.buttons.login.text })
-    ).toBeInTheDocument();
-    expect(
-      getByRole('button', {
-        name: new RegExp(defaultDict.forms.buttons.register.text, 'i')
-      }).closest('a')
-    ).toHaveAttribute('href', routes.auth.register);
+    await waitFor(() => {
+      expect(
+        getByLabelText(defaultDict.forms.inputs.email.labelText)
+      ).toBeInTheDocument();
+      expect(
+        getByLabelText(defaultDict.forms.inputs.password.labelText)
+      ).toBeInTheDocument();
+      expect(
+        getByRole('button', { name: defaultDict.forms.buttons.login.text })
+      ).toBeInTheDocument();
+      expect(
+        getByRole('button', {
+          name: new RegExp(defaultDict.forms.buttons.register.text, 'i')
+        }).closest('a')
+      ).toHaveAttribute('href', routes.auth.register);
+    });
   });
 
   it('should submit when form inputs contain text', async () => {
@@ -40,22 +42,24 @@ describe('<Login />', () => {
       </Router>
     );
 
-    userEvent.type(
-      getByLabelText(defaultDict.forms.inputs.email.labelText),
-      'taken@test.com'
-    );
-    userEvent.type(
-      getByLabelText(defaultDict.forms.inputs.password.labelText),
-      'Randompassword123@'
-    );
+    act(() => {
+      userEvent.type(
+        getByLabelText(defaultDict.forms.inputs.email.labelText),
+        'taken@test.com'
+      );
+      userEvent.type(
+        getByLabelText(defaultDict.forms.inputs.password.labelText),
+        'Randompassword123@'
+      );
 
-    userEvent.click(
-      getByRole('button', { name: defaultDict.forms.buttons.login.text })
-    );
+      userEvent.click(
+        getByRole('button', { name: defaultDict.forms.buttons.login.text })
+      );
+    });
+
+    waitFor(() => expect(onSubmit).toHaveBeenCalledTimes(1));
 
     await waitFor(() => {
-      expect(onSubmit).toHaveBeenCalledTimes(1);
-
       expect(
         queryByText(customErrorMessages.email.required)
       ).not.toBeInTheDocument();
@@ -74,14 +78,16 @@ describe('<Login />', () => {
       </Router>
     );
 
-    userEvent.click(getByLabelText(defaultDict.forms.inputs.email.labelText));
-    userEvent.click(
-      getByLabelText(defaultDict.forms.inputs.password.labelText)
-    );
+    act(() => {
+      userEvent.click(getByLabelText(defaultDict.forms.inputs.email.labelText));
+      userEvent.click(
+        getByLabelText(defaultDict.forms.inputs.password.labelText)
+      );
 
-    userEvent.click(
-      getByRole('button', { name: defaultDict.forms.buttons.login.text })
-    );
+      userEvent.click(
+        getByRole('button', { name: defaultDict.forms.buttons.login.text })
+      );
+    });
 
     await waitFor(() => {
       expect(getByText(customErrorMessages.email.required)).toBeInTheDocument();

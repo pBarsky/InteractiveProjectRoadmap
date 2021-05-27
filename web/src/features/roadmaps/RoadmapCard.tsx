@@ -1,7 +1,4 @@
-import React from 'react';
 import { Card, Divider } from 'semantic-ui-react';
-import { browserHistory } from '../../App';
-import routes from '../../app/common/routing/routes';
 import defaultDict from '../../app/dictionaries/defaultDict';
 import { Roadmap } from '../../app/models/roadmap';
 
@@ -74,11 +71,6 @@ const RoadmapCard = ({
             : shortcutDescription(roadmap.description)}
         </Card.Description>
       </Card.Content>
-      <button
-          color='black'
-          onClick={() => browserHistory.push(routes.milestone.add)}>
-          Dodaj milestonika byczku;)
-      </button>
     </Card>
   );
 };

@@ -1,13 +1,14 @@
 import { format } from 'date-fns';
 
 export enum Status {
-  ToBeStarted,
-  WorkInProgress,
+  New,
+  InProgress,
   Done
 };
 
 export interface Milestone{
     id: number;
+    parentProjectId: number;
     name: string;
     description: string | null;
     endsOn: Date;
@@ -18,6 +19,7 @@ export interface MilestoneFormValues {
     name: string;
     description: string | null;
     endsOn: string;
+    parentProjectId: number;
     status: Status;
     commonFormError?: string;
 }
@@ -25,7 +27,8 @@ export interface MilestoneFormValues {
 export class DefaultMilestoneFormValues implements MilestoneFormValues {
     name: string = '';
     description: string | null ='';
-    endsOn: string = format(new Date(), "yyyy-MM-dd'T'hh:mm");
-    status: Status = Status.ToBeStarted;
+    parentProjectId: number = 0;
+    endsOn: string = format(new Date().setDate(new Date().getDate() + 1), 'yyyy-MM-dd');
+    status: Status = Status.New;
     commonFormError?: string;
 }

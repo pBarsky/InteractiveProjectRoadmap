@@ -1,12 +1,17 @@
-import { ErrorMessage, FormikProps } from 'formik';
-import { Form, Input } from 'formik-semantic-ui-react';
+import {
+  ErrorMessage,
+  Field as FormikField,
+  Form as FormikForm,
+  FormikProps
+} from 'formik';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {
   Button,
   Container,
   Divider,
-  FormField,
+  Form,
+  Input,
   Label
 } from 'semantic-ui-react';
 import defaultDict from '../../app/dictionaries/defaultDict';
@@ -16,10 +21,13 @@ const RegisterInnerForm = ({
   isValid,
   isSubmitting,
   touched,
-  errors
+  errors,
+  submitForm
 }: FormikProps<UserFormValues>) => {
   return (
     <Form
+      as={FormikForm}
+      onSubmit={submitForm}
       loading={isSubmitting}
       layout='vertical'
       style={{
@@ -28,28 +36,31 @@ const RegisterInnerForm = ({
         border: '1px solid rgba(0,0,0,.05)',
         boxShadow: '0 10px 25px rgba(0,0,0,.05)',
         padding: '20px'
-      }}>
-      <FormField required>
-        <label id={defaultDict.forms.inputs.email.label}>
+      }}
+    >
+      <Form.Field required>
+        <label htmlFor={defaultDict.forms.inputs.email.label}>
           {defaultDict.forms.inputs.email.labelText}
         </label>
-        <Input
+        <FormikField
+          as={Input}
+          id={defaultDict.forms.inputs.email.name}
           name={defaultDict.forms.inputs.email.name}
-          aria-labelledby={defaultDict.forms.inputs.email.label}
           placeholder={defaultDict.forms.inputs.email.placeholder}
           required
           icon='user'
           iconPosition='left'
         />
         {touched.email && errors.email && <Label prompt>{errors.email}</Label>}
-      </FormField>
-      <FormField required>
-        <label id={defaultDict.forms.inputs.username.label}>
+      </Form.Field>
+      <Form.Field required>
+        <label htmlFor={defaultDict.forms.inputs.username.label}>
           {defaultDict.forms.inputs.username.labelText}
         </label>
-        <Input
+        <FormikField
+          as={Input}
+          id={defaultDict.forms.inputs.username.name}
           name={defaultDict.forms.inputs.username.name}
-          aria-labelledby={defaultDict.forms.inputs.username.label}
           placeholder={defaultDict.forms.inputs.username.placeholder}
           required
           icon='user'
@@ -58,14 +69,15 @@ const RegisterInnerForm = ({
         {touched.username && errors.username && (
           <Label prompt>{errors.username}</Label>
         )}
-      </FormField>
-      <FormField required>
-        <label id={defaultDict.forms.inputs.password.label}>
+      </Form.Field>
+      <Form.Field required>
+        <label htmlFor={defaultDict.forms.inputs.password.label}>
           {defaultDict.forms.inputs.password.labelText}
         </label>
-        <Input
+        <FormikField
+          as={Input}
+          id={defaultDict.forms.inputs.password.name}
           name={defaultDict.forms.inputs.password.name}
-          aria-labelledby={defaultDict.forms.inputs.password.label}
           required
           placeholder={defaultDict.forms.inputs.password.placeholder}
           type='password'
@@ -75,7 +87,7 @@ const RegisterInnerForm = ({
         {touched.password && errors.password && (
           <Label prompt>{errors.password}</Label>
         )}
-      </FormField>
+      </Form.Field>
       <ErrorMessage
         name='commonFormError'
         render={() => (
@@ -98,7 +110,8 @@ const RegisterInnerForm = ({
           disabled={!isValid}
           basic={!isValid}
           loading={isSubmitting}
-          type='submit'>
+          type='submit'
+        >
           {defaultDict.forms.buttons.register.text}
         </Button>
       </Container>
