@@ -44,7 +44,7 @@ namespace Roadmap.API.Controllers
             return Ok(mappedMilestone);
         }
 
-        [HttpGet("/of-project/{id}")]
+        [HttpGet("of-project/{id}")]
         public async Task<ActionResult<IEnumerable<MilestoneDto>>> GetAllOfProject(int id)
         {
             var user = await _userManager.GetUserAsync(User);
