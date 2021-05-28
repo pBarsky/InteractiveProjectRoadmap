@@ -10,6 +10,11 @@ export default {
       get: (id: number) => `/api/roadmap/${id}`,
       getAll: '/api/roadmap',
       add: '/api/roadmap'
+    },
+    milestone: {
+      get: (id: number) => `/api/milestones/${id}`,
+      getAll: (idRoadmap: number) => `/api/milestones/of-project/${idRoadmap}`,
+      add: '/api/milestones'
     }
   },
   common: {
@@ -27,5 +32,9 @@ export default {
     add: '/roadmap/add',
     list: '/roadmap',
     details: '/roadmap/:id'
+  },
+  milestone: {
+    add: '/milestones/add',
+    details: '/milestones/:id'
   }
 };

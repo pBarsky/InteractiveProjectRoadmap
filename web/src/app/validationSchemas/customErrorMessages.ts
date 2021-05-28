@@ -12,13 +12,15 @@ export default {
   },
   common: {
     failedLogin: 'Nieprawidłowy email lub hasło.',
-    failedAdd: 'Wystąpił problem przy dodawaniu roadmapy.'
+    failedAdd: 'Wystąpił problem przy dodawaniu roadmapy.',
+    failedAddMilestone: 'Wystąpił problem przy dodawaniu milestone.'
   },
   username: {
     required: 'Nazwa użytkownika jest wymagana'
   },
   name: {
     required: 'Nazwa roadmapy jest wymagana',
+    requiredMilestone: 'Nazwa milestone jest wymagana',
     max: (n: number): string => `Maksymalna długość nazwy to ${n} znaków`
   },
   description: {
@@ -28,6 +30,7 @@ export default {
     required: 'Data początku roadmapy jest wymagana'
   },
   endsOn: {
-    failedTime: 'Data końca nie może wystąpić przed datą początka.'
+    failedTime: 'Data końca nie może wystąpić przed datą początka.',
+    requiredMilestone: 'Data końca milestone jest wymagana'
   }
 };

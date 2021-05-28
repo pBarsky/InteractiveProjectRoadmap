@@ -1,7 +1,11 @@
-import { ErrorMessage, FormikProps } from 'formik';
-import { Form, Input } from 'formik-semantic-ui-react';
+import {
+  ErrorMessage,
+  Field as FormikField,
+  Form as FormikForm,
+  FormikProps
+} from 'formik';
 import React from 'react';
-import { Button, Container, FormField, Label } from 'semantic-ui-react';
+import { Button, Container, Form, Input, Label } from 'semantic-ui-react';
 import BackButton from '../../app/common/buttons/BackButton';
 import defaultDict from '../../app/dictionaries/defaultDict';
 import { RoadmapFormValues } from '../../app/models/roadmap';
@@ -14,6 +18,7 @@ const AddRoadmapInnerForm = ({
 }: FormikProps<RoadmapFormValues>) => {
   return (
     <Form
+      as={FormikForm}
       loading={isSubmitting}
       layout='vertical'
       style={{
@@ -22,13 +27,15 @@ const AddRoadmapInnerForm = ({
         border: '1px solid rgba(0,0,0,.05)',
         boxShadow: '0 10px 25px rgba(0,0,0,.05)',
         padding: '20px'
-      }}>
-      <FormField required>
-        <label id={defaultDict.forms.inputs.name.label}>
+      }}
+    >
+      <Form.Field required>
+        <label htmlFor={defaultDict.forms.inputs.name.name}>
           {defaultDict.forms.inputs.name.labelText}
         </label>
-        <Input
-          aria-labelledby={defaultDict.forms.inputs.name.label}
+        <FormikField
+          as={Input}
+          id={defaultDict.forms.inputs.name.name}
           name={defaultDict.forms.inputs.name.name}
           placeholder={defaultDict.forms.inputs.name.placeholder}
           required
@@ -36,13 +43,14 @@ const AddRoadmapInnerForm = ({
           iconPosition='left'
         />
         {touched.name && errors.name && <Label prompt>{errors.name}</Label>}
-      </FormField>
-      <FormField>
-        <label id={defaultDict.forms.inputs.description.label}>
+      </Form.Field>
+      <Form.Field>
+        <label htmlFor={defaultDict.forms.inputs.description.name}>
           {defaultDict.forms.inputs.description.labelText}
         </label>
-        <Input
-          aria-labelledby={defaultDict.forms.inputs.description.label}
+        <FormikField
+          as={Input}
+          id={defaultDict.forms.inputs.description.name}
           name={defaultDict.forms.inputs.description.name}
           placeholder={defaultDict.forms.inputs.description.placeholder}
           icon='edit outline'
@@ -51,13 +59,14 @@ const AddRoadmapInnerForm = ({
         {touched.description && errors.description && (
           <Label prompt>{errors.description}</Label>
         )}
-      </FormField>
-      <FormField required>
-        <label id={defaultDict.forms.inputs.startsOn.label}>
+      </Form.Field>
+      <Form.Field required>
+        <label htmlFor={defaultDict.forms.inputs.startsOn.name}>
           {defaultDict.forms.inputs.startsOn.labelText}
         </label>
-        <Input
-          aria-labelledby={defaultDict.forms.inputs.startsOn.label}
+        <FormikField
+          as={Input}
+          id={defaultDict.forms.inputs.startsOn.name}
           name={defaultDict.forms.inputs.startsOn.name}
           type='datetime-local'
           placeholder={defaultDict.forms.inputs.startsOn.placeholder}
@@ -68,13 +77,14 @@ const AddRoadmapInnerForm = ({
         {touched.startsOn && errors.startsOn && (
           <Label prompt>{errors.startsOn}</Label>
         )}
-      </FormField>
-      <FormField>
-        <label id={defaultDict.forms.inputs.endsOn.label}>
+      </Form.Field>
+      <Form.Field>
+        <label htmlFor={defaultDict.forms.inputs.endsOn.name}>
           {defaultDict.forms.inputs.endsOn.labelText}
         </label>
-        <Input
-          aria-labelledby={defaultDict.forms.inputs.endsOn.label}
+        <FormikField
+          as={Input}
+          id={defaultDict.forms.inputs.endsOn.name}
           name={defaultDict.forms.inputs.endsOn.name}
           placeholder={defaultDict.forms.inputs.endsOn.placeholder}
           type='datetime-local'
@@ -84,7 +94,7 @@ const AddRoadmapInnerForm = ({
         {touched.endsOn && errors.endsOn && (
           <Label prompt>{errors.endsOn}</Label>
         )}
-      </FormField>
+      </Form.Field>
       <ErrorMessage
         name='commonFormError'
         render={() => (
@@ -103,7 +113,8 @@ const AddRoadmapInnerForm = ({
           disabled={!isValid}
           loading={isSubmitting}
           floated='right'
-          type='submit'>
+          type='submit'
+        >
           {defaultDict.forms.buttons.add.text}
         </Button>
       </Container>

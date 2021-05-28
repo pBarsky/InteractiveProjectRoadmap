@@ -6,6 +6,7 @@ import BackButton from '../../app/common/buttons/BackButton';
 import defaultDict from '../../app/dictionaries/defaultDict';
 import Loader from '../../app/layout/Loader';
 import { useStore } from '../../app/stores/store';
+import AddMilestone from '../milestone/AddMilestone';
 import RoadmapCard from './RoadmapCard';
 
 const RoadmapDetails = () => {
@@ -24,10 +25,11 @@ const RoadmapDetails = () => {
   }
 
   return (
-    <Container textAlign='justified'>
-      <RoadmapCard fluid roadmap={roadmapStore.selectedRoadmap} />
-      <BackButton />
-    </Container>
+   <Container>
+    <RoadmapCard fluid roadmap={roadmapStore.selectedRoadmap} />
+      <AddMilestone roadmapId={id}/>
+    <BackButton />
+   </Container>
   );
 };
 

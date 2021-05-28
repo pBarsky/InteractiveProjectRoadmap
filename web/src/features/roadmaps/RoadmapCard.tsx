@@ -1,4 +1,3 @@
-import React from 'react';
 import { Card, Divider } from 'semantic-ui-react';
 import defaultDict from '../../app/dictionaries/defaultDict';
 import { Roadmap } from '../../app/models/roadmap';

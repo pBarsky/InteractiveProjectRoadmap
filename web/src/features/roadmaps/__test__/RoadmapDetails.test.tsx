@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import { Router } from 'react-router';
 import { browserHistory } from '../../../App';
 import routes from '../../../app/common/routing/routes';
@@ -23,7 +23,7 @@ describe('<RoadmapDetails />', () => {
     ).toBeInTheDocument();
   });
 
-  it('Should display roadmap when data is loaded', () => {
+  it('Should display roadmap when data is loaded', async () => {
     const route = `${routes.roadmap.list}/1`;
     browserHistory.push(route);
     const testRoadmap = {
@@ -42,8 +42,9 @@ describe('<RoadmapDetails />', () => {
         </Router>
       </StoreProvider>
     );
-
-    expect(getByText(testRoadmap.description)).toBeInTheDocument();
-    expect(getByText(testRoadmap.name)).toBeInTheDocument();
+    await waitFor(() => {
+      expect(getByText(testRoadmap.description)).toBeInTheDocument();
+      expect(getByText(testRoadmap.name)).toBeInTheDocument();
+    });
   });
 });
