@@ -11,5 +11,7 @@ namespace Roadmap.Services.Projects
         Task<IEnumerable<Project>> GetAllAsync(AppUser user);
 
         Task<Project> GetAsync(int id, AppUser user);
+        Task<bool> DeleteAsync(int id, AppUser user);
+        Task<bool> UpdateAsync(Project project, AppUser user);
     }
 }
