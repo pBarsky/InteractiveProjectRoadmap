@@ -4,6 +4,7 @@ import { format } from 'date-fns';
 import React from 'react';
 import { Router } from 'react-router-dom';
 import { browserHistory } from '../../../App';
+import constants from '../../../app/constants/constants';
 import defaultDict from '../../../app/dictionaries/defaultDict';
 import customErrorMessages from '../../../app/validationSchemas/customErrorMessages';
 import AddMilestone from '../AddMilestone';
@@ -35,7 +36,7 @@ describe('<AddMilestone />', () => {
     act(() => {
       fireEvent.change(getByLabelText(defaultDict.forms.inputs.endsOn.labelText), {
         target: {
-          value: format(new Date('2021-05-18'), 'yyyy-MM-dd')
+          value: format(new Date('2021-05-18'), constants.dateFormat)
         }
       });
       fireEvent.change(getByLabelText(defaultDict.forms.inputs.name.labelText), {

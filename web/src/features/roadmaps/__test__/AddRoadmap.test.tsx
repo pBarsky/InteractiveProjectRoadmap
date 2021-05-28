@@ -4,6 +4,7 @@ import { format } from 'date-fns';
 import React from 'react';
 import { Router } from 'react-router-dom';
 import { browserHistory } from '../../../App';
+import constants from '../../../app/constants/constants';
 import defaultDict from '../../../app/dictionaries/defaultDict';
 import customErrorMessages from '../../../app/validationSchemas/customErrorMessages';
 import AddRoadmap from '../AddRoadmap';
@@ -17,21 +18,11 @@ describe('<AddRoadmap />', () => {
     );
 
     await waitFor(() => {
-      expect(
-        getByLabelText(defaultDict.forms.inputs.name.labelText)
-      ).toBeInTheDocument();
-      expect(
-        getByLabelText(defaultDict.forms.inputs.description.labelText)
-      ).toBeInTheDocument();
-      expect(
-        getByLabelText(defaultDict.forms.inputs.startsOn.labelText)
-      ).toBeInTheDocument();
-      expect(
-        getByLabelText(defaultDict.forms.inputs.endsOn.labelText)
-      ).toBeInTheDocument();
-      expect(
-        getByRole('button', { name: defaultDict.forms.buttons.add.text })
-      ).toBeInTheDocument();
+      expect(getByLabelText(defaultDict.forms.inputs.name.labelText)).toBeInTheDocument();
+      expect(getByLabelText(defaultDict.forms.inputs.description.labelText)).toBeInTheDocument();
+      expect(getByLabelText(defaultDict.forms.inputs.startsOn.labelText)).toBeInTheDocument();
+      expect(getByLabelText(defaultDict.forms.inputs.endsOn.labelText)).toBeInTheDocument();
+      expect(getByRole('button', { name: defaultDict.forms.buttons.add.text })).toBeInTheDocument();
     });
   });
 
@@ -44,21 +35,16 @@ describe('<AddRoadmap />', () => {
       </Router>
     );
 
-    fireEvent.change(
-      getByLabelText(defaultDict.forms.inputs.startsOn.labelText),
-      {
-        target: {
-          value: format(new Date('2021-05-18T03:24:00'), "yyyy-MM-dd'T'hh:mm")
-        }
+    fireEvent.change(getByLabelText(defaultDict.forms.inputs.startsOn.labelText), {
+      target: {
+        value: format(new Date('2021-05-18T03:24:00'), constants.dateTimeFormat)
       }
-    );
+    });
     fireEvent.change(getByLabelText(defaultDict.forms.inputs.name.labelText), {
       target: { value: 'TestRoadmap2' }
     });
 
-    userEvent.click(
-      getByRole('button', { name: defaultDict.forms.buttons.add.text })
-    );
+    userEvent.click(getByRole('button', { name: defaultDict.forms.buttons.add.text }));
 
     waitFor(() => expect(onSubmit).toHaveBeenCalledTimes(1));
   });
@@ -71,21 +57,17 @@ describe('<AddRoadmap />', () => {
         <AddRoadmap onSubmit={onSubmit} />
       </Router>
     );
-    const startsOnInput = getByLabelText(
-      defaultDict.forms.inputs.startsOn.labelText
-    );
+    const startsOnInput = getByLabelText(defaultDict.forms.inputs.startsOn.labelText);
     fireEvent.change(startsOnInput, {
       target: {
-        value: format(new Date('2021-05-18T03:24:00'), "yyyy-MM-dd'T'hh:mm")
+        value: format(new Date('2021-05-18T03:24:00'), constants.dateTimeFormat)
       }
     });
 
-    const endsOnInput = getByLabelText(
-      defaultDict.forms.inputs.endsOn.labelText
-    );
+    const endsOnInput = getByLabelText(defaultDict.forms.inputs.endsOn.labelText);
     fireEvent.change(endsOnInput, {
       target: {
-        value: format(new Date('2021-03-18T02:24:00'), "yyyy-MM-dd'T'hh:mm")
+        value: format(new Date('2021-03-18T02:24:00'), constants.dateTimeFormat)
       }
     });
 
@@ -93,15 +75,9 @@ describe('<AddRoadmap />', () => {
     fireEvent.change(nameInput, {
       target: { value: 'TestRoadmap2' }
     });
-    fireEvent.click(
-      getByRole('button', { name: defaultDict.forms.buttons.add.text })
-    );
+    fireEvent.click(getByRole('button', { name: defaultDict.forms.buttons.add.text }));
 
-    waitFor(() =>
-      expect(
-        getByText(customErrorMessages.endsOn.failedTime)
-      ).toBeInTheDocument()
-    );
+    waitFor(() => expect(getByText(customErrorMessages.endsOn.failedTime)).toBeInTheDocument());
   });
 
   it('Should show error messages when user puts wrong input', async () => {
@@ -114,16 +90,10 @@ describe('<AddRoadmap />', () => {
     );
 
     userEvent.click(getByLabelText(defaultDict.forms.inputs.name.labelText));
-    userEvent.click(
-      getByLabelText(defaultDict.forms.inputs.startsOn.labelText)
-    );
+    userEvent.click(getByLabelText(defaultDict.forms.inputs.startsOn.labelText));
 
-    userEvent.click(
-      getByRole('button', { name: defaultDict.forms.buttons.add.text })
-    );
+    userEvent.click(getByRole('button', { name: defaultDict.forms.buttons.add.text }));
 
-    await waitFor(() =>
-      expect(getByText(customErrorMessages.name.required)).toBeInTheDocument()
-    );
+    await waitFor(() => expect(getByText(customErrorMessages.name.required)).toBeInTheDocument());
   });
 });
