@@ -1,0 +1,38 @@
+.wrapper {
+    margin: 1em 0;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 10px 25px;
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid var(--gray);
+    border-radius: 5px;
+    padding: 10px;
+    width: clamp(100%, 100%, 1200px);
+    height: clamp(5vh, 100%, 70px);
+    div {
+        margin: 0.5em;
+    }
+}
+
+.details {
+    padding: 1.5em;
+    min-height: 15vh;
+    flex-direction: column;
+    div {
+        margin: 0.2em;
+    }
+    .primary {
+        font-size: 2em;
+    }
+}
+
+.primary {
+    font-weight: bold;
+}
+
+.secondary {
+    color: var(---secondaryText);
+}
+
+.statusDiv {
+    margin-right: auto !important;
+}
