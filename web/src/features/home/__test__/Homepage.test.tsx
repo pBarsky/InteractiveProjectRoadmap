@@ -22,14 +22,14 @@ describe('<Homepage />', () => {
       }).closest('a')
     ).toHaveAttribute('href', routes.auth.login);
   });
-  it('Should render dashboard button when user is authenticated', () => {
+  it('Should redirect to dashboard when user is authenticated', () => {
     store.authStore.user = {
       displayName: 'TestDisplayName',
       token: '',
       username: 'test'
     };
 
-    const { getByRole } = render(
+    render(
       <StoreProvider store={store}>
         <Router history={browserHistory}>
           <Homepage />
@@ -37,10 +37,6 @@ describe('<Homepage />', () => {
       </StoreProvider>
     );
 
-    expect(
-      getByRole('button', { name: defaultDict.common.welcomeButton }).closest(
-        'a'
-      )
-    ).toHaveAttribute('href', routes.user.dashboard);
+    expect(browserHistory.location.pathname).toBe(routes.user.dashboard);
   });
 });
