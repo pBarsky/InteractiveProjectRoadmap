@@ -1,22 +1,11 @@
-import {
-  ErrorMessage,
-  Field as FormikField,
-  Form as FormikForm,
-  FormikProps
-} from 'formik';
+import { ErrorMessage, Field as FormikField, Form as FormikForm, FormikProps } from 'formik';
 import React from 'react';
-import { Link } from 'react-router-dom';
-import {
-  Button,
-  Container,
-  Divider,
-  Form,
-  Input,
-  Label
-} from 'semantic-ui-react';
+import { Button, Container, Divider, Form, Input, Label } from 'semantic-ui-react';
+import LinkButton from '../../app/common/buttons/LinkButton';
 import routes from '../../app/common/routing/routes';
 import defaultDict from '../../app/dictionaries/defaultDict';
 import { UserFormValues } from '../../app/models/user';
+import styles from './LoginInnerForm.module.scss';
 
 const LoginInnerForm = ({
   isValid,
@@ -68,36 +57,32 @@ const LoginInnerForm = ({
           icon='lock'
           iconPosition='left'
         />
-        {touched.password && errors.password && (
-          <Label prompt>{errors.password}</Label>
-        )}
+        {touched.password && errors.password && <Label prompt>{errors.password}</Label>}
       </Form.Field>
       <ErrorMessage
         name='commonFormError'
         render={() => (
-          <Label
-            style={{ marginBottom: 10 }}
-            basic
-            color='red'
-            content={errors.commonFormError}
-          />
+          <Label style={{ marginBottom: 10 }} basic color='red' content={errors.commonFormError} />
         )}
       />
       <Divider />
       <Container>
-        <Button basic color='black' as={Link} to={routes.auth.register}>
-          {defaultDict.common.or} {defaultDict.forms.buttons.register.text}
-        </Button>
-        <Button
-          color='black'
-          disabled={!isValid}
-          basic={!isValid}
-          loading={isSubmitting}
-          floated='right'
-          type='submit'
-        >
-          {defaultDict.forms.buttons.login.text}
-        </Button>
+        <div className={styles.buttonsContainer}>
+          <LinkButton to={routes.auth.register}>
+            {defaultDict.forms.buttons.register.text}
+          </LinkButton>
+
+          <Button
+            color='black'
+            disabled={!isValid}
+            basic={!isValid}
+            loading={isSubmitting}
+            floated='right'
+            type='submit'
+          >
+            {defaultDict.forms.buttons.login.text}
+          </Button>
+        </div>
       </Container>
     </Form>
   );
