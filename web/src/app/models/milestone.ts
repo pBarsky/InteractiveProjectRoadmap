@@ -12,7 +12,7 @@ export interface Milestone {
   parentProjectId: number;
   name: string;
   description: string | null;
-  endsOn: Date;
+  endsOn: Date | null;
   status: Status;
 }
 

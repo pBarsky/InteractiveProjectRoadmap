@@ -10,13 +10,13 @@ import AddMilestone from '../milestone/AddMilestone';
 import RoadmapCard from './RoadmapCard';
 
 const RoadmapDetails = () => {
-  const { roadmapStore } = useStore();
+  const { roadmapStore, milestoneStore } = useStore();
   const params = useParams<{ id: string }>();
   const id = parseInt(params.id);
 
   useEffect(() => {
     if (id) {
-      roadmapStore.loadRoadmap(id);
+      roadmapStore.loadRoadmap(id).then(() => milestoneStore.getAll(roadmapStore.selectedRoadmap!));
     }
   }, [roadmapStore, id]);
 
@@ -25,11 +25,11 @@ const RoadmapDetails = () => {
   }
 
   return (
-   <Container>
-    <RoadmapCard fluid roadmap={roadmapStore.selectedRoadmap} />
-      <AddMilestone roadmapId={id}/>
-    <BackButton />
-   </Container>
+    <Container>
+      <RoadmapCard fluid roadmap={roadmapStore.selectedRoadmap} />
+      <AddMilestone roadmapId={id} />
+      <BackButton />
+    </Container>
   );
 };
 

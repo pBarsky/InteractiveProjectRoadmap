@@ -1,6 +1,7 @@
 import { Card, Divider } from 'semantic-ui-react';
 import defaultDict from '../../app/dictionaries/defaultDict';
 import { Roadmap } from '../../app/models/roadmap';
+import MilestonesList from '../milestone/MilestonesList';
 
 interface RoadmapCardProps {
   onClick?: () => void;
@@ -9,12 +10,7 @@ interface RoadmapCardProps {
   testDate?: Date;
 }
 
-const RoadmapCard = ({
-  onClick,
-  roadmap,
-  testDate,
-  fluid = false
-}: RoadmapCardProps) => {
+const RoadmapCard = ({ onClick, roadmap, testDate, fluid = false }: RoadmapCardProps) => {
   let isFailing: boolean = false;
   if (roadmap.endsOn) {
     isFailing = (testDate ?? new Date()).getTime() > roadmap.endsOn.getTime();
@@ -33,9 +29,7 @@ const RoadmapCard = ({
 
   const isLate: JSX.Element | null = isFailing
     ? (
-    <Card.Meta textAlign='center'>
-      {defaultDict.pages.roadmap.roadmapLate}
-    </Card.Meta>
+    <Card.Meta textAlign='center'>{defaultDict.pages.roadmap.roadmapLate}</Card.Meta>
       )
     : null;
 
@@ -44,7 +38,8 @@ const RoadmapCard = ({
       fluid={fluid}
       onClick={onClick}
       color={isFailing ? 'red' : undefined}
-      style={{ padding: fluid ? '20px' : '' }}>
+      style={{ padding: fluid ? '20px' : '' }}
+    >
       <Card.Content>
         <Card.Header textAlign='center'>{roadmap.name}</Card.Header>
         {isLate}
@@ -65,12 +60,16 @@ const RoadmapCard = ({
             maxHeight: !fluid ? '20ch' : '',
             overflow: 'hidden',
             textOverflow: 'ellipsis'
-          }}>
-          {fluid
-            ? roadmap.description
-            : shortcutDescription(roadmap.description)}
+          }}
+        >
+          {fluid ? roadmap.description : shortcutDescription(roadmap.description)}
         </Card.Description>
       </Card.Content>
+      {fluid && (
+        <Card.Content>
+          <MilestonesList />
+        </Card.Content>
+      )}
     </Card>
   );
 };

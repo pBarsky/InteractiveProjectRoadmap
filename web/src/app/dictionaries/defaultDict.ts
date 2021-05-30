@@ -1,9 +1,17 @@
+import { Status } from '../models/milestone';
+
 const common = {
   appName: 'Roadmap',
   welcomeMessage: 'Witaj w',
   welcomeButton: 'Idź na dashboard',
   backButton: 'Powrót',
-  or: 'lub'
+  or: 'lub',
+  status: {
+    [Status.New]: 'Nowy',
+    [Status.InProgress]: 'W trakcie',
+    [Status.Done]: 'Zakończony'
+
+  }
 };
 
 const forms = {
@@ -94,6 +102,12 @@ const pages = {
     proposalOfCreation: 'Może chcesz zrobić nową? 😸',
     roadmapLate: 'Jesteś spóźniony... 😥',
     loadingDetails: "Wczytywanie roadmap'y..."
+  },
+  milestone: {
+    name: 'Nazwa: ',
+    endsOn: 'Kończy się: ',
+    status: 'Status: ',
+    noMilestones: 'Nie masz jeszcze żadnych milestone`ów dla tej roadmapy...'
   }
 };
 
