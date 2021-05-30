@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Roadmap.API.DTOs;
 using Roadmap.Domain.Models;
 using Roadmap.Services.Projects;
@@ -48,6 +46,7 @@ namespace Roadmap.API.Controllers
             {
                 return BadRequest("Did not find roadmap.");
             }
+
             return Ok(_mapper.Map<ProjectDto>(project));
         }
 
@@ -62,7 +61,37 @@ namespace Roadmap.API.Controllers
             {
                 return BadRequest("Could not add roadmap.");
             }
+
             return Ok(id);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<bool>> Put(ProjectDto projectDto)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var project = _mapper.Map<Project>(projectDto);
+            var result = await _projectService.UpdateAsync(project, user);
+
+            if (result)
+            {
+                return Ok(true);
+            }
+
+            return BadRequest("Could not update roadmap.");
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<bool>> Delete(int id)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var result = await _projectService.DeleteAsync(id, user);
+
+            if (result)
+            {
+                return Ok(true);
+            }
+
+            return BadRequest("Could not delete roadmap.");
         }
     }
 }
