@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Roadmap.API.DTOs;
 using Roadmap.Domain.Models;
 using Roadmap.Services.Milestones;
@@ -21,7 +21,8 @@ namespace Roadmap.API.Controllers
         private readonly IProjectService _projectService;
         private readonly UserManager<AppUser> _userManager;
 
-        public MilestonesController(IMilestoneService milestoneService, IProjectService projectService, UserManager<AppUser> userManager, IMapper mapper)
+        public MilestonesController(IMilestoneService milestoneService, IProjectService projectService,
+            UserManager<AppUser> userManager, IMapper mapper)
         {
             _milestoneService = milestoneService;
             _projectService = projectService;
@@ -55,7 +56,8 @@ namespace Roadmap.API.Controllers
                 return BadRequest("No roadmap found.");
             }
 
-            var mappedCollection = _mapper.Map<IEnumerable<MilestoneDto>>(await _milestoneService.GetAllOfProjectAsync(project, user));
+            var mappedCollection =
+                _mapper.Map<IEnumerable<MilestoneDto>>(await _milestoneService.GetAllOfProjectAsync(project, user));
 
             return Ok(mappedCollection);
         }
@@ -81,7 +83,37 @@ namespace Roadmap.API.Controllers
             {
                 return BadRequest("Could not add milestone.");
             }
+
             return Ok(id);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<bool>> Put(MilestoneDto milestoneDto)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var milestone = _mapper.Map<Milestone>(milestoneDto);
+            var result = await _milestoneService.UpdateAsync(milestone, user);
+
+            if (result)
+            {
+                return Ok(true);
+            }
+
+            return BadRequest("Could not update milestone");
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<bool>> Delete(int id)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var result = await _milestoneService.DeleteAsync(id, user);
+
+            if (result)
+            {
+                return Ok();
+            }
+
+            return BadRequest();
         }
     }
 }

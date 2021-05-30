@@ -2,7 +2,6 @@
 using System.Security.Claims;
 using AutoMapper;
 using FluentAssertions;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Roadmap.API.Controllers;
@@ -31,9 +30,9 @@ namespace Roadmap.API.Tests
         {
             // Arrange
             var userManager =
-                    new FakeUserManagerBuilder().With(s =>
-                        s.Setup(x => x.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(new AppUser())).Build();
-            _projectService.Setup(x => x.GetAsync(It.IsAny<int>(), It.IsAny<AppUser>())).ReturnsAsync((Project)null);
+                new FakeUserManagerBuilder().With(s =>
+                    s.Setup(x => x.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(new AppUser())).Build();
+            _projectService.Setup(x => x.GetAsync(It.IsAny<int>(), It.IsAny<AppUser>())).ReturnsAsync((Project) null);
 
             var controller = new RoadmapController(userManager.Object, _projectService.Object, _mapper);
 
@@ -59,7 +58,8 @@ namespace Roadmap.API.Tests
             var project = await controller.Get(1);
 
             // Assert
-            project.Result.Should().BeOfType<OkObjectResult>().Which.Value.Should().NotBeNull().And.BeOfType<ProjectDto>();
+            project.Result.Should().BeOfType<OkObjectResult>().Which.Value.Should().NotBeNull().And
+                .BeOfType<ProjectDto>();
         }
 
         [Fact]
@@ -69,7 +69,8 @@ namespace Roadmap.API.Tests
             var userManager =
                 new FakeUserManagerBuilder().With(s =>
                     s.Setup(x => x.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(new AppUser())).Build();
-            _projectService.Setup(x => x.GetAllAsync(It.IsAny<AppUser>())).ReturnsAsync(new List<Project> { new Project(), new Project() });
+            _projectService.Setup(x => x.GetAllAsync(It.IsAny<AppUser>()))
+                .ReturnsAsync(new List<Project> {new Project(), new Project()});
 
             var controller = new RoadmapController(userManager.Object, _projectService.Object, _mapper);
 
@@ -77,7 +78,8 @@ namespace Roadmap.API.Tests
             var project = await controller.Get();
 
             // Assert
-            project.Result.Should().BeOfType<OkObjectResult>().Which.Value.As<IEnumerable<ProjectDto>>().Should().NotBeNull().And.HaveCountGreaterThan(0);
+            project.Result.Should().BeOfType<OkObjectResult>().Which.Value.As<IEnumerable<ProjectDto>>().Should()
+                .NotBeNull().And.HaveCountGreaterThan(0);
         }
 
         [Fact]
@@ -118,6 +120,78 @@ namespace Roadmap.API.Tests
 
             // Assert
             project.Result.Should().BeOfType<OkObjectResult>().Which.Value.Should().Be(returnId);
+        }
+
+        [Fact]
+        public async void Delete_BadRequestObjectResult_OnFailure()
+        {
+            // Arrange
+            var id = 1;
+            var userManager =
+                new FakeUserManagerBuilder().With(s =>
+                    s.Setup(x => x.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(new AppUser())).Build();
+            _projectService.Setup(x => x.DeleteAsync(It.IsAny<int>(), It.IsAny<AppUser>())).ReturnsAsync(false);
+
+            var controller = new RoadmapController(userManager.Object, _projectService.Object, _mapper);
+
+            // Act
+            var result = await controller.Delete(id);
+            // Assert
+
+            result.Result.Should().BeOfType<BadRequestObjectResult>();
+        }
+
+        [Fact]
+        public async void Delete_OkObjectResult_OnSuccess()
+        {
+            // Arrange
+            var id = 1;
+            var userManager =
+                new FakeUserManagerBuilder().With(s =>
+                    s.Setup(x => x.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(new AppUser())).Build();
+            _projectService.Setup(x => x.DeleteAsync(It.IsAny<int>(), It.IsAny<AppUser>())).ReturnsAsync(true);
+
+            var controller = new RoadmapController(userManager.Object, _projectService.Object, _mapper);
+
+            // Act
+            var result = await controller.Delete(id);
+            // Assert
+
+            result.Result.Should().BeOfType<OkObjectResult>().Which.Value.As<bool>().Should().BeTrue();
+        }
+
+        [Fact]
+        public async void Put_OkObjectResult_OnSuccess()
+        {
+            var userManager =
+                new FakeUserManagerBuilder().With(s =>
+                    s.Setup(x => x.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(new AppUser())).Build();
+            _projectService.Setup(x => x.UpdateAsync(It.IsAny<Project>(), It.IsAny<AppUser>())).ReturnsAsync(true);
+
+            var controller = new RoadmapController(userManager.Object, _projectService.Object, _mapper);
+
+            // Act
+            var result = await controller.Put(It.IsAny<ProjectDto>());
+            // Assert
+
+            result.Result.Should().BeOfType<OkObjectResult>().Which.Value.As<bool>().Should().BeTrue();
+        }
+
+        [Fact]
+        public async void Put_BadRequestObjectResult_OnFailure()
+        {
+            var userManager =
+                new FakeUserManagerBuilder().With(s =>
+                    s.Setup(x => x.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(new AppUser())).Build();
+            _projectService.Setup(x => x.UpdateAsync(It.IsAny<Project>(), It.IsAny<AppUser>())).ReturnsAsync(false);
+
+            var controller = new RoadmapController(userManager.Object, _projectService.Object, _mapper);
+
+            // Act
+            var result = await controller.Put(It.IsAny<ProjectDto>());
+            // Assert
+
+            result.Result.Should().BeOfType<BadRequestObjectResult>();
         }
     }
 }

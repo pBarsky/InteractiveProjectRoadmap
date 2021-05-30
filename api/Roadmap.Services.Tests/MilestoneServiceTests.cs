@@ -29,9 +29,9 @@ namespace Roadmap.Services.Tests
         {
             // Arrange
             _milestoneRepository.Setup(x => x.AddAsync(It.IsAny<Milestone>())).ReturnsAsync(0);
-            _projectRepository.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync(new Project { Id = 1 });
+            _projectRepository.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync(new Project {Id = 1});
             // Act
-            var milestone = new Milestone { ParentProjectId = 1 };
+            var milestone = new Milestone {ParentProjectId = 1};
             var result = await _milestoneService.AddAsync(milestone, new AppUser());
 
             // Assert
@@ -58,12 +58,13 @@ namespace Roadmap.Services.Tests
             const string userId = "1";
 
             _milestoneRepository.Setup(x => x.AddAsync(It.IsAny<Milestone>())).ReturnsAsync(1);
-            _projectRepository.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync(new Project { Id = 1, UserId = userId });
+            _projectRepository.Setup(x => x.GetAsync(It.IsAny<int>()))
+                .ReturnsAsync(new Project {Id = 1, UserId = userId});
 
             // Act
-            var milestone = new Milestone { ParentProjectId = 1 };
+            var milestone = new Milestone {ParentProjectId = 1};
             var result = await _milestoneService.AddAsync(milestone,
-                new AppUser { Id = userId });
+                new AppUser {Id = userId});
 
             // Assert
             result.Should().BePositive();
@@ -88,7 +89,7 @@ namespace Roadmap.Services.Tests
         {
             // Arrange
             _milestoneRepository.Setup(x => x.FindAsync(It.IsAny<Expression<Func<Milestone, bool>>>()))
-                .ReturnsAsync(new List<Milestone> { new Milestone(), new Milestone() });
+                .ReturnsAsync(new List<Milestone> {new Milestone(), new Milestone()});
 
             // Act
             var milestones = await _milestoneService.GetAllOfProjectAsync(new Project(), new AppUser());
@@ -102,7 +103,7 @@ namespace Roadmap.Services.Tests
         {
             // Arrange
             _milestoneRepository.Setup(x => x.FindAsync(It.IsAny<Expression<Func<Milestone, bool>>>()))
-                .ReturnsAsync(new List<Milestone> { new Milestone(), new Milestone() });
+                .ReturnsAsync(new List<Milestone> {new Milestone(), new Milestone()});
 
             // Act
             var milestones = await _milestoneService.GetAllOfProjectAsync(null, new AppUser());
@@ -117,10 +118,10 @@ namespace Roadmap.Services.Tests
             // Arrange
             const string userId = "123";
             const int projectId = 1;
-            var parentProject = new Project { UserId = userId };
+            var parentProject = new Project {UserId = userId};
             _milestoneRepository.Setup(x => x.GetAsync(It.IsAny<int>()))
-                .ReturnsAsync(new Milestone { ParentProject = parentProject });
-            var user = new AppUser { Id = userId };
+                .ReturnsAsync(new Milestone {ParentProject = parentProject});
+            var user = new AppUser {Id = userId};
             // Act
             var milestone = await _milestoneService.GetAsync(projectId, user);
 
@@ -133,8 +134,8 @@ namespace Roadmap.Services.Tests
         {
             // Arrange
             const string userId = "123";
-            _milestoneRepository.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync((Milestone)null);
-            var user = new AppUser { Id = userId };
+            _milestoneRepository.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync((Milestone) null);
+            var user = new AppUser {Id = userId};
 
             // Act
             var milestone = await _milestoneService.GetAsync(-2, user);
@@ -148,8 +149,8 @@ namespace Roadmap.Services.Tests
         {
             // Arrange
             const string userId = "123";
-            _milestoneRepository.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync((Milestone)null);
-            var user = new AppUser { Id = userId };
+            _milestoneRepository.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync((Milestone) null);
+            var user = new AppUser {Id = userId};
 
             // Act
             var milestone = await _milestoneService.GetAsync(1, user);
@@ -166,13 +167,98 @@ namespace Roadmap.Services.Tests
             const string badUserId = "12312313";
             const int projectId = 1;
             _milestoneRepository.Setup(x => x.GetAsync(It.IsAny<int>()))
-                .ReturnsAsync(new Milestone { ParentProject = new Project { UserId = userId } });
-            var user = new AppUser { Id = badUserId };
+                .ReturnsAsync(new Milestone {ParentProject = new Project {UserId = userId}});
+            var user = new AppUser {Id = badUserId};
             // Act
             var milestone = await _milestoneService.GetAsync(projectId, user);
 
             // Assert
             milestone.Should().BeNull();
+        }
+
+        [Fact]
+        public async void DeleteAsync_False_IdIsInvalid()
+        {
+            // Arrange
+            const int invalidId = -1;
+            var user = It.IsAny<AppUser>();
+
+            // Act
+            var result = await _milestoneService.DeleteAsync(invalidId, user);
+
+            // Assert
+            result.Should().BeFalse();
+        }
+
+        [Fact]
+        public async void DeleteAsync_False_MilestoneNotFound()
+        {
+            // Arrange
+            const int id = 1;
+            var user = It.IsAny<AppUser>();
+
+            // Act
+            var result = await _milestoneService.DeleteAsync(id, user);
+
+            // Assert
+            result.Should().BeFalse();
+        }
+
+        [Fact]
+        public async void DeleteAsync_True_UserIsNotOwnerOfMilestonesParentProject()
+        {
+            // Arrange
+            const int milestoneId = 1;
+            const string userId = "123";
+            var parentProject = new Project {UserId = userId};
+            _milestoneRepository
+                .Setup(x => x.GetAsync(It.IsAny<int>()))
+                .ReturnsAsync(new Milestone {Id = milestoneId, ParentProject = parentProject});
+            _milestoneRepository.Setup(x => x.DeleteAsync(It.IsAny<int>())).ReturnsAsync(true);
+            var user = new AppUser {Id = userId};
+            // Act
+
+            var result = await _milestoneService.DeleteAsync(milestoneId, user);
+
+            // Assert
+            result.Should().BeTrue();
+        }
+
+        [Fact]
+        public async void UpdateAsync_False_MilestoneNotFound()
+        {
+            // Arrange
+            const int milestoneId = 1;
+            var milestone = new Milestone {Id = milestoneId};
+            var user = It.IsAny<AppUser>();
+            _milestoneRepository.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync((Milestone) null);
+
+            // Act
+            var result = await _milestoneService.UpdateAsync(milestone, user);
+
+            // Assert
+            result.Should().BeFalse();
+        }
+
+        [Fact]
+        public async void UpdateAsync_True_UserIsNotOwnerOfMilestonesParentProject()
+        {
+            // Arrange
+            const int milestoneId = 1;
+            const string userId = "123";
+            var user = new AppUser {Id = userId};
+            var parentProject = new Project {UserId = userId};
+            var milestone = new Milestone {Id = milestoneId};
+            _milestoneRepository
+                .Setup(x => x.GetAsync(It.IsAny<int>()))
+                .ReturnsAsync(new Milestone {Id = milestoneId, ParentProject = parentProject});
+            _milestoneRepository.Setup(x => x.UpdateAsync(It.IsAny<Milestone>())).ReturnsAsync(true);
+
+            // Act
+            var result = await _milestoneService.UpdateAsync(milestone, user);
+
+            // Assert  
+            result.Should().BeTrue();
         }
     }
 }

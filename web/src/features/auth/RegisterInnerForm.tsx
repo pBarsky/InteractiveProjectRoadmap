@@ -1,19 +1,6 @@
-import {
-  ErrorMessage,
-  Field as FormikField,
-  Form as FormikForm,
-  FormikProps
-} from 'formik';
+import { ErrorMessage, Field as FormikField, Form as FormikForm, FormikProps } from 'formik';
 import React from 'react';
-import { Link } from 'react-router-dom';
-import {
-  Button,
-  Container,
-  Divider,
-  Form,
-  Input,
-  Label
-} from 'semantic-ui-react';
+import { Button, Container, Divider, Form, Input, Label } from 'semantic-ui-react';
 import defaultDict from '../../app/dictionaries/defaultDict';
 import { UserFormValues } from '../../app/models/user';
 
@@ -66,9 +53,7 @@ const RegisterInnerForm = ({
           icon='user'
           iconPosition='left'
         />
-        {touched.username && errors.username && (
-          <Label prompt>{errors.username}</Label>
-        )}
+        {touched.username && errors.username && <Label prompt>{errors.username}</Label>}
       </Form.Field>
       <Form.Field required>
         <label htmlFor={defaultDict.forms.inputs.password.label}>
@@ -84,26 +69,16 @@ const RegisterInnerForm = ({
           icon='lock'
           iconPosition='left'
         />
-        {touched.password && errors.password && (
-          <Label prompt>{errors.password}</Label>
-        )}
+        {touched.password && errors.password && <Label prompt>{errors.password}</Label>}
       </Form.Field>
       <ErrorMessage
         name='commonFormError'
         render={() => (
-          <Label
-            style={{ marginBottom: 10 }}
-            basic
-            color='red'
-            content={errors.commonFormError}
-          />
+          <Label style={{ marginBottom: 10 }} basic color='red' content={errors.commonFormError} />
         )}
       />
       <Divider />
       <Container>
-        <Button basic as={Link} to='/login'>
-          {defaultDict.common.or} {defaultDict.forms.buttons.login.text}
-        </Button>
         <Button
           floated='right'
           color='black'

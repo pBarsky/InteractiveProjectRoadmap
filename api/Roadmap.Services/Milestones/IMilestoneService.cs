@@ -11,5 +11,7 @@ namespace Roadmap.Services.Milestones
         Task<IEnumerable<Milestone>> GetAllOfProjectAsync(Project project, AppUser user);
 
         Task<Milestone> GetAsync(int milestoneId, AppUser user);
+        Task<bool> DeleteAsync(int id, AppUser user);
+        Task<bool> UpdateAsync(Milestone project, AppUser user);
     }
 }
