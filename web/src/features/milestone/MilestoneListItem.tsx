@@ -4,13 +4,13 @@ import { Milestone } from '../../app/models/milestone';
 import styles from './MilestoneListItem.module.scss';
 
 interface MilestoneListItemProps {
-  onClick?: () => void;
   milestone: Milestone;
 }
 
-const MilestoneListItem = ({ onClick, milestone }: MilestoneListItemProps) => {
+const MilestoneListItem = ({ milestone }: MilestoneListItemProps) => {
   const [isDetails, setDetails] = useState(false);
-  onClick = () => setDetails((lastState) => !lastState);
+  const onClick = () => setDetails((lastState) => !lastState);
+
   return (
     <div
       onClick={onClick}

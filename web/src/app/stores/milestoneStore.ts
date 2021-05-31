@@ -1,6 +1,7 @@
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable, runInAction } from 'mobx';
 import { browserHistory } from '../../App';
 import routes from '../common/routing/routes';
+import defaultDict from '../dictionaries/defaultDict';
 import { Milestone, MilestoneFormValues } from '../models/milestone';
 import { Roadmap } from '../models/roadmap';
 import milestoneService from '../services/milestoneService';
@@ -8,10 +9,12 @@ import milestoneService from '../services/milestoneService';
 export interface MilestoneStore {
   milestones: Milestone[];
   selectedMilestone: Milestone | null;
+  loading: boolean;
   getAll(roadmap: Roadmap): Promise<void>;
   get(id: number): Promise<void>;
-  loading: boolean;
   addMilestone(milestone: MilestoneFormValues): Promise<void>;
+  updateMilestone(milestone: Milestone): Promise<void>;
+  deleteMilestone(id: number): Promise<void>;
 }
 
 export class DefaultMilestoneStore implements MilestoneStore {
@@ -91,9 +94,53 @@ export class DefaultMilestoneStore implements MilestoneStore {
         id: id,
         endsOn: new Date(values.endsOn)
       };
-      this.milestones.push(milestone);
+      runInAction(() => {
+        this.milestones.push(milestone);
+      });
     } catch (error) {
-      console.log(error);
+      console.error(error);
+    }
+  };
+
+  updateMilestone = async (values: Milestone): Promise<void> => {
+    this.loading = true;
+    try {
+      const { data } = await milestoneService.update(values);
+      if (!data) {
+        throw new Error(defaultDict.errors.milestones.failedEdit);
+      }
+      this.setMilestone(values);
+      this.selectedMilestone = { ...values };
+    } catch (error) {
+      console.error(error);
+    } finally {
+      this.loading = false;
+    }
+  };
+
+  setMilestone = (milestone: Milestone) => {
+    const index = this.milestones.findIndex((x) => x.id === milestone.id);
+    if (index === -1) {
+      return;
+    }
+    const newMilestones = [...this.milestones];
+    newMilestones[index] = { ...milestone };
+    this.setMilestones(newMilestones);
+  };
+
+  deleteMilestone = async (id: number): Promise<void> => {
+    this.loading = true;
+    try {
+      const { data } = await milestoneService.delete(id);
+      if (!data) {
+        throw new Error(defaultDict.errors.milestones.failedDelete);
+      }
+      this.selectedMilestone = null;
+      this.setMilestones(this.milestones.filter((x) => x.id !== id));
+    } catch (error) {
+      console.error(error);
+    } finally {
+      this.loading = false;
     }
   };
 

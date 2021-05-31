@@ -11,11 +11,9 @@ import authStore from '../stores/authStore';
 
 export interface ApiClient {
   get<T>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>;
-  post<T>(
-    url: string,
-    data?: any,
-    config?: AxiosRequestConfig
-  ): AxiosPromise<T>;
+  post<T>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>;
+  put<T>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>;
+  delete<T>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>;
 }
 
 export const createApiClient = (): AxiosInstance => {
