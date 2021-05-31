@@ -10,8 +10,12 @@ const common = {
     [Status.New]: 'Nowy',
     [Status.InProgress]: 'W trakcie',
     [Status.Done]: 'Zakończony'
-
   }
+};
+
+const errors = {
+  failedEdit: 'Nie udało się zaktualizować roadmapy.',
+  failedDelete: 'Nie udało się usunąć roadmapy.'
 };
 
 const forms = {
@@ -114,7 +118,8 @@ const pages = {
 const defaultDict = {
   common,
   pages,
-  forms
+  forms,
+  errors
 };
 
 export default defaultDict;

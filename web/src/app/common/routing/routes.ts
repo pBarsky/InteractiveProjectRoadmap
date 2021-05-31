@@ -9,7 +9,9 @@ export default {
     roadmap: {
       get: (id: number) => `/api/roadmap/${id}`,
       getAll: '/api/roadmap',
-      add: '/api/roadmap'
+      add: '/api/roadmap',
+      update: '/api/roadmap',
+      delete: (id: number) => `/api/roadmap/${id}`
     },
     milestone: {
       get: (id: number) => `/api/milestones/${id}`,

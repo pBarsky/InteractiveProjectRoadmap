@@ -1,16 +1,19 @@
 import { makeAutoObservable } from 'mobx';
 import { browserHistory } from '../../App';
 import routes from '../common/routing/routes';
+import defaultDict from '../dictionaries/defaultDict';
 import { Roadmap, RoadmapFormValues } from '../models/roadmap';
 import roadmapService from '../services/roadmapService';
 
 export interface RoadmapStore {
   roadmaps: Roadmap[];
   selectedRoadmap: Roadmap | null;
+  loading: boolean;
   loadRoadmaps(): Promise<void>;
   loadRoadmap(id: number): Promise<void>;
-  loading: boolean;
   addRoadmap(roadmap: RoadmapFormValues): Promise<void>;
+  updateRoadmap(roadmap: Roadmap): Promise<void>;
+  deleteRoadmap(id: number): Promise<void>;
 }
 
 export class DefaultRoadmapStore implements RoadmapStore {
@@ -95,6 +98,38 @@ export class DefaultRoadmapStore implements RoadmapStore {
       browserHistory.push(`${routes.roadmap.list}/${id}`);
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  updateRoadmap = async (values: Roadmap): Promise<void> => {
+    this.loading = true;
+    try {
+      const { data } = await roadmapService.update(values);
+      if (!data) {
+        throw new Error(defaultDict.errors.failedEdit);
+      }
+      this.selectedRoadmap = { ...values };
+    } catch (error) {
+      console.error(error);
+    } finally {
+      this.loading = false;
+    }
+  };
+
+  deleteRoadmap = async (id: number): Promise<void> => {
+    this.loading = true;
+    try {
+      const { data } = await roadmapService.delete(id);
+      if (!data) {
+        throw new Error(defaultDict.errors.failedDelete);
+      }
+      this.selectedRoadmap = null;
+      this.roadmaps = this.roadmaps.filter((x) => x.id !== id);
+      browserHistory.push(routes.user.dashboard);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      this.loading = false;
     }
   };
 
