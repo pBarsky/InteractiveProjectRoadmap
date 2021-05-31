@@ -99,7 +99,7 @@ namespace Roadmap.API.Controllers
                 return Ok(true);
             }
 
-            return BadRequest("Could not update milestone");
+            return BadRequest("Could not update milestone.");
         }
 
         [HttpDelete("{id}")]
@@ -110,10 +110,10 @@ namespace Roadmap.API.Controllers
 
             if (result)
             {
-                return Ok();
+                return Ok(true);
             }
 
-            return BadRequest();
+            return BadRequest("Could not delete milestone.");
         }
     }
 }
