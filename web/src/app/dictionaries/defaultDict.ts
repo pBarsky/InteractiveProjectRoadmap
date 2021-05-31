@@ -14,8 +14,14 @@ const common = {
 };
 
 const errors = {
-  failedEdit: 'Nie udało się zaktualizować roadmapy.',
-  failedDelete: 'Nie udało się usunąć roadmapy.'
+  roadmap: {
+    failedEdit: 'Nie udało się zaktualizować roadmapy.',
+    failedDelete: 'Nie udało się usunąć roadmapy.'
+  },
+  milestones: {
+    failedEdit: "Nie udało się zaktualizować milestone'a.",
+    failedDelete: "Nie udało się usunąć milestone'a."
+  }
 };
 
 const forms = {

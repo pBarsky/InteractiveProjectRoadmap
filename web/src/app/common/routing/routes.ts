@@ -16,7 +16,9 @@ export default {
     milestone: {
       get: (id: number) => `/api/milestones/${id}`,
       getAll: (idRoadmap: number) => `/api/milestones/of-project/${idRoadmap}`,
-      add: '/api/milestones'
+      add: '/api/milestones',
+      update: '/api/milestones',
+      delete: (id: number) => `/api/milestones/${id}`
     }
   },
   common: {

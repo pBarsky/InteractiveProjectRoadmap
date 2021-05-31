@@ -1,5 +1,5 @@
 import { AxiosPromise } from 'axios';
-import { createApiClient, ApiClient } from '../api/apiClient';
+import { ApiClient, createApiClient } from '../api/apiClient';
 import routes from '../common/routing/routes';
 import { Milestone, MilestoneFormValues } from '../models/milestone';
 
@@ -7,6 +7,8 @@ export interface MilestoneService {
   get(id: number): AxiosPromise<Milestone>;
   getAll(idRoadmap: number): AxiosPromise<Milestone[]>;
   add(milestone: MilestoneFormValues): AxiosPromise<number>;
+  update(milestone: Milestone): AxiosPromise<boolean>;
+  delete(id: number): AxiosPromise<boolean>;
 }
 
 export class DefaultMilestoneService implements MilestoneService {
@@ -22,6 +24,14 @@ export class DefaultMilestoneService implements MilestoneService {
 
   add (milestone: MilestoneFormValues): AxiosPromise<number> {
     return this.api.post<number>(routes.api.milestone.add, milestone);
+  }
+
+  update (milestone: Milestone): AxiosPromise<boolean> {
+    return this.api.put<boolean>(routes.api.milestone.update, milestone);
+  }
+
+  delete (id: number): AxiosPromise<boolean> {
+    return this.api.delete<boolean>(routes.api.milestone.delete(id));
   }
 }
 
