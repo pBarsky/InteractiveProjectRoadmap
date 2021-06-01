@@ -1,38 +1,51 @@
 .wrapper {
-    margin: 1em 0;
-    box-shadow: rgba(0, 0, 0, 0.05) 0px 10px 25px;
-    display: flex;
-    justify-content: space-between;
-    border: 1px solid var(--gray);
-    border-radius: 5px;
-    padding: 10px;
-    width: clamp(100%, 100%, 1200px);
-    height: clamp(5vh, 100%, 70px);
-    div {
-        margin: 0.5em;
-    }
+  margin: 1em 0;
+  box-shadow: var(--defaultBoxShadow);
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid var(--gray);
+  border-radius: 5px;
+  padding: 10px;
+  width: clamp(100%, 100%, 1200px);
+  height: clamp(5vh, 100%, 70px);
+  word-wrap: break-word;
+  transition: box-shadow 0.1s ease-in;
+
+  div {
+    margin: 0.5em;
+  }
+
+  &:hover {
+    box-shadow: var(--defaultDarkerBoxShadow);
+    transition: box-shadow 0.1s ease-in;
+  }
 }
 
 .details {
-    padding: 1.5em;
-    min-height: 15vh;
-    flex-direction: column;
-    div {
-        margin: 0.2em;
-    }
-    .primary {
-        font-size: 2em;
-    }
+  padding: 1.5em;
+  min-height: 15vh;
+  flex-direction: column;
+
+  div {
+    margin: 0.2em;
+  }
+
+  .primary {
+    font-size: 2em;
+    max-width: 45ch;
+  }
 }
 
 .primary {
-    font-weight: bold;
+  font-weight: bold;
+  max-width: 30%;
 }
 
 .secondary {
-    color: var(---secondaryText);
+  color: var(--secondaryText);
+  max-width: 15ch;
 }
 
 .statusDiv {
-    margin-right: auto !important;
+  margin-right: auto !important;
 }

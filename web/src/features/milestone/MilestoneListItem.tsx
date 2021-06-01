@@ -23,7 +23,7 @@ const MilestoneListItem = ({ milestone }: MilestoneListItemProps) => {
       {milestone.endsOn && (
         <div className={styles.secondary}>{milestone.endsOn.toLocaleDateString()}</div>
       )}
-      {isDetails && <div className={styles.secondary}>{milestone.description}</div>}
+      {isDetails && <div>{milestone.description}</div>}
     </div>
   );
 };

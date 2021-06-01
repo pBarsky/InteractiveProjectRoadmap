@@ -18,9 +18,7 @@ describe('<RoadmapDetails />', () => {
       </StoreProvider>
     );
 
-    expect(
-      getByText(defaultDict.pages.roadmap.loadingDetails)
-    ).toBeInTheDocument();
+    expect(getByText(defaultDict.pages.roadmap.loadingDetails)).toBeInTheDocument();
   });
 
   it('Should display roadmap when data is loaded', async () => {
@@ -35,7 +33,7 @@ describe('<RoadmapDetails />', () => {
     };
     store.roadmapStore.roadmaps = [testRoadmap];
     store.roadmapStore.selectedRoadmap = testRoadmap;
-    const { getByText } = render(
+    const { getByDisplayValue } = render(
       <StoreProvider>
         <Router history={browserHistory}>
           <RoadmapDetails />
@@ -43,8 +41,8 @@ describe('<RoadmapDetails />', () => {
       </StoreProvider>
     );
     await waitFor(() => {
-      expect(getByText(testRoadmap.description)).toBeInTheDocument();
-      expect(getByText(testRoadmap.name)).toBeInTheDocument();
+      expect(getByDisplayValue(testRoadmap.description)).toBeInTheDocument();
+      expect(getByDisplayValue(testRoadmap.name)).toBeInTheDocument();
     });
   });
 });

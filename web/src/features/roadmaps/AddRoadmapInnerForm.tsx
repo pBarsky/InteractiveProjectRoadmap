@@ -1,9 +1,4 @@
-import {
-  ErrorMessage,
-  Field as FormikField,
-  Form as FormikForm,
-  FormikProps
-} from 'formik';
+import { ErrorMessage, Field as FormikField, Form as FormikForm, FormikProps } from 'formik';
 import React from 'react';
 import { Button, Container, Form, Input, Label } from 'semantic-ui-react';
 import BackButton from '../../app/common/buttons/BackButton';
@@ -14,7 +9,8 @@ const AddRoadmapInnerForm = ({
   isValid,
   errors,
   isSubmitting,
-  touched
+  touched,
+  submitForm
 }: FormikProps<RoadmapFormValues>) => {
   return (
     <Form
@@ -28,6 +24,7 @@ const AddRoadmapInnerForm = ({
         boxShadow: '0 10px 25px rgba(0,0,0,.05)',
         padding: '20px'
       }}
+      onSubmit={submitForm}
     >
       <Form.Field required>
         <label htmlFor={defaultDict.forms.inputs.name.name}>
@@ -56,9 +53,7 @@ const AddRoadmapInnerForm = ({
           icon='edit outline'
           iconPosition='left'
         />
-        {touched.description && errors.description && (
-          <Label prompt>{errors.description}</Label>
-        )}
+        {touched.description && errors.description && <Label prompt>{errors.description}</Label>}
       </Form.Field>
       <Form.Field required>
         <label htmlFor={defaultDict.forms.inputs.startsOn.name}>
@@ -74,9 +69,7 @@ const AddRoadmapInnerForm = ({
           icon='calendar alternate outline'
           iconPosition='left'
         />
-        {touched.startsOn && errors.startsOn && (
-          <Label prompt>{errors.startsOn}</Label>
-        )}
+        {touched.startsOn && errors.startsOn && <Label prompt>{errors.startsOn}</Label>}
       </Form.Field>
       <Form.Field>
         <label htmlFor={defaultDict.forms.inputs.endsOn.name}>
@@ -91,19 +84,12 @@ const AddRoadmapInnerForm = ({
           icon='calendar alternate outline'
           iconPosition='left'
         />
-        {touched.endsOn && errors.endsOn && (
-          <Label prompt>{errors.endsOn}</Label>
-        )}
+        {touched.endsOn && errors.endsOn && <Label prompt>{errors.endsOn}</Label>}
       </Form.Field>
       <ErrorMessage
         name='commonFormError'
         render={() => (
-          <Label
-            style={{ marginBottom: 10 }}
-            basic
-            color='red'
-            content={errors.commonFormError}
-          />
+          <Label style={{ marginBottom: 10 }} basic color='red' content={errors.commonFormError} />
         )}
       />
       <Container>

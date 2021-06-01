@@ -1,76 +1,81 @@
-import { Card, Divider } from 'semantic-ui-react';
+import format from 'date-fns/format';
+import { Formik, FormikHelpers } from 'formik';
+import React, { useState } from 'react';
+import constants from '../../app/constants/constants';
 import defaultDict from '../../app/dictionaries/defaultDict';
-import { Roadmap } from '../../app/models/roadmap';
+import { Roadmap, RoadmapFormValues } from '../../app/models/roadmap';
+import roadmapStore from '../../app/stores/roadmapStore';
+import { roadmapFormValuesSchema } from '../../app/validationSchemas/roadmapSchemas';
 import MilestonesList from '../milestone/MilestonesList';
-
+import styles from './RoadmapCard.module.scss';
+import RoadmapCardInnerForm from './RoadmapCardInnerForm';
 interface RoadmapCardProps {
-  onClick?: () => void;
   roadmap: Roadmap;
-  fluid?: boolean;
   testDate?: Date;
+  onSubmit?: (
+    values: RoadmapFormValues,
+    { setErrors }: FormikHelpers<RoadmapFormValues>
+  ) => Promise<void>;
 }
 
-const RoadmapCard = ({ onClick, roadmap, testDate, fluid = false }: RoadmapCardProps) => {
+const RoadmapCard = ({ onSubmit, roadmap, testDate }: RoadmapCardProps): JSX.Element => {
+  const [isEditing, setIsEditing] = useState(false);
+
+  const toggleEdit = () => {
+    setIsEditing((oldState) => !oldState);
+  };
+
   let isFailing: boolean = false;
   if (roadmap.endsOn) {
     isFailing = (testDate ?? new Date()).getTime() > roadmap.endsOn.getTime();
   }
 
-  const shortcutDescription = (desc: string | null) => {
-    if (!desc) {
-      return desc;
+  const handleSubmit = async (
+    values: RoadmapFormValues,
+    { setErrors }: FormikHelpers<RoadmapFormValues>
+  ) => {
+    try {
+      const updatedRoadmap: Roadmap = {
+        id: roadmap.id,
+        name: values.name,
+        description: values.description,
+        endsOn: values.endsOn ? new Date(values.endsOn) : null,
+        startsOn: new Date(values.startsOn)
+      };
+      console.log(updatedRoadmap);
+      await roadmapStore.updateRoadmap(updatedRoadmap);
+    } catch {
+      setErrors({ description: defaultDict.errors.roadmap.failedEdit });
     }
-    if (desc.length < 100) {
-      return desc;
-    }
-
-    return `${desc.slice(0, 100)}...`;
   };
 
-  const isLate: JSX.Element | null = isFailing
-    ? (
-    <Card.Meta textAlign='center'>{defaultDict.pages.roadmap.roadmapLate}</Card.Meta>
-      )
-    : null;
+  const handleDelete = async () => {};
 
   return (
-    <Card
-      fluid={fluid}
-      onClick={onClick}
-      color={isFailing ? 'red' : undefined}
-      style={{ padding: fluid ? '20px' : '' }}
-    >
-      <Card.Content>
-        <Card.Header textAlign='center'>{roadmap.name}</Card.Header>
-        {isLate}
-        <Card.Meta textAlign='center'>
-          {defaultDict.pages.roadmap.startsOn}
-          {roadmap.startsOn.toLocaleString()}
-        </Card.Meta>
-        {roadmap.endsOn && (
-          <Card.Meta textAlign='center'>
-            {defaultDict.pages.roadmap.endsOn}
-            {roadmap.endsOn.toLocaleString()}
-          </Card.Meta>
+    <div className={`${styles.wrapper} ${isFailing ? styles.failing : ''}`}>
+      <Formik
+        enableReinitialize
+        validationSchema={roadmapFormValuesSchema}
+        initialValues={{
+          ...roadmap,
+          startsOn: format(roadmap.startsOn, constants.dateTimeFormat),
+          endsOn: roadmap.endsOn ? format(roadmap.endsOn, constants.dateTimeFormat) : ''
+        }}
+        onSubmit={onSubmit || handleSubmit}
+        component={(props) => (
+          <RoadmapCardInnerForm
+            onDelete={handleDelete}
+            isEditing={isEditing}
+            toggleEdit={toggleEdit}
+            isFailing={isFailing}
+            {...props}
+          />
         )}
-        <Divider />
-        <Card.Description
-          textAlign='center'
-          style={{
-            maxHeight: !fluid ? '20ch' : '',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis'
-          }}
-        >
-          {fluid ? roadmap.description : shortcutDescription(roadmap.description)}
-        </Card.Description>
-      </Card.Content>
-      {fluid && (
-        <Card.Content>
-          <MilestonesList />
-        </Card.Content>
-      )}
-    </Card>
+      />
+      <div>
+        <MilestonesList />
+      </div>
+    </div>
   );
 };
 

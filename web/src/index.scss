@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
-
 html,
 body,
 #root {
@@ -19,9 +18,16 @@ code {
 }
 
 :root {
-    --black: rgba(0, 0, 0, 0.85);
-    --gray: rgba(0, 0, 0, 0.10);
-    --secondaryText: rgba(0, 0, 0, 0.50);
-    --errorRed: #cc0000;
+  --black: rgba(0, 0, 0, 0.85);
+  --gray: rgba(0, 0, 0, 0.1);
+  --secondaryText: rgba(0, 0, 0, 0.5);
+  --errorRed: #cc0000;
+  --blue: rgb(55, 118, 255);
+  --darkBlue: hsl(221, 100%, 35%);
+  --lightRed: hsla(0, 100%, 40%, 0.2);
+  --green: hsl(138, 100%, 66%);
+  --green: hsl(138, 100%, 30%);
+  --lightGray: rgba(0, 0, 0, 0.05);
+  --defaultBoxShadow: var(--lightGray) 0px 10px 25px;
+  --defaultDarkerBoxShadow: var(--gray) 0px 10px 25px;
 }
-
