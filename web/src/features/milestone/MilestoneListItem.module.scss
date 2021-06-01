@@ -1,51 +1,102 @@
 .wrapper {
-  margin: 1em 0;
-  box-shadow: var(--defaultBoxShadow);
-  display: flex;
-  justify-content: space-between;
-  border: 1px solid var(--gray);
-  border-radius: 5px;
-  padding: 10px;
-  width: clamp(100%, 100%, 1200px);
-  height: clamp(5vh, 100%, 70px);
-  word-wrap: break-word;
-  transition: box-shadow 0.1s ease-in;
-
-  div {
-    margin: 0.5em;
-  }
-
-  &:hover {
-    box-shadow: var(--defaultDarkerBoxShadow);
-    transition: box-shadow 0.1s ease-in;
-  }
+    width: clamp(300px, 100%, 70%);
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--gray);
+    border-radius: 5px;
+    padding: 2em;
+    margin: auto auto 2em;
+    box-shadow: var(--defaultBoxShadow);
 }
 
-.details {
-  padding: 1.5em;
-  min-height: 15vh;
-  flex-direction: column;
-
-  div {
-    margin: 0.2em;
-  }
-
-  .primary {
-    font-size: 2em;
-    max-width: 45ch;
-  }
+.form {
+    width: 100%;
+    input {
+        border: none;
+    }
+    .status {
+        font-size: 0.75em;
+        margin: 0.5em 0;
+        font-weight: bold;
+    }
+    .name {
+        font-size: 1em;
+        margin: 0.5em 0;
+        font-weight: bold;
+    }
+    .dates {
+        margin-left: 1em;
+        margin: 0.5em 0;
+        color: var(--secondaryText);
+        display: flex;
+        flex-direction: column;
+        font-size: 1.25em;
+        .date {
+            color: var(--black);
+        }
+    }
+    .description {
+        color: var(--secondaryText);
+        line-height: 1.5em;
+    }
+    textarea {
+        padding: 0;
+        border: none;
+        padding-bottom: 0.25em;
+        &:focus {
+            border-bottom: 1px solid var(--gray);
+        }
+    }
+    .buttons {
+        display: flex;
+        flex-direction: row-reverse;
+        margin: 0.5em;
+        overflow: visible;
+        button {
+            padding: 0.5em;
+            margin: 0 0.5em;
+            min-width: 4em;
+            border: none;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            background-color: white;
+            transition: all 0.1s ease-in !important;
+        }
+        .editButton {
+            background-color: var(--blue);
+            color: white;
+            &:hover {
+                background-color: var(--darkBlue);
+            }
+        }
+        .deleteButton {
+            color: var(--errorRed);
+            &:hover {
+                color: red;
+            }
+        }
+        .saveButton {
+            color: var(--green);
+            &:hover {
+                background-color: var(--gray);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            }
+        }
+        .cancelButton {
+            color: var(--errorRed);
+            &:hover {
+                background-color: var(--gray);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            }
+        }
+    }
 }
 
-.primary {
-  font-weight: bold;
-  max-width: 30%;
-}
-
-.secondary {
-  color: var(--secondaryText);
-  max-width: 15ch;
-}
-
-.statusDiv {
-  margin-right: auto !important;
+.form.editing {
+    label {
+        display: inline-block;
+    }
+    textarea,
+    input {
+        border-bottom: 1px solid var(--gray);
+    }
 }
