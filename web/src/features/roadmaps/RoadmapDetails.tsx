@@ -1,19 +1,23 @@
 import { observer } from 'mobx-react-lite';
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router';
-import { Container } from 'semantic-ui-react';
+import { CSSTransition } from 'react-transition-group';
 import BackButton from '../../app/common/buttons/BackButton';
+import Button from '../../app/common/buttons/Button';
 import defaultDict from '../../app/dictionaries/defaultDict';
 import Loader from '../../app/layout/Loader';
 import { useStore } from '../../app/stores/store';
 import AddMilestone from '../milestone/AddMilestone';
 import RoadmapCard from './RoadmapCard';
+import styles from './RoadmapDetails.module.scss';
 
 const RoadmapDetails = () => {
 	const { roadmapStore, milestoneStore } = useStore();
+	const scrollRef = useRef<HTMLDivElement>(null);
 	const params = useParams<{ id: string }>();
 	const id = parseInt(params.id);
-
+	const [isAddMilestoneVisible, setIsAddMilestoneVisible] = useState(false);
+	const [isButtonVisible, setIsButtonVisible] = useState(true);
 	useEffect(() => {
 		if (id) {
 			roadmapStore
@@ -26,12 +30,36 @@ const RoadmapDetails = () => {
 		return <Loader content={defaultDict.pages.roadmap.loadingDetails} />;
 	}
 
+	const showAddMilestoneForm = () => {
+		setIsAddMilestoneVisible((oldState) => !oldState);
+		setIsButtonVisible(false);
+	};
 	return (
-		<Container>
+		<div className={styles.container}>
 			<RoadmapCard roadmap={roadmapStore.selectedRoadmap} />
-			<AddMilestone roadmapId={id} />
+			{isButtonVisible && (
+				<Button className={styles.addMilestoneButton} onClick={showAddMilestoneForm}>
+					{defaultDict.forms.buttons.addNewMilestone.text}
+				</Button>
+			)}
+			<CSSTransition
+				in={isAddMilestoneVisible}
+				timeout={200}
+				classNames={{
+					enter: styles.addMilestoneFormEnter,
+					enterActive: styles.addMilestoneFormEnterActive,
+					exit: styles.addMilestoneFormExit,
+					exitActive: styles.addMilestoneFormExitActive
+				}}
+				onEntered={() => scrollRef?.current?.scrollIntoView()}
+				unmountOnExit
+			>
+				<div ref={scrollRef} className={styles.addMilestoneForm}>
+					<AddMilestone roadmapId={id} />
+				</div>
+			</CSSTransition>
 			<BackButton />
-		</Container>
+		</div>
 	);
 };
 

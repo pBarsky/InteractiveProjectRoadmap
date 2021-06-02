@@ -25,7 +25,7 @@ const Dashboard = () => {
 				{user?.displayName}
 			</Header>
 			<Button color='black' onClick={() => browserHistory.push(routes.roadmap.add)}>
-				{defaultDict.forms.buttons.addNew.text}
+				{defaultDict.forms.buttons.addNewRoadmap.text}
 			</Button>
 			<Divider />
 			{roadmapStore.loading

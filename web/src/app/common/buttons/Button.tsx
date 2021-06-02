@@ -19,7 +19,7 @@ const Button = ({
 		<button
 			{...props}
 			type={type}
-			className={`${styles.button} ${className} ${outlined ? styles.outlined : null}`}
+			className={`${styles.button} ${className || ''} ${outlined ? styles.outlined : ''}`}
 			disabled={disabled}
 		>
 			{children}

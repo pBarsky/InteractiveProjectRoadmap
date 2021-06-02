@@ -103,7 +103,10 @@ const forms = {
 		add: {
 			text: 'Dodaj'
 		},
-		addNew: {
+		addNewMilestone: {
+			text: "Dodaj nowego milestone'a"
+		},
+		addNewRoadmap: {
 			text: 'Dodaj nową roadmapę'
 		}
 	}
