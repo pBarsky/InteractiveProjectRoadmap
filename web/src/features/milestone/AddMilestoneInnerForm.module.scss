@@ -6,14 +6,19 @@
 
 	form {
 		padding: 10px;
-		width: clamp(250px, 100%, 500px);
+		width: 100%;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: flex-end;
+		.field {
+			margin: 10px;
+			flex-grow: 1;
+		}
 	}
 
 	.buttonDiv {
-		margin: 2%;
-		padding: 10px 0;
-		display: flex;
-		justify-content: flex-end;
+		margin: 10px;
 	}
 
 	.submitButton {

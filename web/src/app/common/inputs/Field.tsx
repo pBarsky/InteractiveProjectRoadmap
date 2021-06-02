@@ -5,15 +5,16 @@ import Input from './Input';
 
 interface FieldProps {
 	label: string;
+	inputClassName?: string;
 }
 
-const Field = ({ label, ...props }: FieldProps & FieldHookConfig<string>) => {
+const Field = ({ label, inputClassName, ...props }: FieldProps & FieldHookConfig<string>) => {
 	return (
 		<div className={`${styles.field} ${props.className || ''}`}>
 			<label htmlFor={props.id} className={props.required ? styles.required : ''}>
 				{label}
 			</label>
-			<Input {...props} />
+			<Input {...props} className={inputClassName} />
 		</div>
 	);
 };

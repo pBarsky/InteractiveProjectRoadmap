@@ -5,11 +5,12 @@ import defaultDict from '../../dictionaries/defaultDict';
 
 interface BackButtonProps {
 	content?: string;
+	className?: string;
 }
 
-const BackButton = ({ content }: BackButtonProps) => {
+const BackButton = ({ content, className }: BackButtonProps) => {
 	return (
-		<Button color='black' basic onClick={() => browserHistory.goBack()}>
+		<Button color='black' className={className} basic onClick={() => browserHistory.goBack()}>
 			{content ?? defaultDict.common.backButton}
 		</Button>
 	);

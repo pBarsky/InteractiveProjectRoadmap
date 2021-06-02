@@ -30,15 +30,15 @@ const RoadmapDetails = () => {
 		return <Loader content={defaultDict.pages.roadmap.loadingDetails} />;
 	}
 
-	const showAddMilestoneForm = () => {
+	const toggleAddMilestoneForm = () => {
 		setIsAddMilestoneVisible((oldState) => !oldState);
-		setIsButtonVisible(false);
+		setIsButtonVisible((oldState) => !oldState);
 	};
 	return (
 		<div className={styles.container}>
 			<RoadmapCard roadmap={roadmapStore.selectedRoadmap} />
 			{isButtonVisible && (
-				<Button className={styles.addMilestoneButton} onClick={showAddMilestoneForm}>
+				<Button className={styles.addMilestoneButton} onClick={toggleAddMilestoneForm}>
 					{defaultDict.forms.buttons.addNewMilestone.text}
 				</Button>
 			)}
@@ -55,10 +55,10 @@ const RoadmapDetails = () => {
 				unmountOnExit
 			>
 				<div ref={scrollRef} className={styles.addMilestoneForm}>
-					<AddMilestone roadmapId={id} />
+					<AddMilestone roadmapId={id} afterSubmit={toggleAddMilestoneForm} />
 				</div>
 			</CSSTransition>
-			<BackButton />
+			<BackButton className={styles.backButton} />
 		</div>
 	);
 };
