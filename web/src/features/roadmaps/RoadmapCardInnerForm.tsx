@@ -30,11 +30,21 @@ const RoadmapCardInnerForm = ({
     pages: { roadmap }
   } = defaultDict;
 
+  const toggleEditAndResetForm = () => {
+    resetForm();
+    toggleEdit();
+  };
+
+  const submit = async () => {
+    await submitForm();
+    toggleEdit();
+  };
+
   const isLate: JSX.Element | null = isFailing ? <p>{roadmap.roadmapLate}</p> : null;
   return (
     <form onSubmit={handleSubmit} className={`${styles.form} ${isEditing ? styles.editing : ''}`}>
       <div className={styles.buttons}>
-        <Button outlined onClick={toggleEdit} className={styles.editButton}>
+        <Button outlined onClick={toggleEditAndResetForm} className={styles.editButton}>
           <FontAwesomeIcon icon={faEdit} />
         </Button>
         <Button outlined onClick={onDelete} className={styles.deleteButton}>
@@ -60,7 +70,7 @@ const RoadmapCardInnerForm = ({
               label={inputs.startsOn.labelText}
               name={inputs.startsOn.name}
               id={`${inputs.startsOn.name}RoadmapCard`}
-              type='datetime-local'
+              type='date'
               disabled={!isEditing}
               required
             />
@@ -73,7 +83,7 @@ const RoadmapCardInnerForm = ({
               <Field
                 label={inputs.endsOn.labelText}
                 name={inputs.endsOn.name}
-                type='datetime-local'
+                type='date'
                 id={`${inputs.endsOn.name}RoadmapCard`}
                 disabled={!isEditing}
               />
@@ -91,24 +101,10 @@ const RoadmapCardInnerForm = ({
       />
       {isEditing && (
         <div className={styles.buttons}>
-          <Button
-            type='submit'
-            onClick={async () => {
-              await submitForm();
-              toggleEdit();
-            }}
-            className={styles.saveButton}
-          >
+          <Button type='submit' onClick={submit} className={styles.saveButton}>
             <FontAwesomeIcon icon={faCheck} />
           </Button>
-          <Button
-            onClick={() => {
-              resetForm();
-              toggleEdit();
-            }}
-            type='reset'
-            className={styles.cancelButton}
-          >
+          <Button onClick={toggleEditAndResetForm} type='reset' className={styles.cancelButton}>
             <FontAwesomeIcon icon={faBan} />
           </Button>
         </div>

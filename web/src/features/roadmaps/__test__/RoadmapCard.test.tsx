@@ -22,10 +22,10 @@ describe('<RoadmapCard/>', () => {
     expect(getByDisplayValue(testRoadmap.description!)).toBeInTheDocument();
     expect(getByDisplayValue(testRoadmap.name)).toBeInTheDocument();
     expect(
-      getByDisplayValue(format(testRoadmap.endsOn!, constants.dateTimeFormat))
+      getByDisplayValue(format(testRoadmap.endsOn!, constants.dateFormat))
     ).toBeInTheDocument();
     expect(
-      getByDisplayValue(format(testRoadmap.startsOn, constants.dateTimeFormat))
+      getByDisplayValue(format(testRoadmap.startsOn, constants.dateFormat))
     ).toBeInTheDocument();
   });
 

@@ -63,7 +63,7 @@ const AddRoadmapInnerForm = ({
           as={Input}
           id={defaultDict.forms.inputs.startsOn.name}
           name={defaultDict.forms.inputs.startsOn.name}
-          type='datetime-local'
+          type='date'
           placeholder={defaultDict.forms.inputs.startsOn.placeholder}
           required
           icon='calendar alternate outline'
@@ -80,7 +80,7 @@ const AddRoadmapInnerForm = ({
           id={defaultDict.forms.inputs.endsOn.name}
           name={defaultDict.forms.inputs.endsOn.name}
           placeholder={defaultDict.forms.inputs.endsOn.placeholder}
-          type='datetime-local'
+          type='date'
           icon='calendar alternate outline'
           iconPosition='left'
         />

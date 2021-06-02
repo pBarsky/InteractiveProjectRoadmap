@@ -14,14 +14,14 @@ const MilestonesList = () => {
     return <Loader />;
   }
   return (
-    <div>
+    <>
       {milestones
         .slice()
         .sort((m1, m2) => m1.endsOn!.getTime() - m2.endsOn!.getTime())
         .map((milestone) => (
           <MilestoneListItem key={milestone.id} milestone={milestone} />
         ))}
-    </div>
+    </>
   );
 };
 

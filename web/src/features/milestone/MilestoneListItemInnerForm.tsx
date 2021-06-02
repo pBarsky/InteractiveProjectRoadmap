@@ -1,12 +1,12 @@
 import { faBan, faCheck, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FormikProps } from 'formik';
-import React, { useState } from 'react';
+import React from 'react';
 import Button from '../../app/common/buttons/Button';
 import Field from '../../app/common/inputs/Field';
 import defaultDict from '../../app/dictionaries/defaultDict';
 import { MilestoneFormValues } from '../../app/models/milestone';
-import styles from './MilestoneListItem.module.scss';
+import styles from './MilestoneListItemInnerForm.module.scss';
 
 interface MilestoneListItemProps {
   isEditing: boolean;
@@ -25,11 +25,10 @@ const MilestoneListItemInnerForm = ({
   const {
     forms: { inputs }
   } = defaultDict;
-  const [isDetails, setDetails] = useState(false);
-  const onClick = () => setDetails(true);
+
   return (
-    <form onClick={onClick} className={`${styles.form} ${isEditing ? styles.editing : ''}`}>
-      {(isDetails || isEditing) && (
+    <form className={`${styles.form} ${isEditing ? styles.editing : ''}`}>
+      {isEditing && (
         <div className={styles.buttons}>
           <Button outlined onClick={toggleEdit} className={styles.editButton}>
             <FontAwesomeIcon icon={faEdit} />
@@ -39,7 +38,7 @@ const MilestoneListItemInnerForm = ({
           </Button>
         </div>
       )}
-      {(isDetails || isEditing) && (
+      {isEditing && (
         <div className={styles.status}>
           {inputs.status.labelText}: {defaultDict.common.status[values.status]}
         </div>
@@ -54,20 +53,28 @@ const MilestoneListItemInnerForm = ({
           disabled={!isEditing}
         />
       </div>
-      {(values.endsOn || isEditing) && (
-        <div className={styles.dateWrapper}>
-          <div className={styles.date}>
-            <Field
-              label={inputs.endsOn.labelText}
-              name={inputs.endsOn.name}
-              type='datetime-local'
-              id={`${inputs.endsOn.name}milestonelistitem`}
-              disabled={!isEditing}
-            />
-          </div>
+      <div className={styles.dateWrapper}>
+        <div className={styles.date}>
+          <Field
+            label={inputs.endsOn.labelText}
+            name={inputs.endsOn.name}
+            type='date'
+            id={`${inputs.endsOn.name}milestonelistitem`}
+            disabled={!isEditing}
+          />
+        </div>
+      </div>
+      {!isEditing && (
+        <div className={styles.buttons}>
+          <Button outlined onClick={toggleEdit} className={styles.editButton}>
+            <FontAwesomeIcon icon={faEdit} />
+          </Button>
+          <Button outlined onClick={onDelete} className={styles.deleteButton}>
+            <FontAwesomeIcon icon={faTrash} />
+          </Button>
         </div>
       )}
-      {(isDetails || isEditing) && (
+      {isEditing && (
         <div>
           <Field
             label={inputs.description.labelText}

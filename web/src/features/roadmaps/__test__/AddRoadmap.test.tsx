@@ -38,7 +38,7 @@ describe('<AddRoadmap />', () => {
     act(() => {
       fireEvent.change(getByLabelText(defaultDict.forms.inputs.startsOn.labelText), {
         target: {
-          value: format(new Date('2021-05-18T03:24:00'), constants.dateTimeFormat)
+          value: format(new Date('2021-05-18T03:24:00'), constants.dateFormat)
         }
       });
       fireEvent.change(getByLabelText(defaultDict.forms.inputs.name.labelText), {
@@ -63,14 +63,14 @@ describe('<AddRoadmap />', () => {
       const startsOnInput = getByLabelText(defaultDict.forms.inputs.startsOn.labelText);
       fireEvent.change(startsOnInput, {
         target: {
-          value: format(new Date('2021-05-18T03:24:00'), constants.dateTimeFormat)
+          value: format(new Date('2021-05-18T03:24:00'), constants.dateFormat)
         }
       });
 
       const endsOnInput = getByLabelText(defaultDict.forms.inputs.endsOn.labelText);
       fireEvent.change(endsOnInput, {
         target: {
-          value: format(new Date('2021-03-18T02:24:00'), constants.dateTimeFormat)
+          value: format(new Date('2021-03-18T02:24:00'), constants.dateFormat)
         }
       });
 

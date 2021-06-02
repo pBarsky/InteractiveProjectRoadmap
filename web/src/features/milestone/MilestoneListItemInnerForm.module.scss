@@ -1,28 +1,25 @@
 .form {
+  display: flex;
+  align-items: center;
   width: 100%;
-  hr {
-    margin-top: 2em;
-    width: 100%;
-    border: none;
-    border-bottom: 1px solid var(--gray);
-  }
   input {
     border: none;
     &:disabled {
       color: var(--black);
-      padding: 5px 0 !important;
     }
   }
-  span {
-    cursor: default;
+  .status {
+    font-size: 0.75em;
+    margin: 0.5em 0;
+    font-weight: bold;
   }
   .name {
-    font-size: 2em;
-  }
-  .late {
-    font-size: 1rem;
+    font-size: 1.5em;
+    margin: 0.5em 0;
+    font-weight: bold;
   }
   .dates {
+    margin-left: 1em;
     margin: 0.5em 0;
     color: var(--secondaryText);
     display: flex;
@@ -37,6 +34,7 @@
     line-height: 1.5em;
   }
   textarea {
+    max-height: 3em;
     padding: 0;
     border: none;
     padding-bottom: 0.25em;
@@ -45,7 +43,6 @@
     }
     &:disabled {
       color: var(--black);
-      padding: 5px 0 !important;
     }
   }
   .buttons {
@@ -92,7 +89,20 @@
   }
 }
 
+@media (max-width: 1200px) {
+  .form {
+    flex-direction: column;
+    .name textarea {
+      font-size: 1em;
+      font-weight: 500;
+    }
+  }
+}
+
 .form.editing {
+  flex-direction: column;
+  align-items: unset;
+
   label {
     display: inline-block;
   }

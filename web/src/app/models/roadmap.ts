@@ -20,7 +20,7 @@ export interface RoadmapFormValues {
 export class DefaultRoadmapFormValues implements RoadmapFormValues {
   name: string = '';
   description: string | null = '';
-  startsOn: string = format(new Date(), constants.dateTimeFormat);
+  startsOn: string = format(new Date(), constants.dateFormat);
   endsOn: string | null = '';
   commonFormError?: string;
 }

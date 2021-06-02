@@ -42,14 +42,15 @@ const RoadmapCard = ({ onSubmit, roadmap, testDate }: RoadmapCardProps): JSX.Ele
         endsOn: values.endsOn ? new Date(values.endsOn) : null,
         startsOn: new Date(values.startsOn)
       };
-      console.log(updatedRoadmap);
       await roadmapStore.updateRoadmap(updatedRoadmap);
     } catch {
       setErrors({ description: defaultDict.errors.roadmap.failedEdit });
     }
   };
 
-  const handleDelete = async () => {};
+  const handleDelete = async () => {
+    await roadmapStore.deleteRoadmap(roadmap.id);
+  };
 
   return (
     <div className={`${styles.wrapper} ${isFailing ? styles.failing : ''}`}>
@@ -58,8 +59,8 @@ const RoadmapCard = ({ onSubmit, roadmap, testDate }: RoadmapCardProps): JSX.Ele
         validationSchema={roadmapFormValuesSchema}
         initialValues={{
           ...roadmap,
-          startsOn: format(roadmap.startsOn, constants.dateTimeFormat),
-          endsOn: roadmap.endsOn ? format(roadmap.endsOn, constants.dateTimeFormat) : ''
+          startsOn: format(roadmap.startsOn, constants.dateFormat),
+          endsOn: roadmap.endsOn ? format(roadmap.endsOn, constants.dateFormat) : ''
         }}
         onSubmit={onSubmit || handleSubmit}
         component={(props) => (

@@ -37,35 +37,36 @@ const MilestoneListItem = ({ onSubmit, milestone }: MilestoneListItemProps) => {
         endsOn: values.endsOn ? new Date(values.endsOn) : null,
         status: milestone.status
       };
-      console.log(updatedMilestone);
       await milestoneStore.updateMilestone(updatedMilestone);
     } catch {
       setErrors({ description: defaultDict.errors.milestones.failedEdit });
     }
   };
 
-  const handleDelete = async () => {};
+  const handleDelete = async () => {
+    await milestoneStore.deleteMilestone(milestone.id);
+  };
 
   return (
     <div className={`${styles.wrapper}`}>
-    <Formik
-      enableReinitialize
-      validationSchema={milestoneFormValuesSchema}
-      initialValues={{
-        ...milestone,
-        endsOn: milestone.endsOn ? format(milestone.endsOn, constants.dateTimeFormat) : ''
-      }}
-      onSubmit={onSubmit || handleSubmit}
-      component={(props) => (
-        <MilestoneListItemInnerForm
-          onDelete={handleDelete}
-          isEditing={isEditing}
-          toggleEdit={toggleEdit}
-          {...props}
-        />
-      )}
-    />
-  </div>
+      <Formik
+        enableReinitialize
+        validationSchema={milestoneFormValuesSchema}
+        initialValues={{
+          ...milestone,
+          endsOn: milestone.endsOn ? format(milestone.endsOn, constants.dateFormat) : ''
+        }}
+        onSubmit={onSubmit || handleSubmit}
+        component={(props) => (
+          <MilestoneListItemInnerForm
+            onDelete={handleDelete}
+            isEditing={isEditing}
+            toggleEdit={toggleEdit}
+            {...props}
+          />
+        )}
+      />
+    </div>
   );
 };
 
