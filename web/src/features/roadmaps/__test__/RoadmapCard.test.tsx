@@ -1,5 +1,7 @@
 import { render } from '@testing-library/react';
+import format from 'date-fns/format';
 import React from 'react';
+import constants from '../../../app/constants/constants';
 import defaultDict from '../../../app/dictionaries/defaultDict';
 import { Roadmap } from '../../../app/models/roadmap';
 import RoadmapCard from '../RoadmapCard';
@@ -15,40 +17,23 @@ describe('<RoadmapCard/>', () => {
 
   it('Should render all properties of roadmap', () => {
     const testRoadmap: Roadmap = { ...defaultTestRoadmap };
-    const { getByText } = render(<RoadmapCard roadmap={testRoadmap} />);
+    const { getByDisplayValue } = render(<RoadmapCard roadmap={testRoadmap} />);
 
-    expect(getByText(testRoadmap.description!)).toBeInTheDocument();
-    expect(getByText(testRoadmap.name)).toBeInTheDocument();
+    expect(getByDisplayValue(testRoadmap.description!)).toBeInTheDocument();
+    expect(getByDisplayValue(testRoadmap.name)).toBeInTheDocument();
     expect(
-      getByText(new RegExp(testRoadmap.endsOn!.toLocaleString(), 'i'))
+      getByDisplayValue(format(testRoadmap.endsOn!, constants.dateFormat))
     ).toBeInTheDocument();
     expect(
-      getByText(new RegExp(testRoadmap.startsOn.toLocaleString(), 'i'))
+      getByDisplayValue(format(testRoadmap.startsOn, constants.dateFormat))
     ).toBeInTheDocument();
   });
 
   it('Should mark card when todays date is past endsOn date', () => {
     const { getByText } = render(
-      <RoadmapCard
-        roadmap={defaultTestRoadmap}
-        testDate={new Date('2033-03-16T23:00')}
-      />
+      <RoadmapCard roadmap={defaultTestRoadmap} testDate={new Date('2033-03-16T23:00')} />
     );
 
-    expect(
-      getByText(defaultDict.pages.roadmap.roadmapLate)
-    ).toBeInTheDocument();
-  });
-
-  it('Should cut description when fluid prop is not passed', () => {
-    const repeatWord = '🍻';
-
-    const { getByText } = render(
-      <RoadmapCard
-        roadmap={{ ...defaultTestRoadmap, description: repeatWord.repeat(50) }}
-      />
-    );
-
-    expect(getByText(new RegExp(`${repeatWord}...$`))).toBeInTheDocument();
+    expect(getByText(defaultDict.pages.roadmap.roadmapLate)).toBeInTheDocument();
   });
 });

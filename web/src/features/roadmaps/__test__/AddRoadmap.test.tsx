@@ -1,4 +1,4 @@
-import { fireEvent, render, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { format } from 'date-fns';
 import React from 'react';
@@ -35,16 +35,18 @@ describe('<AddRoadmap />', () => {
       </Router>
     );
 
-    fireEvent.change(getByLabelText(defaultDict.forms.inputs.startsOn.labelText), {
-      target: {
-        value: format(new Date('2021-05-18T03:24:00'), constants.dateTimeFormat)
-      }
-    });
-    fireEvent.change(getByLabelText(defaultDict.forms.inputs.name.labelText), {
-      target: { value: 'TestRoadmap2' }
-    });
+    act(() => {
+      fireEvent.change(getByLabelText(defaultDict.forms.inputs.startsOn.labelText), {
+        target: {
+          value: format(new Date('2021-05-18T03:24:00'), constants.dateFormat)
+        }
+      });
+      fireEvent.change(getByLabelText(defaultDict.forms.inputs.name.labelText), {
+        target: { value: 'TestRoadmap2' }
+      });
 
-    userEvent.click(getByRole('button', { name: defaultDict.forms.buttons.add.text }));
+      userEvent.click(getByRole('button', { name: defaultDict.forms.buttons.add.text }));
+    });
 
     waitFor(() => expect(onSubmit).toHaveBeenCalledTimes(1));
   });
@@ -57,25 +59,27 @@ describe('<AddRoadmap />', () => {
         <AddRoadmap onSubmit={onSubmit} />
       </Router>
     );
-    const startsOnInput = getByLabelText(defaultDict.forms.inputs.startsOn.labelText);
-    fireEvent.change(startsOnInput, {
-      target: {
-        value: format(new Date('2021-05-18T03:24:00'), constants.dateTimeFormat)
-      }
-    });
+    act(() => {
+      const startsOnInput = getByLabelText(defaultDict.forms.inputs.startsOn.labelText);
+      fireEvent.change(startsOnInput, {
+        target: {
+          value: format(new Date('2021-05-18T03:24:00'), constants.dateFormat)
+        }
+      });
 
-    const endsOnInput = getByLabelText(defaultDict.forms.inputs.endsOn.labelText);
-    fireEvent.change(endsOnInput, {
-      target: {
-        value: format(new Date('2021-03-18T02:24:00'), constants.dateTimeFormat)
-      }
-    });
+      const endsOnInput = getByLabelText(defaultDict.forms.inputs.endsOn.labelText);
+      fireEvent.change(endsOnInput, {
+        target: {
+          value: format(new Date('2021-03-18T02:24:00'), constants.dateFormat)
+        }
+      });
 
-    const nameInput = getByLabelText(defaultDict.forms.inputs.name.labelText);
-    fireEvent.change(nameInput, {
-      target: { value: 'TestRoadmap2' }
+      const nameInput = getByLabelText(defaultDict.forms.inputs.name.labelText);
+      fireEvent.change(nameInput, {
+        target: { value: 'TestRoadmap2' }
+      });
+      fireEvent.click(getByRole('button', { name: defaultDict.forms.buttons.add.text }));
     });
-    fireEvent.click(getByRole('button', { name: defaultDict.forms.buttons.add.text }));
 
     waitFor(() => expect(getByText(customErrorMessages.endsOn.failedTime)).toBeInTheDocument());
   });

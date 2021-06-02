@@ -6,7 +6,7 @@ import { browserHistory } from '../../App';
 import routes from '../../app/common/routing/routes';
 import defaultDict from '../../app/dictionaries/defaultDict';
 import { useStore } from '../../app/stores/store';
-import RoadmapCard from './RoadmapCard';
+import RoadmapListItem from './RoadmapListItem';
 
 const RoadmapList = () => {
   const { roadmapStore } = useStore();
@@ -22,7 +22,7 @@ const RoadmapList = () => {
   return (
     <CardGroup centered>
       {roadmapStore.roadmaps.map((roadmap) => (
-        <RoadmapCard
+        <RoadmapListItem
           key={roadmap.id}
           onClick={() => {
             browserHistory.push(`${routes.roadmap.list}/${roadmap.id}`);

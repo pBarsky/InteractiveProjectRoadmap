@@ -1,26 +1,25 @@
 .wrapper {
-    margin-bottom: 2em;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-}
+  margin-bottom: 2em;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 
-form {
-    box-shadow: rgba(0, 0, 0, 0.05) 0px 10px 25px;
+  form {
+    box-shadow: var(--defaultBoxShadow);
     border: 1px solid var(--gray);
     border-radius: 5px;
     padding: 10px;
     width: clamp(250px, 100%, 500px);
-}
+  }
 
-.buttonDiv {
+  .buttonDiv {
     margin: 2%;
     padding: 10px 0;
     display: flex;
     justify-content: flex-end;
-}
+  }
 
-.submitButton {
+  .submitButton {
     min-height: 1em;
     background-color: var(--black);
     color: white;
@@ -29,6 +28,7 @@ form {
     border-radius: 5px;
     min-width: 90px;
     &:hover {
-        cursor: pointer;
+      cursor: pointer;
     }
+  }
 }

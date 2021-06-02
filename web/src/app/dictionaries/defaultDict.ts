@@ -73,9 +73,21 @@ const forms = {
       label: 'endsOn',
       placeholder: 'Kończy się',
       labelText: 'Kończy się'
+    },
+    status: {
+      name: 'status',
+      label: 'status',
+      placeholder: 'Status',
+      labelText: 'Status'
     }
   },
   buttons: {
+    edit: {
+      text: 'Edytuj'
+    },
+    delete: {
+      text: 'Usuń'
+    },
     register: {
       text: 'Zarejestruj'
     },

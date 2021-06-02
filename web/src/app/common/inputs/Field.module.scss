@@ -1,34 +1,17 @@
 .field {
-    margin: 2%;
-}
-
-input {
-    width: 100%;
-    min-height: 2.5em;
-    padding: 5px;
-    border: 1px solid var(--gray);
-    border-radius: 2px;
-}
-
-label {
+  margin: 5px 0;
+  input {
+    padding: 5px !important;
+  }
+  label {
     display: inline-block;
     text-align: left;
     font-weight: bold;
     margin-bottom: 0.25em;
     font-size: small;
     &.required:after {
-        content: " *";
-        color: red;
+      content: ' *';
+      color: red;
     }
-}
-
-.errorMessage {
-    margin-left: 2px;
-    text-align: center;
-    color: var(--errorRed);
-    background-color: white;
-    width: 215px;
-    margin-top: 1%;
-    border: 1px solid #ff4040;
-    border-radius: 2px;
+  }
 }

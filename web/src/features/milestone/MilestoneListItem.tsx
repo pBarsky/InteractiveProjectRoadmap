@@ -1,29 +1,71 @@
+import format from 'date-fns/format';
+import { Formik, FormikHelpers } from 'formik';
 import { useState } from 'react';
+import constants from '../../app/constants/constants';
 import defaultDict from '../../app/dictionaries/defaultDict';
-import { Milestone } from '../../app/models/milestone';
+import { Milestone, MilestoneFormValues } from '../../app/models/milestone';
+import milestoneStore from '../../app/stores/milestoneStore';
+import { milestoneFormValuesSchema } from '../../app/validationSchemas/milestoneSchemas';
 import styles from './MilestoneListItem.module.scss';
+import MilestoneListItemInnerForm from './MilestoneListItemInnerForm';
 
 interface MilestoneListItemProps {
   milestone: Milestone;
+  onSubmit?: (
+    values: MilestoneFormValues,
+    { setErrors }: FormikHelpers<MilestoneFormValues>
+  ) => Promise<void>;
 }
 
-const MilestoneListItem = ({ milestone }: MilestoneListItemProps) => {
-  const [isDetails, setDetails] = useState(false);
-  const onClick = () => setDetails((lastState) => !lastState);
+const MilestoneListItem = ({ onSubmit, milestone }: MilestoneListItemProps) => {
+  const [isEditing, setIsEditing] = useState(false);
+
+  const toggleEdit = () => {
+    setIsEditing((oldState) => !oldState);
+  };
+
+  const handleSubmit = async (
+    values: MilestoneFormValues,
+    { setErrors }: FormikHelpers<MilestoneFormValues>
+  ) => {
+    try {
+      const updatedMilestone: Milestone = {
+        id: milestone.id,
+        parentProjectId: milestone.parentProjectId,
+        name: values.name,
+        description: values.description,
+        endsOn: values.endsOn ? new Date(values.endsOn) : null,
+        status: milestone.status
+      };
+      await milestoneStore.updateMilestone(updatedMilestone);
+    } catch {
+      setErrors({ description: defaultDict.errors.milestones.failedEdit });
+    }
+  };
+
+  const handleDelete = async () => {
+    await milestoneStore.deleteMilestone(milestone.id);
+  };
 
   return (
-    <div
-      onClick={onClick}
-      className={isDetails ? [styles.details, styles.wrapper].join(' ') : styles.wrapper}
-    >
-      <div className={styles.primary}>{milestone.name}</div>
-      <div className={[styles.secondary, styles.statusDiv].join(' ')}>
-        {defaultDict.common.status[milestone.status]}
-      </div>
-      {milestone.endsOn && (
-        <div className={styles.secondary}>{milestone.endsOn.toLocaleDateString()}</div>
-      )}
-      {isDetails && <div className={styles.secondary}>{milestone.description}</div>}
+    <div className={`${styles.wrapper}`}>
+      <Formik
+        enableReinitialize
+        validationSchema={milestoneFormValuesSchema}
+        initialValues={{
+          ...milestone,
+          endsOn: milestone.endsOn ? format(milestone.endsOn, constants.dateFormat) : ''
+        }}
+        onSubmit={onSubmit || handleSubmit}
+        component={(props) => (
+          <MilestoneListItemInnerForm
+            onDelete={handleDelete}
+            isEditing={isEditing}
+            toggleEdit={toggleEdit}
+            {...props}
+          />
+        )}
+      />
     </div>
   );
 };

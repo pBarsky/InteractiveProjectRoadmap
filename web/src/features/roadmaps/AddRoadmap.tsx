@@ -1,10 +1,7 @@
 import { Formik, FormikHelpers } from 'formik';
 import { observer } from 'mobx-react-lite';
 import React from 'react';
-import {
-  DefaultRoadmapFormValues,
-  RoadmapFormValues
-} from '../../app/models/roadmap';
+import { DefaultRoadmapFormValues, RoadmapFormValues } from '../../app/models/roadmap';
 import { useStore } from '../../app/stores/store';
 import customErrorMessages from '../../app/validationSchemas/customErrorMessages';
 import { roadmapFormValuesSchema } from '../../app/validationSchemas/roadmapSchemas';
@@ -28,9 +25,7 @@ const AddRoadmap = ({ onSubmit }: RoadmapProps) => {
   ) => {
     try {
       values.startsOn = new Date(values.startsOn).toISOString();
-      values.endsOn = values.endsOn
-        ? new Date(values.endsOn).toISOString()
-        : null;
+      values.endsOn = values.endsOn ? new Date(values.endsOn).toISOString() : null;
       await roadmapStore.addRoadmap(values);
     } catch {
       setErrors({ commonFormError: customErrorMessages.common.failedAdd });

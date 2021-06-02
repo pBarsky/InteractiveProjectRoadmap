@@ -26,7 +26,7 @@ const RoadmapDetails = () => {
 
   return (
     <Container>
-      <RoadmapCard fluid roadmap={roadmapStore.selectedRoadmap} />
+      <RoadmapCard roadmap={roadmapStore.selectedRoadmap} />
       <AddMilestone roadmapId={id} />
       <BackButton />
     </Container>

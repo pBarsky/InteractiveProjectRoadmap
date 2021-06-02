@@ -15,15 +15,18 @@ const AddMilestoneInnerForm = ({
         <Field
           label={defaultDict.forms.inputs.name.labelText}
           name={defaultDict.forms.inputs.name.name}
+          id={`${defaultDict.forms.inputs.name.name}AddMilestone`}
           required
         />
         <Field
           label={defaultDict.forms.inputs.description.labelText}
           name={defaultDict.forms.inputs.description.name}
+          id={`${defaultDict.forms.inputs.description.name}AddMilestone`}
         />
         <Field
           label={defaultDict.forms.inputs.endsOn.labelText}
           name={defaultDict.forms.inputs.endsOn.name}
+          id={`${defaultDict.forms.inputs.endsOn.name}AddMilestone`}
           required
           type='date'
         />

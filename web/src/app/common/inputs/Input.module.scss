@@ -1,0 +1,25 @@
+.input {
+  input {
+    width: 100%;
+    min-height: 2.5em;
+    padding: 5px 0;
+    border: 1px solid var(--gray);
+    border-radius: 2px;
+    background-color: transparent;
+  }
+
+  textarea {
+    width: 100%;
+    border: 1px solid var(--gray);
+    outline: none;
+    padding: 0.5em;
+    resize: none;
+    background-color: transparent;
+  }
+
+  .errorMessage {
+    font-size: 1rem;
+    margin: 0.5em;
+    color: var(--errorRed);
+  }
+}
