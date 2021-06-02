@@ -12,6 +12,9 @@
   &:hover {
     cursor: pointer;
   }
+  &:disabled {
+    filter: brightness(80%);
+  }
 }
 
 .outlined {

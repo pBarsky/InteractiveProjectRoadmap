@@ -4,6 +4,7 @@ import styles from './Button.module.scss';
 interface ButtonProps {
   outlined?: boolean;
   type?: 'button' | 'submit' | 'reset';
+  disabled?: boolean;
 }
 
 const Button = ({
@@ -11,6 +12,7 @@ const Button = ({
   className,
   children,
   type = 'button',
+  disabled = false,
   ...props
 }: ButtonProps & DetailedHTMLProps<HTMLAttributes<HTMLButtonElement>, HTMLButtonElement>) => {
   return (
@@ -18,6 +20,7 @@ const Button = ({
       {...props}
       type={type}
       className={`${styles.button} ${className} ${outlined ? styles.outlined : null}`}
+      disabled={disabled}
     >
       {children}
     </button>

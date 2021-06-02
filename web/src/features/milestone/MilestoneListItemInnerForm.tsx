@@ -18,6 +18,7 @@ const MilestoneListItemInnerForm = ({
   values,
   onDelete,
   isEditing,
+  isValid,
   toggleEdit,
   resetForm,
   submitForm
@@ -26,6 +27,14 @@ const MilestoneListItemInnerForm = ({
     forms: { inputs }
   } = defaultDict;
 
+  const handleCancel = () => {
+    resetForm();
+    toggleEdit();
+  };
+  const handleEdit = async () => {
+    await submitForm();
+    toggleEdit();
+  };
   return (
     <form className={`${styles.form} ${isEditing ? styles.editing : ''}`}>
       {isEditing && (
@@ -88,24 +97,10 @@ const MilestoneListItemInnerForm = ({
       )}
       {isEditing && (
         <div className={styles.buttons}>
-          <Button
-            type='submit'
-            onClick={async () => {
-              await submitForm();
-              toggleEdit();
-            }}
-            className={styles.saveButton}
-          >
+          <Button onClick={handleEdit} disabled={!isValid} className={styles.saveButton}>
             <FontAwesomeIcon icon={faCheck} />
           </Button>
-          <Button
-            onClick={() => {
-              resetForm();
-              toggleEdit();
-            }}
-            type='reset'
-            className={styles.cancelButton}
-          >
+          <Button onClick={handleCancel} className={styles.cancelButton}>
             <FontAwesomeIcon icon={faBan} />
           </Button>
         </div>

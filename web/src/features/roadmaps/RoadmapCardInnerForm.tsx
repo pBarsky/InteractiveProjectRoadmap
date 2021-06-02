@@ -2,6 +2,7 @@ import { faBan, faCheck, faEdit, faTrash } from '@fortawesome/free-solid-svg-ico
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FormikProps } from 'formik';
 import React from 'react';
+import { ButtonContent } from 'semantic-ui-react';
 import Button from '../../app/common/buttons/Button';
 import Field from '../../app/common/inputs/Field';
 import defaultDict from '../../app/dictionaries/defaultDict';
@@ -18,6 +19,7 @@ interface RoadmapCardInnerFormProps {
 const RoadmapCardInnerForm = ({
   values,
   isFailing,
+  isValid,
   isEditing,
   handleSubmit,
   onDelete,
@@ -101,10 +103,10 @@ const RoadmapCardInnerForm = ({
       />
       {isEditing && (
         <div className={styles.buttons}>
-          <Button type='submit' onClick={submit} className={styles.saveButton}>
+          <ButtonContent onClick={submit} disabled={!isValid} className={styles.saveButton}>
             <FontAwesomeIcon icon={faCheck} />
-          </Button>
-          <Button onClick={toggleEditAndResetForm} type='reset' className={styles.cancelButton}>
+          </ButtonContent>
+          <Button onClick={toggleEditAndResetForm} className={styles.cancelButton}>
             <FontAwesomeIcon icon={faBan} />
           </Button>
         </div>

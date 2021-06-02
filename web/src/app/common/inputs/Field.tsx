@@ -9,7 +9,7 @@ interface FieldProps {
 
 const Field = ({ label, ...props }: FieldProps & FieldHookConfig<string>) => {
   return (
-    <div className={`${styles.field} ${props.className}`}>
+    <div className={`${styles.field} ${props.className || ''}`}>
       <label htmlFor={props.id} className={props.required ? styles.required : ''}>
         {label}
       </label>
