@@ -12,29 +12,29 @@ import Routes from './features/routes/Routes';
 export const browserHistory = createBrowserHistory();
 
 function App () {
-  const { commonStore, authStore } = useStore();
+	const { commonStore, authStore } = useStore();
 
-  useEffect(() => {
-    if (authStore.token) {
-      authStore.fetchUser().finally(() => commonStore.setAppLoaded());
-    } else {
-      commonStore.setAppLoaded();
-    }
-  }, [commonStore, authStore]);
+	useEffect(() => {
+		if (authStore.token) {
+			authStore.fetchUser().finally(() => commonStore.setAppLoaded());
+		} else {
+			commonStore.setAppLoaded();
+		}
+	}, [commonStore, authStore]);
 
-  if (!commonStore.appLoaded) {
-    return <Loader page content='Loading app...' />;
-  }
-  return (
-    <StoreProvider>
-      <Router history={browserHistory}>
-        <Navbar />
-        <Container className={css.Container} as='main'>
-          <Routes />
-        </Container>
-      </Router>
-    </StoreProvider>
-  );
+	if (!commonStore.appLoaded) {
+		return <Loader page content='Loading app...' />;
+	}
+	return (
+		<StoreProvider>
+			<Router history={browserHistory}>
+				<Navbar />
+				<Container className={css.Container} as='main'>
+					<Routes />
+				</Container>
+			</Router>
+		</StoreProvider>
+	);
 }
 
 export default observer(App);

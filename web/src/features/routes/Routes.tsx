@@ -11,21 +11,18 @@ import RoadmapDetails from '../roadmaps/RoadmapDetails';
 import Dashboard from '../users/Dashboard';
 
 const Routes = () => {
-  return (
-    <Switch>
-      <Route path={routes.auth.login} component={Login} />
-      <Route path={routes.auth.register} component={Register} />
-      <ProtectedRoute path={routes.roadmap.add} component={AddRoadmap} />
-      <ProtectedRoute path={routes.user.dashboard} component={Dashboard} />
-      <ProtectedRoute
-        path={routes.roadmap.details}
-        component={RoadmapDetails}
-      />
-      <Route exact path={routes.common.home} component={Homepage} />
-      <Route path={routes.common.notFound} component={NotFound} />
-      <Redirect to={routes.common.notFound} />
-    </Switch>
-  );
+	return (
+		<Switch>
+			<Route path={routes.auth.login} component={Login} />
+			<Route path={routes.auth.register} component={Register} />
+			<ProtectedRoute path={routes.roadmap.add} component={AddRoadmap} />
+			<ProtectedRoute path={routes.user.dashboard} component={Dashboard} />
+			<ProtectedRoute path={routes.roadmap.details} component={RoadmapDetails} />
+			<Route exact path={routes.common.home} component={Homepage} />
+			<Route path={routes.common.notFound} component={NotFound} />
+			<Redirect to={routes.common.notFound} />
+		</Switch>
+	);
 };
 
 export default Routes;

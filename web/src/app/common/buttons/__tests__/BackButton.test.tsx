@@ -6,27 +6,27 @@ import defaultDict from '../../../dictionaries/defaultDict';
 import BackButton from '../BackButton';
 
 describe('<BackButton />', () => {
-  it('Should display a button with custom content when provided', () => {
-    const content = 'test content';
-    const { getByText } = render(<BackButton content={content} />);
+	it('Should display a button with custom content when provided', () => {
+		const content = 'test content';
+		const { getByText } = render(<BackButton content={content} />);
 
-    expect(getByText(content)).toBeInTheDocument();
-  });
+		expect(getByText(content)).toBeInTheDocument();
+	});
 
-  it('Should go back a page when clicked', async () => {
-    const lastPage = '/lastPage';
-    browserHistory.push(lastPage);
-    browserHistory.push('/');
-    const { getByText } = render(
-      <Router history={browserHistory}>
-        <BackButton />
-      </Router>
-    );
+	it('Should go back a page when clicked', async () => {
+		const lastPage = '/lastPage';
+		browserHistory.push(lastPage);
+		browserHistory.push('/');
+		const { getByText } = render(
+			<Router history={browserHistory}>
+				<BackButton />
+			</Router>
+		);
 
-    await userEvent.click(getByText(defaultDict.common.backButton));
+		await userEvent.click(getByText(defaultDict.common.backButton));
 
-    await waitFor(() => {
-      expect(browserHistory.location.pathname).toBe(lastPage);
-    });
-  });
+		await waitFor(() => {
+			expect(browserHistory.location.pathname).toBe(lastPage);
+		});
+	});
 });

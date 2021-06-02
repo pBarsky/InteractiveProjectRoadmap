@@ -7,32 +7,29 @@ import ProtectedRoute from '../ProtectedRoute';
 import routes from '../routes';
 
 describe('<ProtectedRoute />', () => {
-  it('Should redirect to login page when user is not authorized', () => {
-    render(
-      <Router history={browserHistory}>
-        <ProtectedRoute
-          path='/'
-          render={() => <div data-testid='protectedDiv'></div>}
-        />
-      </Router>
-    );
+	it('Should redirect to login page when user is not authorized', () => {
+		render(
+			<Router history={browserHistory}>
+				<ProtectedRoute path='/' render={() => <div data-testid='protectedDiv'></div>} />
+			</Router>
+		);
 
-    expect(browserHistory.location.pathname).toBe(routes.auth.login);
-  });
-  it('Should render desired component when user is authorized', () => {
-    store.authStore.user = { displayName: 'test', token: '', username: 'test' };
+		expect(browserHistory.location.pathname).toBe(routes.auth.login);
+	});
+	it('Should render desired component when user is authorized', () => {
+		store.authStore.user = { displayName: 'test', token: '', username: 'test' };
 
-    const { getByTestId } = render(
-      <StoreProvider store={store}>
-        <Router history={browserHistory}>
-          <ProtectedRoute
-            path='/'
-            render={() => <div data-testid='protectedDiv'>test</div>}
-          />
-        </Router>
-      </StoreProvider>
-    );
+		const { getByTestId } = render(
+			<StoreProvider store={store}>
+				<Router history={browserHistory}>
+					<ProtectedRoute
+						path='/'
+						render={() => <div data-testid='protectedDiv'>test</div>}
+					/>
+				</Router>
+			</StoreProvider>
+		);
 
-    expect(getByTestId('protectedDiv')).toBeInTheDocument();
-  });
+		expect(getByTestId('protectedDiv')).toBeInTheDocument();
+	});
 });

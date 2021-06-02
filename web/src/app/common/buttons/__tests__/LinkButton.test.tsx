@@ -5,21 +5,21 @@ import { browserHistory } from '../../../../App';
 import LinkButton from '../LinkButton';
 
 describe('<linkButton />', () => {
-  it('Should go to other page when clicked', async () => {
-    const otherPage = '/otherPage';
-    browserHistory.push(otherPage);
-    browserHistory.push('/');
-    browserHistory.push('/');
-    const { getByRole } = render(
-      <Router history={browserHistory}>
-        <LinkButton to={otherPage} />
-      </Router>
-    );
+	it('Should go to other page when clicked', async () => {
+		const otherPage = '/otherPage';
+		browserHistory.push(otherPage);
+		browserHistory.push('/');
+		browserHistory.push('/');
+		const { getByRole } = render(
+			<Router history={browserHistory}>
+				<LinkButton to={otherPage} />
+			</Router>
+		);
 
-    await userEvent.click(getByRole('button'));
+		await userEvent.click(getByRole('button'));
 
-    await waitFor(() => {
-      expect(browserHistory.location.pathname).toBe(otherPage);
-    });
-  });
+		await waitFor(() => {
+			expect(browserHistory.location.pathname).toBe(otherPage);
+		});
+	});
 });
