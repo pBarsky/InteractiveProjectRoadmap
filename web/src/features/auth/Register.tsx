@@ -11,40 +11,37 @@ import RegisterInnerForm from './RegisterInnerForm';
 const registerInitialValues: UserFormValues = new DefaultUserFormValues();
 
 interface RegisterProps {
-  onSubmit?: (
-    values: UserFormValues,
-    actions: FormikHelpers<UserFormValues>
-  ) => Promise<void>;
+	onSubmit?: (values: UserFormValues, actions: FormikHelpers<UserFormValues>) => Promise<void>;
 }
 
 const Register = ({ onSubmit }: RegisterProps) => {
-  const { authStore } = useStore();
+	const { authStore } = useStore();
 
-  if (authStore.isLoggedIn) {
-    browserHistory.push(routes.user.dashboard);
-  }
-  const handleSubmit = async (
-    values: UserFormValues,
-    { setErrors }: FormikHelpers<UserFormValues>
-  ) => {
-    try {
-      values.displayName =
-        values.username!.charAt(0).toUpperCase() + values.username!.slice(1);
-      await authStore.register(values);
-      browserHistory.push(routes.user.dashboard);
-    } catch {
-      setErrors({ commonFormError: 'Invalid email or password.' });
-    }
-  };
-  return (
-    <Formik
-      initialValues={registerInitialValues}
-      onSubmit={onSubmit ?? handleSubmit}
-      validateOnMount
-      validationSchema={userRegisterFormValuesSchema}
-      component={RegisterInnerForm}
-    />
-  );
+	if (authStore.isLoggedIn) {
+		browserHistory.push(routes.user.dashboard);
+	}
+	const handleSubmit = async (
+		values: UserFormValues,
+		{ setErrors }: FormikHelpers<UserFormValues>
+	) => {
+		try {
+			values.displayName =
+				values.username!.charAt(0).toUpperCase() + values.username!.slice(1);
+			await authStore.register(values);
+			browserHistory.push(routes.user.dashboard);
+		} catch {
+			setErrors({ commonFormError: 'Invalid email or password.' });
+		}
+	};
+	return (
+		<Formik
+			initialValues={registerInitialValues}
+			onSubmit={onSubmit ?? handleSubmit}
+			validateOnMount
+			validationSchema={userRegisterFormValuesSchema}
+			component={RegisterInnerForm}
+		/>
+	);
 };
 
 export default observer(Register);

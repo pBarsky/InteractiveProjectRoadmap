@@ -4,15 +4,15 @@ import { browserHistory } from '../../../App';
 import defaultDict from '../../dictionaries/defaultDict';
 
 interface BackButtonProps {
-  content?: string;
+	content?: string;
 }
 
 const BackButton = ({ content }: BackButtonProps) => {
-  return (
-    <Button color='black' basic onClick={() => browserHistory.goBack()}>
-      {content ?? defaultDict.common.backButton}
-    </Button>
-  );
+	return (
+		<Button color='black' basic onClick={() => browserHistory.goBack()}>
+			{content ?? defaultDict.common.backButton}
+		</Button>
+	);
 };
 
 export default BackButton;

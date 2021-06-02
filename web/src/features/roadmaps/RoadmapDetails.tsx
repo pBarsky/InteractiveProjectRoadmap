@@ -10,27 +10,29 @@ import AddMilestone from '../milestone/AddMilestone';
 import RoadmapCard from './RoadmapCard';
 
 const RoadmapDetails = () => {
-  const { roadmapStore, milestoneStore } = useStore();
-  const params = useParams<{ id: string }>();
-  const id = parseInt(params.id);
+	const { roadmapStore, milestoneStore } = useStore();
+	const params = useParams<{ id: string }>();
+	const id = parseInt(params.id);
 
-  useEffect(() => {
-    if (id) {
-      roadmapStore.loadRoadmap(id).then(() => milestoneStore.getAll(roadmapStore.selectedRoadmap!));
-    }
-  }, [roadmapStore, id]);
+	useEffect(() => {
+		if (id) {
+			roadmapStore
+				.loadRoadmap(id)
+				.then(() => milestoneStore.getAll(roadmapStore.selectedRoadmap!));
+		}
+	}, [roadmapStore, id]);
 
-  if (!roadmapStore.selectedRoadmap) {
-    return <Loader content={defaultDict.pages.roadmap.loadingDetails} />;
-  }
+	if (!roadmapStore.selectedRoadmap) {
+		return <Loader content={defaultDict.pages.roadmap.loadingDetails} />;
+	}
 
-  return (
-    <Container>
-      <RoadmapCard roadmap={roadmapStore.selectedRoadmap} />
-      <AddMilestone roadmapId={id} />
-      <BackButton />
-    </Container>
-  );
+	return (
+		<Container>
+			<RoadmapCard roadmap={roadmapStore.selectedRoadmap} />
+			<AddMilestone roadmapId={id} />
+			<BackButton />
+		</Container>
+	);
 };
 
 export default observer(RoadmapDetails);

@@ -10,74 +10,74 @@ import MilestonesList from '../milestone/MilestonesList';
 import styles from './RoadmapCard.module.scss';
 import RoadmapCardInnerForm from './RoadmapCardInnerForm';
 interface RoadmapCardProps {
-  roadmap: Roadmap;
-  testDate?: Date;
-  onSubmit?: (
-    values: RoadmapFormValues,
-    { setErrors }: FormikHelpers<RoadmapFormValues>
-  ) => Promise<void>;
+	roadmap: Roadmap;
+	testDate?: Date;
+	onSubmit?: (
+		values: RoadmapFormValues,
+		{ setErrors }: FormikHelpers<RoadmapFormValues>
+	) => Promise<void>;
 }
 
 const RoadmapCard = ({ onSubmit, roadmap, testDate }: RoadmapCardProps): JSX.Element => {
-  const [isEditing, setIsEditing] = useState(false);
+	const [isEditing, setIsEditing] = useState(false);
 
-  const toggleEdit = () => {
-    setIsEditing((oldState) => !oldState);
-  };
+	const toggleEdit = () => {
+		setIsEditing((oldState) => !oldState);
+	};
 
-  let isFailing: boolean = false;
-  if (roadmap.endsOn) {
-    isFailing = (testDate ?? new Date()).getTime() > roadmap.endsOn.getTime();
-  }
+	let isFailing: boolean = false;
+	if (roadmap.endsOn) {
+		isFailing = (testDate ?? new Date()).getTime() > roadmap.endsOn.getTime();
+	}
 
-  const handleSubmit = async (
-    values: RoadmapFormValues,
-    { setErrors }: FormikHelpers<RoadmapFormValues>
-  ) => {
-    try {
-      const updatedRoadmap: Roadmap = {
-        id: roadmap.id,
-        name: values.name,
-        description: values.description,
-        endsOn: values.endsOn ? new Date(values.endsOn) : null,
-        startsOn: new Date(values.startsOn)
-      };
-      await roadmapStore.updateRoadmap(updatedRoadmap);
-    } catch {
-      setErrors({ description: defaultDict.errors.roadmap.failedEdit });
-    }
-  };
+	const handleSubmit = async (
+		values: RoadmapFormValues,
+		{ setErrors }: FormikHelpers<RoadmapFormValues>
+	) => {
+		try {
+			const updatedRoadmap: Roadmap = {
+				id: roadmap.id,
+				name: values.name,
+				description: values.description,
+				endsOn: values.endsOn ? new Date(values.endsOn) : null,
+				startsOn: new Date(values.startsOn)
+			};
+			await roadmapStore.updateRoadmap(updatedRoadmap);
+		} catch {
+			setErrors({ description: defaultDict.errors.roadmap.failedEdit });
+		}
+	};
 
-  const handleDelete = async () => {
-    await roadmapStore.deleteRoadmap(roadmap.id);
-  };
+	const handleDelete = async () => {
+		await roadmapStore.deleteRoadmap(roadmap.id);
+	};
 
-  return (
-    <div className={`${styles.wrapper} ${isFailing ? styles.failing : ''}`}>
-      <Formik
-        enableReinitialize
-        validationSchema={roadmapFormValuesSchema}
-        initialValues={{
-          ...roadmap,
-          startsOn: format(roadmap.startsOn, constants.dateFormat),
-          endsOn: roadmap.endsOn ? format(roadmap.endsOn, constants.dateFormat) : ''
-        }}
-        onSubmit={onSubmit || handleSubmit}
-        component={(props) => (
-          <RoadmapCardInnerForm
-            onDelete={handleDelete}
-            isEditing={isEditing}
-            toggleEdit={toggleEdit}
-            isFailing={isFailing}
-            {...props}
-          />
-        )}
-      />
-      <div>
-        <MilestonesList />
-      </div>
-    </div>
-  );
+	return (
+		<div className={`${styles.wrapper} ${isFailing ? styles.failing : ''}`}>
+			<Formik
+				enableReinitialize
+				validationSchema={roadmapFormValuesSchema}
+				initialValues={{
+					...roadmap,
+					startsOn: format(roadmap.startsOn, constants.dateFormat),
+					endsOn: roadmap.endsOn ? format(roadmap.endsOn, constants.dateFormat) : ''
+				}}
+				onSubmit={onSubmit || handleSubmit}
+				component={(props) => (
+					<RoadmapCardInnerForm
+						onDelete={handleDelete}
+						isEditing={isEditing}
+						toggleEdit={toggleEdit}
+						isFailing={isFailing}
+						{...props}
+					/>
+				)}
+			/>
+			<div>
+				<MilestonesList />
+			</div>
+		</div>
+	);
 };
 
 export default RoadmapCard;

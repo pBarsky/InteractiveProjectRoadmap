@@ -10,41 +10,41 @@ import AddMilestoneInnerForm from './AddMilestoneInnerForm';
 const milestoneInitialValues: MilestoneFormValues = new DefaultMilestoneFormValues();
 
 interface MilestoneProps {
-  onSubmit?: (
-    values: MilestoneFormValues,
-    actions: FormikHelpers<MilestoneFormValues>
-  ) => Promise<void>;
-  roadmapId: number;
+	onSubmit?: (
+		values: MilestoneFormValues,
+		actions: FormikHelpers<MilestoneFormValues>
+	) => Promise<void>;
+	roadmapId: number;
 }
 
 const AddMilestone = ({ onSubmit, roadmapId }: MilestoneProps) => {
-  const { milestoneStore } = useStore();
+	const { milestoneStore } = useStore();
 
-  const handleSubmit = async (
-    values: MilestoneFormValues,
-    { setErrors, resetForm }: FormikHelpers<MilestoneFormValues>
-  ) => {
-    try {
-      values.endsOn = new Date(values.endsOn).toISOString();
-      values.parentProjectId = roadmapId;
-      await milestoneStore.addMilestone(values);
-      resetForm();
-    } catch {
-      setErrors({
-        commonFormError: customErrorMessages.common.failedAddMilestone
-      });
-    }
-  };
+	const handleSubmit = async (
+		values: MilestoneFormValues,
+		{ setErrors, resetForm }: FormikHelpers<MilestoneFormValues>
+	) => {
+		try {
+			values.endsOn = new Date(values.endsOn).toISOString();
+			values.parentProjectId = roadmapId;
+			await milestoneStore.addMilestone(values);
+			resetForm();
+		} catch {
+			setErrors({
+				commonFormError: customErrorMessages.common.failedAddMilestone
+			});
+		}
+	};
 
-  return (
-    <Formik
-      initialValues={milestoneInitialValues}
-      onSubmit={onSubmit ?? handleSubmit}
-      validateOnMount
-      validationSchema={milestoneFormValuesSchema}
-      component={AddMilestoneInnerForm}
-    />
-  );
+	return (
+		<Formik
+			initialValues={milestoneInitialValues}
+			onSubmit={onSubmit ?? handleSubmit}
+			validateOnMount
+			validationSchema={milestoneFormValuesSchema}
+			component={AddMilestoneInnerForm}
+		/>
+	);
 };
 
 export default observer(AddMilestone);

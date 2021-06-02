@@ -10,37 +10,37 @@ import AddRoadmapInnerForm from './AddRoadmapInnerForm';
 const roadmapInitialValues: RoadmapFormValues = new DefaultRoadmapFormValues();
 
 interface RoadmapProps {
-  onSubmit?: (
-    values: RoadmapFormValues,
-    actions: FormikHelpers<RoadmapFormValues>
-  ) => Promise<void>;
+	onSubmit?: (
+		values: RoadmapFormValues,
+		actions: FormikHelpers<RoadmapFormValues>
+	) => Promise<void>;
 }
 
 const AddRoadmap = ({ onSubmit }: RoadmapProps) => {
-  const { roadmapStore } = useStore();
+	const { roadmapStore } = useStore();
 
-  const handleSubmit = async (
-    values: RoadmapFormValues,
-    { setErrors }: FormikHelpers<RoadmapFormValues>
-  ) => {
-    try {
-      values.startsOn = new Date(values.startsOn).toISOString();
-      values.endsOn = values.endsOn ? new Date(values.endsOn).toISOString() : null;
-      await roadmapStore.addRoadmap(values);
-    } catch {
-      setErrors({ commonFormError: customErrorMessages.common.failedAdd });
-    }
-  };
+	const handleSubmit = async (
+		values: RoadmapFormValues,
+		{ setErrors }: FormikHelpers<RoadmapFormValues>
+	) => {
+		try {
+			values.startsOn = new Date(values.startsOn).toISOString();
+			values.endsOn = values.endsOn ? new Date(values.endsOn).toISOString() : null;
+			await roadmapStore.addRoadmap(values);
+		} catch {
+			setErrors({ commonFormError: customErrorMessages.common.failedAdd });
+		}
+	};
 
-  return (
-    <Formik
-      initialValues={roadmapInitialValues}
-      onSubmit={onSubmit ?? handleSubmit}
-      validateOnMount
-      validationSchema={roadmapFormValuesSchema}
-      component={AddRoadmapInnerForm}
-    />
-  );
+	return (
+		<Formik
+			initialValues={roadmapInitialValues}
+			onSubmit={onSubmit ?? handleSubmit}
+			validateOnMount
+			validationSchema={roadmapFormValuesSchema}
+			component={AddRoadmapInnerForm}
+		/>
+	);
 };
 
 export default observer(AddRoadmap);

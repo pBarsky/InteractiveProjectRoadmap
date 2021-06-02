@@ -14,40 +14,37 @@ import LoginInnerForm from './LoginInnerForm';
 const loginInitialValues: UserFormValues = new DefaultUserFormValues();
 
 interface LoginProps {
-  onSubmit?: (
-    values: UserFormValues,
-    actions: FormikHelpers<UserFormValues>
-  ) => Promise<void>;
+	onSubmit?: (values: UserFormValues, actions: FormikHelpers<UserFormValues>) => Promise<void>;
 }
 
 const Login = ({ onSubmit }: LoginProps) => {
-  const { authStore } = useStore();
+	const { authStore } = useStore();
 
-  if (authStore.isLoggedIn) {
-    browserHistory.push(routes.user.dashboard);
-  }
+	if (authStore.isLoggedIn) {
+		browserHistory.push(routes.user.dashboard);
+	}
 
-  const handleSubmit = async (
-    values: UserFormValues,
-    { setErrors }: FormikHelpers<UserFormValues>
-  ) => {
-    try {
-      await authStore.login(values);
-      browserHistory.push(routes.user.dashboard);
-    } catch {
-      setErrors({ commonFormError: customErrorMessages.common.failedLogin });
-    }
-  };
+	const handleSubmit = async (
+		values: UserFormValues,
+		{ setErrors }: FormikHelpers<UserFormValues>
+	) => {
+		try {
+			await authStore.login(values);
+			browserHistory.push(routes.user.dashboard);
+		} catch {
+			setErrors({ commonFormError: customErrorMessages.common.failedLogin });
+		}
+	};
 
-  return (
-    <Formik
-      initialValues={loginInitialValues}
-      onSubmit={onSubmit ?? handleSubmit}
-      validateOnMount
-      validationSchema={userLoginFormValuesSchema}
-      component={LoginInnerForm}
-    />
-  );
+	return (
+		<Formik
+			initialValues={loginInitialValues}
+			onSubmit={onSubmit ?? handleSubmit}
+			validateOnMount
+			validationSchema={userLoginFormValuesSchema}
+			component={LoginInnerForm}
+		/>
+	);
 };
 
 export default observer(Login);

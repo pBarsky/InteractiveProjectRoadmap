@@ -1,113 +1,113 @@
 .form {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  input {
-    border: none;
-    &:disabled {
-      color: var(--black);
-    }
-  }
-  .status {
-    font-size: 0.75em;
-    margin: 0.5em 0;
-    font-weight: bold;
-  }
-  .name {
-    font-size: 1.5em;
-    margin: 0.5em 0;
-    font-weight: bold;
-  }
-  .dates {
-    margin-left: 1em;
-    margin: 0.5em 0;
-    color: var(--secondaryText);
-    display: flex;
-    flex-direction: column;
-    font-size: 1.25em;
-    .date {
-      color: var(--black);
-    }
-  }
-  .description {
-    color: var(--secondaryText);
-    line-height: 1.5em;
-  }
-  textarea {
-    max-height: 3em;
-    padding: 0;
-    border: none;
-    padding-bottom: 0.25em;
-    &:focus {
-      border-bottom: 1px solid var(--gray);
-    }
-    &:disabled {
-      color: var(--black);
-    }
-  }
-  .buttons {
-    display: flex;
-    flex-direction: row-reverse;
-    margin: 0.5em;
-    overflow: visible;
-    button {
-      padding: 0.5em;
-      margin: 0 0.5em;
-      min-width: 4em;
-      border: none;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-      background-color: white;
-      transition: all 0.1s ease-in !important;
-    }
-    .editButton {
-      background-color: var(--blue);
-      color: white;
-      &:hover {
-        background-color: var(--darkBlue);
-      }
-    }
-    .deleteButton {
-      color: var(--errorRed);
-      &:hover {
-        color: red;
-      }
-    }
-    .saveButton {
-      color: var(--green);
-      &:hover {
-        background-color: var(--gray);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-      }
-    }
-    .cancelButton {
-      color: var(--errorRed);
-      &:hover {
-        background-color: var(--gray);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-      }
-    }
-  }
+	display: flex;
+	align-items: center;
+	width: 100%;
+	input {
+		border: none;
+		&:disabled {
+			color: var(--black);
+		}
+	}
+	.status {
+		font-size: 0.75em;
+		margin: 0.5em 0;
+		font-weight: bold;
+	}
+	.name {
+		font-size: 1.5em;
+		margin: 0.5em 0;
+		font-weight: bold;
+	}
+	.dates {
+		margin-left: 1em;
+		margin: 0.5em 0;
+		color: var(--secondaryText);
+		display: flex;
+		flex-direction: column;
+		font-size: 1.25em;
+		.date {
+			color: var(--black);
+		}
+	}
+	.description {
+		color: var(--secondaryText);
+		line-height: 1.5em;
+	}
+	textarea {
+		max-height: 3em;
+		padding: 0;
+		border: none;
+		padding-bottom: 0.25em;
+		&:focus {
+			border-bottom: 1px solid var(--gray);
+		}
+		&:disabled {
+			color: var(--black);
+		}
+	}
+	.buttons {
+		display: flex;
+		flex-direction: row-reverse;
+		margin: 0.5em;
+		overflow: visible;
+		button {
+			padding: 0.5em;
+			margin: 0 0.5em;
+			min-width: 4em;
+			border: none;
+			box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+			background-color: white;
+			transition: all 0.1s ease-in !important;
+		}
+		.editButton {
+			background-color: var(--blue);
+			color: white;
+			&:hover {
+				background-color: var(--darkBlue);
+			}
+		}
+		.deleteButton {
+			color: var(--errorRed);
+			&:hover {
+				color: red;
+			}
+		}
+		.saveButton {
+			color: var(--green);
+			&:hover {
+				background-color: var(--gray);
+				box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+			}
+		}
+		.cancelButton {
+			color: var(--errorRed);
+			&:hover {
+				background-color: var(--gray);
+				box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+			}
+		}
+	}
 }
 
 @media (max-width: 1200px) {
-  .form {
-    flex-direction: column;
-    .name textarea {
-      font-size: 1em;
-      font-weight: 500;
-    }
-  }
+	.form {
+		flex-direction: column;
+		.name textarea {
+			font-size: 1em;
+			font-weight: 500;
+		}
+	}
 }
 
 .form.editing {
-  flex-direction: column;
-  align-items: unset;
+	flex-direction: column;
+	align-items: unset;
 
-  label {
-    display: inline-block;
-  }
-  textarea,
-  input {
-    border-bottom: 1px solid var(--gray);
-  }
+	label {
+		display: inline-block;
+	}
+	textarea,
+	input {
+		border-bottom: 1px solid var(--gray);
+	}
 }

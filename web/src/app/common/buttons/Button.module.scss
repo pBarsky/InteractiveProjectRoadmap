@@ -1,29 +1,29 @@
 .button {
-  min-height: 1em;
-  background-color: var(--black);
-  text-align: center;
-  border: 1px solid black;
-  padding: 0.6em;
-  border-radius: 5px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-  overflow: visible;
-  color: white;
-  min-width: 90px;
-  &:hover {
-    cursor: pointer;
-  }
-  &:disabled {
-    filter: brightness(80%);
-  }
+	min-height: 1em;
+	background-color: var(--black);
+	text-align: center;
+	border: 1px solid black;
+	padding: 0.6em;
+	border-radius: 5px;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+	overflow: visible;
+	color: white;
+	min-width: 90px;
+	&:hover {
+		cursor: pointer;
+	}
+	&:disabled {
+		filter: brightness(80%);
+	}
 }
 
 .outlined {
-  background-color: transparent;
-  border: 1px solid var(--black);
-  color: var(--black);
-  transition: all 0.1s ease-in;
-  &:hover {
-    background-color: var(--black);
-    color: white;
-  }
+	background-color: transparent;
+	border: 1px solid var(--black);
+	color: var(--black);
+	transition: all 0.1s ease-in;
+	&:hover {
+		background-color: var(--black);
+		color: white;
+	}
 }
