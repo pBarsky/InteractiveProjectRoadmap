@@ -2,6 +2,7 @@ import { ErrorMessage, Field as FormikField, Form as FormikForm, FormikProps } f
 import React from 'react';
 import { Button, Container, Form, Input, Label } from 'semantic-ui-react';
 import BackButton from '../../app/common/buttons/BackButton';
+import routes from '../../app/common/routing/routes';
 import defaultDict from '../../app/dictionaries/defaultDict';
 import { RoadmapFormValues } from '../../app/models/roadmap';
 
@@ -100,7 +101,7 @@ const AddRoadmapInnerForm = ({
 				)}
 			/>
 			<Container>
-				<BackButton />
+				<BackButton backUrl={routes.user.dashboard} />
 				<Button
 					color='black'
 					disabled={!isValid}

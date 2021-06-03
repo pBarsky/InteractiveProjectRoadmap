@@ -6,11 +6,19 @@ import defaultDict from '../../dictionaries/defaultDict';
 interface BackButtonProps {
 	content?: string;
 	className?: string;
+	backUrl?: string;
 }
 
-const BackButton = ({ content, className }: BackButtonProps) => {
+const BackButton = ({ content, backUrl, className }: BackButtonProps) => {
+	const onClick = () => {
+		if (backUrl) {
+			browserHistory.push(backUrl);
+			return;
+		}
+		browserHistory.goBack();
+	};
 	return (
-		<Button color='black' className={className} basic onClick={() => browserHistory.goBack()}>
+		<Button color='black' className={className} basic onClick={onClick}>
 			{content ?? defaultDict.common.backButton}
 		</Button>
 	);
