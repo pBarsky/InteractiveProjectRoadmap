@@ -1,6 +1,4 @@
 import { makeAutoObservable } from 'mobx';
-import { browserHistory } from '../../App';
-import routes from '../common/routing/routes';
 import { User, UserFormValues } from '../models/user';
 import authService from '../services/authService';
 
@@ -68,9 +66,8 @@ export class DefaultAuthStore implements AuthStore {
 			this.setToken(user.token);
 			this.setUser(user);
 			this.startRefreshTokenTimer(user);
-			browserHistory.push(routes.user.dashboard);
 		} catch (error) {
-			console.error(error);
+			console.debug(error);
 			throw error;
 		}
 	};
@@ -81,9 +78,8 @@ export class DefaultAuthStore implements AuthStore {
 			this.setToken(user.token);
 			this.setUser(user);
 			this.startRefreshTokenTimer(user);
-			browserHistory.push(routes.user.dashboard);
 		} catch (error) {
-			console.error(error);
+			console.debug(error);
 			throw error;
 		}
 	};
@@ -93,7 +89,6 @@ export class DefaultAuthStore implements AuthStore {
 		this.setToken(null);
 		window.localStorage.removeItem('jwt');
 		this.setUser(null);
-		browserHistory.push('/');
 	};
 
 	public setUser = (user: User | null) => {
@@ -107,7 +102,7 @@ export class DefaultAuthStore implements AuthStore {
 			this.setToken(user.token);
 			this.startRefreshTokenTimer(user);
 		} catch (error) {
-			console.error(error);
+			console.debug(error);
 		}
 	};
 
@@ -119,7 +114,7 @@ export class DefaultAuthStore implements AuthStore {
 			this.setToken(user.token);
 			this.startRefreshTokenTimer(user);
 		} catch (error) {
-			console.error(error);
+			console.debug(error);
 		}
 	};
 

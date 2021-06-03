@@ -59,6 +59,33 @@ namespace Roadmap.API.Tests
         }
 
         [Fact]
+        public async Task GetCurrentUser_440error_NoUserFound()
+        {
+            // Arrange
+            var signInManager = new FakeSignInManagerBuilder().Build();
+            var tokenService = new Mock<ITokenService>();
+            var userManager = new FakeUserManagerBuilder()
+                .With(s => s.Setup(x => x.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync((AppUser) null)).Build();
+
+            var controller = new AccountController(userManager.Object, signInManager.Object, tokenService.Object);
+            var principalUser = new ClaimsPrincipal(new ClaimsIdentity(new[]
+            {
+                new Claim(ClaimTypes.Name, "test"),
+                new Claim(ClaimTypes.Email, "test@test.com"),
+            }, "mock"));
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext { User = principalUser }
+            };
+
+            // Act
+            var result = await controller.GetCurrentUser();
+
+            // Assert
+            result.Result.As<StatusCodeResult>().StatusCode.Should().Be(440);
+        }
+
+        [Fact]
         public async Task Login__ReturnsUnauthorized_WhenPasswordDoesNotMatch()
         {
             // Arrange

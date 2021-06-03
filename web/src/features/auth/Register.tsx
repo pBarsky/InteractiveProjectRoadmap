@@ -1,10 +1,10 @@
 import { Formik, FormikHelpers } from 'formik';
-import { observer } from 'mobx-react-lite';
 import React from 'react';
 import { browserHistory } from '../../App';
 import routes from '../../app/common/routing/routes';
 import { DefaultUserFormValues, UserFormValues } from '../../app/models/user';
 import { useStore } from '../../app/stores/store';
+import customErrorMessages from '../../app/validationSchemas/customErrorMessages';
 import { userRegisterFormValuesSchema } from '../../app/validationSchemas/userSchemas';
 import RegisterInnerForm from './RegisterInnerForm';
 
@@ -30,7 +30,7 @@ const Register = ({ onSubmit }: RegisterProps) => {
 			await authStore.register(values);
 			browserHistory.push(routes.user.dashboard);
 		} catch {
-			setErrors({ commonFormError: 'Invalid email or password.' });
+			setErrors({ commonFormError: customErrorMessages.common.failedLogin });
 		}
 	};
 	return (
@@ -44,4 +44,4 @@ const Register = ({ onSubmit }: RegisterProps) => {
 	);
 };
 
-export default observer(Register);
+export default Register;

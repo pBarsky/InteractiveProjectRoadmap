@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -29,11 +30,15 @@ namespace Roadmap.API.Controllers
             _tokenService = tokenService;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<UserDto>> GetCurrentUser()
         {
             var user = await _userManager.GetUserAsync(User);
-
+            if (user == null)
+            {
+                return new StatusCodeResult(440);
+            }
             return Ok(CreateUserObject(user));
         }
 

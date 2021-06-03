@@ -1,5 +1,4 @@
 import { Formik, FormikHelpers } from 'formik';
-import { observer } from 'mobx-react-lite';
 import React from 'react';
 import { browserHistory } from '../../App';
 import routes from '../../app/common/routing/routes';
@@ -47,4 +46,4 @@ const Login = ({ onSubmit }: LoginProps) => {
 	);
 };
 
-export default observer(Login);
+export default Login;
