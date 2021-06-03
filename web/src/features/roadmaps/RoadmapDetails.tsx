@@ -4,6 +4,7 @@ import { useParams } from 'react-router';
 import { CSSTransition } from 'react-transition-group';
 import BackButton from '../../app/common/buttons/BackButton';
 import Button from '../../app/common/buttons/Button';
+import routes from '../../app/common/routing/routes';
 import defaultDict from '../../app/dictionaries/defaultDict';
 import Loader from '../../app/layout/Loader';
 import { useStore } from '../../app/stores/store';
@@ -58,7 +59,7 @@ const RoadmapDetails = () => {
 					<AddMilestone roadmapId={id} afterSubmit={toggleAddMilestoneForm} />
 				</div>
 			</CSSTransition>
-			<BackButton className={styles.backButton} />
+			<BackButton className={styles.backButton} backUrl={routes.user.dashboard} />
 		</div>
 	);
 };
