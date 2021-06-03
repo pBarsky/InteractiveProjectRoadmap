@@ -21,8 +21,13 @@ export const createApiClient = (): AxiosInstance => {
 
 	const onError = (error: AxiosError): Promise<AxiosError> => {
 		const { response } = error;
-		if (response?.status === 401) {
+		switch (response?.status) {
+		case 401:
 			browserHistory.push(routes.auth.login);
+			break;
+		case 440:
+			authStore.logout();
+			break;
 		}
 		return Promise.reject(error);
 	};
