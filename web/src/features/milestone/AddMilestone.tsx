@@ -15,9 +15,10 @@ interface MilestoneProps {
 		actions: FormikHelpers<MilestoneFormValues>
 	) => Promise<void>;
 	roadmapId: number;
+	afterSubmit?: () => void;
 }
 
-const AddMilestone = ({ onSubmit, roadmapId }: MilestoneProps) => {
+const AddMilestone = ({ onSubmit, afterSubmit, roadmapId }: MilestoneProps) => {
 	const { milestoneStore } = useStore();
 
 	const handleSubmit = async (
@@ -29,6 +30,7 @@ const AddMilestone = ({ onSubmit, roadmapId }: MilestoneProps) => {
 			values.parentProjectId = roadmapId;
 			await milestoneStore.addMilestone(values);
 			resetForm();
+			afterSubmit && afterSubmit();
 		} catch {
 			setErrors({
 				commonFormError: customErrorMessages.common.failedAddMilestone

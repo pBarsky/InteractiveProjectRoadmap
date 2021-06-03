@@ -18,9 +18,6 @@ describe('<AddMilestone />', () => {
 		);
 		await waitFor(() => {
 			expect(getByLabelText(defaultDict.forms.inputs.name.labelText)).toBeInTheDocument();
-			expect(
-				getByLabelText(defaultDict.forms.inputs.description.labelText)
-			).toBeInTheDocument();
 			expect(getByLabelText(defaultDict.forms.inputs.endsOn.labelText)).toBeInTheDocument();
 			expect(
 				getByRole('button', { name: defaultDict.forms.buttons.add.text })
