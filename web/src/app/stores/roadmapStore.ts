@@ -54,7 +54,7 @@ export class DefaultRoadmapStore implements RoadmapStore {
 			const { data } = await roadmapService.getAll();
 			this.setRoadmaps(data);
 		} catch (error) {
-			console.error(error);
+			console.debug(error);
 			throw error;
 		} finally {
 			this.loading = false;
@@ -76,6 +76,7 @@ export class DefaultRoadmapStore implements RoadmapStore {
 			this.selectedRoadmap = newRoadmap;
 		} catch (error) {
 			browserHistory.push(routes.user.dashboard);
+			throw error;
 		} finally {
 			this.loading = false;
 		}
@@ -99,7 +100,8 @@ export class DefaultRoadmapStore implements RoadmapStore {
 			});
 			browserHistory.push(`${routes.roadmap.list}/${id}`);
 		} catch (error) {
-			console.error(error);
+			console.debug(error);
+			throw error;
 		}
 	};
 
@@ -112,7 +114,8 @@ export class DefaultRoadmapStore implements RoadmapStore {
 			}
 			this.selectedRoadmap = { ...values };
 		} catch (error) {
-			console.error(error);
+			console.debug(error);
+			throw error;
 		} finally {
 			this.loading = false;
 		}
@@ -139,7 +142,8 @@ export class DefaultRoadmapStore implements RoadmapStore {
 			this.roadmaps = this.roadmaps.filter((x) => x.id !== id);
 			browserHistory.push(routes.user.dashboard);
 		} catch (error) {
-			console.error(error);
+			console.debug(error);
+			throw error;
 		} finally {
 			this.loading = false;
 		}

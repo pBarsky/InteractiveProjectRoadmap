@@ -2,8 +2,10 @@ import { observer } from 'mobx-react-lite';
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router';
 import { CSSTransition } from 'react-transition-group';
+import { browserHistory } from '../../App';
 import BackButton from '../../app/common/buttons/BackButton';
 import Button from '../../app/common/buttons/Button';
+import routes from '../../app/common/routing/routes';
 import defaultDict from '../../app/dictionaries/defaultDict';
 import Loader from '../../app/layout/Loader';
 import { useStore } from '../../app/stores/store';
@@ -22,7 +24,8 @@ const RoadmapDetails = () => {
 		if (id) {
 			roadmapStore
 				.loadRoadmap(id)
-				.then(() => milestoneStore.getAll(roadmapStore.selectedRoadmap!));
+				.then(() => milestoneStore.getAll(roadmapStore.selectedRoadmap!))
+				.catch(() => browserHistory.push(routes.user.dashboard));
 		}
 	}, [roadmapStore, id]);
 

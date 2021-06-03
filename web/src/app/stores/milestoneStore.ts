@@ -55,7 +55,7 @@ export class DefaultMilestoneStore implements MilestoneStore {
 			const { data } = await milestoneService.getAll(roadmap.id);
 			this.setMilestones(data);
 		} catch (error) {
-			console.error(error);
+			console.debug(error);
 			throw error;
 		} finally {
 			this.loading = false;
@@ -77,6 +77,7 @@ export class DefaultMilestoneStore implements MilestoneStore {
 			this.selectedMilestone = newMilestone;
 		} catch (error) {
 			browserHistory.push(routes.user.dashboard);
+			throw error;
 		} finally {
 			this.loading = false;
 		}
@@ -98,7 +99,8 @@ export class DefaultMilestoneStore implements MilestoneStore {
 				this.milestones.push(milestone);
 			});
 		} catch (error) {
-			console.error(error);
+			console.debug(error);
+			throw error;
 		}
 	};
 
@@ -112,7 +114,8 @@ export class DefaultMilestoneStore implements MilestoneStore {
 			this.setMilestone(values);
 			this.selectedMilestone = { ...values };
 		} catch (error) {
-			console.error(error);
+			console.debug(error);
+			throw error;
 		} finally {
 			this.loading = false;
 		}
@@ -138,7 +141,8 @@ export class DefaultMilestoneStore implements MilestoneStore {
 			this.selectedMilestone = null;
 			this.setMilestones(this.milestones.filter((x) => x.id !== id));
 		} catch (error) {
-			console.error(error);
+			console.debug(error);
+			throw error;
 		} finally {
 			this.loading = false;
 		}
