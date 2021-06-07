@@ -5,7 +5,7 @@ type Sizes = 'small' | 'medium' | 'huge';
 interface ButtonProps
 	extends DetailedHTMLProps<HTMLAttributes<HTMLButtonElement>, HTMLButtonElement> {
 	outlined?: boolean;
-	type?: 'submit' | 'reset';
+	type?: 'button' | 'submit' | 'reset';
 	disabled?: boolean;
 	size?: Sizes;
 }
@@ -14,7 +14,7 @@ const Button = ({
 	outlined = false,
 	className,
 	children,
-	type,
+	type = 'button',
 	disabled = false,
 	size = 'medium',
 	...props

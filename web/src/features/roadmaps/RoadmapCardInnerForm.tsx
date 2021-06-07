@@ -6,6 +6,7 @@ import defaultDict from '../../app/dictionaries/defaultDict';
 import { RoadmapFormValues } from '../../app/models/roadmap';
 import Button from '../common/buttons/Button';
 import Field from '../common/inputs/Field';
+import Form from '../common/inputs/Form';
 import styles from './RoadmapCardInnerForm.module.scss';
 
 interface RoadmapCardInnerFormProps {
@@ -22,9 +23,8 @@ const RoadmapCardInnerForm = ({
 	isEditing,
 	handleSubmit,
 	onDelete,
-	toggleEdit,
-	resetForm,
-	submitForm
+	handleReset,
+	toggleEdit
 }: RoadmapCardInnerFormProps & FormikProps<RoadmapFormValues>) => {
 	const {
 		forms: { inputs },
@@ -32,19 +32,20 @@ const RoadmapCardInnerForm = ({
 	} = defaultDict;
 
 	const toggleEditAndResetForm = () => {
-		resetForm();
+		handleReset();
 		toggleEdit();
 	};
 
-	const submit = async () => {
-		await submitForm();
+	const onSubmit = async () => {
+		handleSubmit();
 		toggleEdit();
 	};
 
 	const isLate: JSX.Element | null = isFailing ? <p>{roadmap.roadmapLate}</p> : null;
 	return (
-		<form
-			onSubmit={handleSubmit}
+		<Form
+			onSubmit={onSubmit}
+			onReset={toggleEditAndResetForm}
 			className={`${styles.form} ${isEditing ? styles.editing : ''}`}
 		>
 			<div className={styles.buttons}>
@@ -105,15 +106,15 @@ const RoadmapCardInnerForm = ({
 			/>
 			{isEditing && (
 				<div className={`${styles.buttons} ${styles.editButtons}`}>
-					<Button onClick={submit} disabled={!isValid} className={styles.saveButton}>
+					<Button type='submit' disabled={!isValid} className={styles.saveButton}>
 						<FontAwesomeIcon icon={faCheck} />
 					</Button>
-					<Button onClick={toggleEditAndResetForm} className={styles.cancelButton}>
+					<Button type='reset' className={styles.cancelButton}>
 						<FontAwesomeIcon icon={faBan} />
 					</Button>
 				</div>
 			)}
-		</form>
+		</Form>
 	);
 };
 
