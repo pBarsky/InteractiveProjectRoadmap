@@ -12,7 +12,7 @@ const RoadmapList = () => {
 	const { roadmapStore } = useStore();
 	if (roadmapStore.roadmaps.length === 0) {
 		return (
-			<h1>
+			<h1 className={styles.noRoadmapsHeader}>
 				{defaultDict.pages.roadmap.noRoadmaps}
 				<br />
 				<Link to={routes.roadmap.add}>{defaultDict.pages.roadmap.proposalOfCreation}</Link>
