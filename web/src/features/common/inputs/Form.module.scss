@@ -1,0 +1,13 @@
+.form {
+	width: clamp(300px, 50vw, 500px);
+	margin: auto;
+	border: 1px solid rgba(0, 0, 0, 0.05);
+	box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+	padding: 20px;
+
+	hr {
+		margin: 1rem 0;
+		border: none;
+		border-top: 1px solid var(--gray);
+	}
+}

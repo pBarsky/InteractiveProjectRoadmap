@@ -1,13 +1,11 @@
 .wrapper {
-	margin-bottom: 2em;
-	width: 100%;
-	display: flex;
-	justify-content: center;
-
 	form {
-		padding: 10px;
+		margin-bottom: 2em;
 		width: 100%;
 		display: flex;
+		justify-content: center;
+		padding: 10px;
+		width: 100%;
 		flex-direction: row;
 		justify-content: space-between;
 		align-items: flex-end;

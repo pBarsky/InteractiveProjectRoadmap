@@ -11,6 +11,16 @@
 	min-width: 90px;
 	transition: all 0.1s ease-in;
 
+	&[type='submit'] {
+		&:disabled {
+			background-color: white;
+			border: 1px solid var(--secondaryText);
+			filter: none;
+			color: rgba(0, 0, 0, 0.4);
+			cursor: auto;
+		}
+	}
+
 	&:hover {
 		cursor: pointer;
 		background-color: var(--lighterBlack);
@@ -37,6 +47,7 @@
 .outlined {
 	background-color: transparent;
 	border: 1px solid var(--black);
+	font-weight: normal;
 	color: var(--black);
 	transition: all 0.1s ease-in;
 	&:hover {

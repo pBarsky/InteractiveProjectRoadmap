@@ -11,7 +11,7 @@ const DropdownMenuItem = ({ children, icon, ...props }: DropdownMenuItemProps) =
 	const itemIcon = icon ? <FontAwesomeIcon className={styles.icon} icon={icon} /> : null;
 
 	return (
-		<div className={styles.item} {...props}>
+		<div {...props} className={styles.item}>
 			{itemIcon}
 			{children}
 		</div>

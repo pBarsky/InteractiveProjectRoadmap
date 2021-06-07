@@ -71,7 +71,7 @@ const MilestoneListItemInnerForm = ({
 					/>
 				</div>
 
-				{isEditing && (
+				{(isEditing || values.description) && (
 					<Field
 						label={inputs.description.labelText}
 						className={styles.description}

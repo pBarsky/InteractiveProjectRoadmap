@@ -5,6 +5,7 @@ import { browserHistory } from '../../App';
 import defaultDict from '../../app/dictionaries/defaultDict';
 import { useStore } from '../../app/stores/store';
 import routes from '../common/routing/routes';
+import styles from './RoadmapList.module.scss';
 import RoadmapListItem from './RoadmapListItem';
 
 const RoadmapList = () => {
@@ -20,7 +21,7 @@ const RoadmapList = () => {
 	}
 
 	return (
-		<div>
+		<div className={styles.roadmapList}>
 			{roadmapStore.roadmaps.map((roadmap) => (
 				<RoadmapListItem
 					key={roadmap.id}

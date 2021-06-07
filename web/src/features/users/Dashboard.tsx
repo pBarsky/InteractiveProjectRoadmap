@@ -1,12 +1,13 @@
 import { observer } from 'mobx-react-lite';
 import React, { useEffect } from 'react';
-import { Button, Divider, Header, Segment } from 'semantic-ui-react';
-import { browserHistory } from '../../App';
+import { Link } from 'react-router-dom';
 import defaultDict from '../../app/dictionaries/defaultDict';
 import { useStore } from '../../app/stores/store';
+import Button from '../common/buttons/Button';
 import Loader from '../common/Loader';
 import routes from '../common/routing/routes';
 import RoadmapList from '../roadmaps/RoadmapList';
+import styles from './Dashboard.module.scss';
 
 const Dashboard = () => {
 	const { authStore, roadmapStore } = useStore();
@@ -17,17 +18,14 @@ const Dashboard = () => {
 	}, [roadmapStore]);
 
 	return (
-		<Segment textAlign='center' vertical>
-			<Header as='h2' style={{ fontSize: '3em', marginBottom: -10 }}>
-				{defaultDict.pages.dashboard.greeting}
-			</Header>
-			<Header as='h1' style={{ fontSize: '3em', marginTop: 0 }}>
-				{user?.displayName}
-			</Header>
-			<Button color='black' onClick={() => browserHistory.push(routes.roadmap.add)}>
-				{defaultDict.forms.buttons.addNewRoadmap.text}
-			</Button>
-			<Divider />
+		<div className={styles.wrapper}>
+			<h2 className={styles.greeting}>{defaultDict.pages.dashboard.greeting}</h2>
+			<h1 className={styles.name}>{user?.displayName}</h1>
+			<Link
+				to={routes.roadmap.add}
+				component={() => <Button>{defaultDict.forms.buttons.addNewRoadmap.text}</Button>}
+			/>
+			<hr />
 			{roadmapStore.loading
 				? (
 					<Loader content={defaultDict.pages.dashboard.loading} inline='centered' />
@@ -35,7 +33,7 @@ const Dashboard = () => {
 				: (
 					<RoadmapList />
 				)}
-		</Segment>
+		</div>
 	);
 };
 

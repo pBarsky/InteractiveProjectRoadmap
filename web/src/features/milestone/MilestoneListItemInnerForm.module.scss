@@ -63,6 +63,7 @@
 	display: flex;
 	flex-direction: row-reverse;
 	width: 100%;
+	margin-top: 1em;
 	overflow: visible;
 	button {
 		padding: 0.5em;
@@ -112,5 +113,12 @@
 	textarea,
 	input {
 		border-bottom: 1px solid var(--gray);
+	}
+}
+
+@media (max-width: 1200px) {
+	.form {
+		flex-direction: column;
+		align-items: unset;
 	}
 }

@@ -2,6 +2,7 @@ import { FormikProps } from 'formik';
 import React from 'react';
 import defaultDict from '../../app/dictionaries/defaultDict';
 import { MilestoneFormValues } from '../../app/models/milestone';
+import Button from '../common/buttons/Button';
 import Field from '../common/inputs/Field';
 import styles from './AddMilestoneInnerForm.module.scss';
 
@@ -28,9 +29,9 @@ const AddMilestoneInnerForm = ({
 					className={styles.field}
 				/>
 				<div className={styles.buttonDiv}>
-					<button className={styles.submitButton} disabled={isSubmitting} type='submit'>
+					<Button className={styles.submitButton} disabled={isSubmitting} type='submit'>
 						{defaultDict.forms.buttons.add.text}
-					</button>
+					</Button>
 				</div>
 			</form>
 		</div>

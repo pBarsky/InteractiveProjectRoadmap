@@ -1,7 +1,7 @@
 import React from 'react';
-import { Button } from 'semantic-ui-react';
 import { browserHistory } from '../../../App';
 import defaultDict from '../../../app/dictionaries/defaultDict';
+import Button from './Button';
 
 interface BackButtonProps {
 	content?: string;
@@ -18,7 +18,7 @@ const BackButton = ({ content, backUrl, className }: BackButtonProps) => {
 		browserHistory.goBack();
 	};
 	return (
-		<Button color='black' className={className} basic onClick={onClick}>
+		<Button className={className} outlined onClick={onClick}>
 			{content ?? defaultDict.common.backButton}
 		</Button>
 	);

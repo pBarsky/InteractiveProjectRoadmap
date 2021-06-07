@@ -1,11 +1,18 @@
 .input {
+	width: 100%;
+	position: relative;
+
 	input {
 		width: 100%;
 		min-height: 2.5em;
-		padding: 5px 0;
+		padding: 1rem 0;
 		border: 1px solid var(--gray);
 		border-radius: 2px;
 		background-color: transparent;
+		&:active,
+		&:focus {
+			outline: 1px solid var(--blue);
+		}
 	}
 
 	textarea {
@@ -20,6 +27,23 @@
 	.errorMessage {
 		font-size: 1rem;
 		margin: 0.5em;
+		font-weight: bold;
 		color: var(--errorRed);
+	}
+}
+
+.withIcon {
+	input {
+		padding-left: 2.5em !important;
+	}
+	.iconWrapper {
+		position: absolute;
+		left: 0.25rem;
+		top: 0.5rem;
+		width: 2rem;
+	}
+	.icon {
+		color: rgba(0, 0, 0, 0.4);
+		width: 100%;
 	}
 }
