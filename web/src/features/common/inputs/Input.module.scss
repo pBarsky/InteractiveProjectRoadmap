@@ -1,0 +1,54 @@
+.input {
+	width: 100%;
+	position: relative;
+
+	input {
+		width: 100%;
+		min-height: 2.5em;
+		padding: 1rem 0;
+		border: 1px solid var(--gray);
+		border-radius: 2px;
+		background-color: transparent;
+		&:active,
+		&:focus {
+			outline: 1px solid var(--gray);
+		}
+	}
+
+	textarea {
+		width: 100%;
+		border: 1px solid var(--gray);
+		outline: none;
+		padding: 0.5em;
+		resize: none;
+		background-color: transparent;
+	}
+
+	.errorMessage {
+		font-size: 1rem;
+		margin: 0.5em;
+		font-weight: bold;
+		color: var(--errorRed);
+	}
+}
+
+.withIcon {
+	input {
+		padding-left: 2.5em !important;
+	}
+	.iconWrapper {
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 2.5rem;
+		height: 2.5rem;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin: auto 0;
+	}
+	.icon {
+		color: rgba(0, 0, 0, 0.4);
+		width: 100%;
+	}
+}

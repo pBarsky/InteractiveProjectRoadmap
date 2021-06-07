@@ -1,6 +1,6 @@
 import { AxiosPromise } from 'axios';
+import routes from '../../features/common/routing/routes';
 import { ApiClient, createApiClient } from '../api/apiClient';
-import routes from '../common/routing/routes';
 import { User, UserFormValues } from '../models/user';
 
 export interface AuthService {

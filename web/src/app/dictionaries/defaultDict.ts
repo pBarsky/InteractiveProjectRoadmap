@@ -10,7 +10,8 @@ const common = {
 		[Status.New]: 'Nowy',
 		[Status.InProgress]: 'W trakcie',
 		[Status.Done]: 'Zakończony'
-	}
+	},
+	loading: 'Ładowanie...'
 };
 
 const errors = {
@@ -108,6 +109,12 @@ const forms = {
 		},
 		addNewRoadmap: {
 			text: 'Dodaj nową roadmapę'
+		},
+		returnToDashboard: {
+			text: 'Powrót na dashboard'
+		},
+		returnToHomepage: {
+			text: 'Powrót na stronę główną'
 		}
 	}
 };

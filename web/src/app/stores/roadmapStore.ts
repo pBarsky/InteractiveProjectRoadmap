@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import { browserHistory } from '../../App';
-import routes from '../common/routing/routes';
+import routes from '../../features/common/routing/routes';
 import defaultDict from '../dictionaries/defaultDict';
 import { Roadmap, RoadmapFormValues } from '../models/roadmap';
 import roadmapService from '../services/roadmapService';

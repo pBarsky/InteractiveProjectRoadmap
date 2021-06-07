@@ -2,11 +2,11 @@ import { faBan, faCheck, faEdit, faTrash } from '@fortawesome/free-solid-svg-ico
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FormikProps } from 'formik';
 import React from 'react';
-import { ButtonContent } from 'semantic-ui-react';
-import Button from '../../app/common/buttons/Button';
-import Field from '../../app/common/inputs/Field';
 import defaultDict from '../../app/dictionaries/defaultDict';
 import { RoadmapFormValues } from '../../app/models/roadmap';
+import Button from '../common/buttons/Button';
+import Field from '../common/inputs/Field';
+import Form from '../common/inputs/Form';
 import styles from './RoadmapCardInnerForm.module.scss';
 
 interface RoadmapCardInnerFormProps {
@@ -23,9 +23,8 @@ const RoadmapCardInnerForm = ({
 	isEditing,
 	handleSubmit,
 	onDelete,
-	toggleEdit,
-	resetForm,
-	submitForm
+	handleReset,
+	toggleEdit
 }: RoadmapCardInnerFormProps & FormikProps<RoadmapFormValues>) => {
 	const {
 		forms: { inputs },
@@ -33,19 +32,20 @@ const RoadmapCardInnerForm = ({
 	} = defaultDict;
 
 	const toggleEditAndResetForm = () => {
-		resetForm();
+		handleReset();
 		toggleEdit();
 	};
 
-	const submit = async () => {
-		await submitForm();
+	const onSubmit = async () => {
+		handleSubmit();
 		toggleEdit();
 	};
 
 	const isLate: JSX.Element | null = isFailing ? <p>{roadmap.roadmapLate}</p> : null;
 	return (
-		<form
-			onSubmit={handleSubmit}
+		<Form
+			onSubmit={onSubmit}
+			onReset={toggleEditAndResetForm}
 			className={`${styles.form} ${isEditing ? styles.editing : ''}`}
 		>
 			<div className={styles.buttons}>
@@ -105,20 +105,16 @@ const RoadmapCardInnerForm = ({
 				disabled={!isEditing}
 			/>
 			{isEditing && (
-				<div className={styles.buttons}>
-					<ButtonContent
-						onClick={submit}
-						disabled={!isValid}
-						className={styles.saveButton}
-					>
+				<div className={`${styles.buttons} ${styles.editButtons}`}>
+					<Button type='submit' disabled={!isValid} className={styles.saveButton}>
 						<FontAwesomeIcon icon={faCheck} />
-					</ButtonContent>
-					<Button onClick={toggleEditAndResetForm} className={styles.cancelButton}>
+					</Button>
+					<Button type='reset' className={styles.cancelButton}>
 						<FontAwesomeIcon icon={faBan} />
 					</Button>
 				</div>
 			)}
-		</form>
+		</Form>
 	);
 };
 

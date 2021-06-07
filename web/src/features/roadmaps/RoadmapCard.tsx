@@ -65,11 +65,11 @@ const RoadmapCard = ({ onSubmit, roadmap, testDate }: RoadmapCardProps): JSX.Ele
 				onSubmit={onSubmit || handleSubmit}
 				component={(props) => (
 					<RoadmapCardInnerForm
+						{...props}
 						onDelete={handleDelete}
 						isEditing={isEditing}
 						toggleEdit={toggleEdit}
 						isFailing={isFailing}
-						{...props}
 					/>
 				)}
 			/>

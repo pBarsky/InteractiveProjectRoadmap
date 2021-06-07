@@ -2,10 +2,10 @@ import { faBan, faCheck, faEdit, faTrash } from '@fortawesome/free-solid-svg-ico
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FormikProps } from 'formik';
 import React from 'react';
-import Button from '../../app/common/buttons/Button';
-import Field from '../../app/common/inputs/Field';
 import defaultDict from '../../app/dictionaries/defaultDict';
 import { MilestoneFormValues } from '../../app/models/milestone';
+import Button from '../common/buttons/Button';
+import Field from '../common/inputs/Field';
 import styles from './MilestoneListItemInnerForm.module.scss';
 
 interface MilestoneListItemProps {
@@ -27,6 +27,17 @@ const MilestoneListItemInnerForm = ({
 		forms: { inputs }
 	} = defaultDict;
 
+	const shortenDescription = (description: string): string => {
+		return `${description.slice(0, 50)}...`;
+	};
+
+	const displayedDescription = (): string => {
+		if (isEditing) {
+			return values.description!;
+		}
+		return shortenDescription(values.description!);
+	};
+
 	const handleCancel = () => {
 		resetForm();
 		toggleEdit();
@@ -36,33 +47,31 @@ const MilestoneListItemInnerForm = ({
 		toggleEdit();
 	};
 	return (
-		<form className={`${styles.form} ${isEditing ? styles.editing : ''}`}>
-			{isEditing && (
-				<div className={styles.buttons}>
-					<Button outlined onClick={toggleEdit} className={styles.editButton}>
-						<FontAwesomeIcon icon={faEdit} />
-					</Button>
-					<Button outlined onClick={onDelete} className={styles.deleteButton}>
-						<FontAwesomeIcon icon={faTrash} />
-					</Button>
-				</div>
-			)}
-			{isEditing && (
-				<div className={styles.status}>
-					{inputs.status.labelText}: {defaultDict.common.status[values.status]}
-				</div>
-			)}
-			<div className={styles.name}>
-				<Field
-					label={inputs.name.labelText}
-					type='textarea'
-					name={inputs.name.name}
-					id={`${inputs.name.name}milestonelistitem`}
-					required
-					disabled={!isEditing}
-				/>
+		<>
+			<div className={styles.buttons}>
+				<Button outlined onClick={toggleEdit} className={styles.editButton}>
+					<FontAwesomeIcon icon={faEdit} />
+				</Button>
+				<Button outlined onClick={onDelete} className={styles.deleteButton}>
+					<FontAwesomeIcon icon={faTrash} />
+				</Button>
 			</div>
-			<div className={styles.dateWrapper}>
+			<form className={`${styles.form} ${isEditing ? styles.editing : ''}`}>
+				{isEditing && (
+					<div className={styles.status}>
+						{inputs.status.labelText}: {defaultDict.common.status[values.status]}
+					</div>
+				)}
+				<div className={styles.name}>
+					<Field
+						label={inputs.name.labelText}
+						type='textarea'
+						name={inputs.name.name}
+						id={`${inputs.name.name}milestonelistitem`}
+						required
+						disabled={!isEditing}
+					/>
+				</div>
 				<div className={styles.date}>
 					<Field
 						label={inputs.endsOn.labelText}
@@ -72,19 +81,8 @@ const MilestoneListItemInnerForm = ({
 						disabled={!isEditing}
 					/>
 				</div>
-			</div>
-			{!isEditing && (
-				<div className={styles.buttons}>
-					<Button outlined onClick={toggleEdit} className={styles.editButton}>
-						<FontAwesomeIcon icon={faEdit} />
-					</Button>
-					<Button outlined onClick={onDelete} className={styles.deleteButton}>
-						<FontAwesomeIcon icon={faTrash} />
-					</Button>
-				</div>
-			)}
-			{isEditing && (
-				<div>
+
+				{(isEditing || values.description) && (
 					<Field
 						label={inputs.description.labelText}
 						className={styles.description}
@@ -92,20 +90,25 @@ const MilestoneListItemInnerForm = ({
 						name={inputs.description.name}
 						id={`${inputs.description.name}RoadmapCard`}
 						disabled={!isEditing}
+						value={displayedDescription()}
 					/>
-				</div>
-			)}
-			{isEditing && (
-				<div className={styles.buttons}>
-					<Button onClick={handleEdit} disabled={!isValid} className={styles.saveButton}>
-						<FontAwesomeIcon icon={faCheck} />
-					</Button>
-					<Button onClick={handleCancel} className={styles.cancelButton}>
-						<FontAwesomeIcon icon={faBan} />
-					</Button>
-				</div>
-			)}
-		</form>
+				)}
+				{isEditing && (
+					<div className={`${styles.buttons} ${styles.editButtons}`}>
+						<Button
+							onClick={handleEdit}
+							disabled={!isValid}
+							className={styles.saveButton}
+						>
+							<FontAwesomeIcon icon={faCheck} />
+						</Button>
+						<Button onClick={handleCancel} className={styles.cancelButton}>
+							<FontAwesomeIcon icon={faBan} />
+						</Button>
+					</div>
+				)}
+			</form>
+		</>
 	);
 };
 

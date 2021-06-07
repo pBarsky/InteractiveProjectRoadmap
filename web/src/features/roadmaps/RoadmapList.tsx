@@ -1,27 +1,27 @@
 import { observer } from 'mobx-react-lite';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { CardGroup, Header } from 'semantic-ui-react';
 import { browserHistory } from '../../App';
-import routes from '../../app/common/routing/routes';
 import defaultDict from '../../app/dictionaries/defaultDict';
 import { useStore } from '../../app/stores/store';
+import routes from '../common/routing/routes';
+import styles from './RoadmapList.module.scss';
 import RoadmapListItem from './RoadmapListItem';
 
 const RoadmapList = () => {
 	const { roadmapStore } = useStore();
 	if (roadmapStore.roadmaps.length === 0) {
 		return (
-			<Header size='huge'>
+			<h1 className={styles.noRoadmapsHeader}>
 				{defaultDict.pages.roadmap.noRoadmaps}
-				<br />{' '}
+				<br />
 				<Link to={routes.roadmap.add}>{defaultDict.pages.roadmap.proposalOfCreation}</Link>
-			</Header>
+			</h1>
 		);
 	}
 
 	return (
-		<CardGroup centered>
+		<div className={styles.roadmapList}>
 			{roadmapStore.roadmaps.map((roadmap) => (
 				<RoadmapListItem
 					key={roadmap.id}
@@ -31,7 +31,7 @@ const RoadmapList = () => {
 					roadmap={roadmap}
 				/>
 			))}
-		</CardGroup>
+		</div>
 	);
 };
 

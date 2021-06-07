@@ -1,117 +1,65 @@
-import { ErrorMessage, Field as FormikField, Form as FormikForm, FormikProps } from 'formik';
+import { faCalendar, faEdit } from '@fortawesome/free-solid-svg-icons';
+import { FormikProps } from 'formik';
 import React from 'react';
-import { Button, Container, Form, Input, Label } from 'semantic-ui-react';
-import BackButton from '../../app/common/buttons/BackButton';
-import routes from '../../app/common/routing/routes';
 import defaultDict from '../../app/dictionaries/defaultDict';
 import { RoadmapFormValues } from '../../app/models/roadmap';
+import BackButton from '../common/buttons/BackButton';
+import Button from '../common/buttons/Button';
+import Field from '../common/inputs/Field';
+import Form from '../common/inputs/Form';
+import routes from '../common/routing/routes';
+import styles from './AddRoadmapInnerForm.module.scss';
 
 const AddRoadmapInnerForm = ({
 	isValid,
 	errors,
 	isSubmitting,
-	touched,
-	submitForm
+	handleSubmit
 }: FormikProps<RoadmapFormValues>) => {
 	return (
-		<Form
-			as={FormikForm}
-			loading={isSubmitting}
-			layout='vertical'
-			style={{
-				width: 'clamp(300px, 50vw, 500px)',
-				margin: 'auto',
-				border: '1px solid rgba(0,0,0,.05)',
-				boxShadow: '0 10px 25px rgba(0,0,0,.05)',
-				padding: '20px'
-			}}
-			onSubmit={submitForm}
-		>
-			<Form.Field required>
-				<label htmlFor={defaultDict.forms.inputs.name.name}>
-					{defaultDict.forms.inputs.name.labelText}
-				</label>
-				<FormikField
-					as={Input}
-					id={defaultDict.forms.inputs.name.name}
-					name={defaultDict.forms.inputs.name.name}
-					placeholder={defaultDict.forms.inputs.name.placeholder}
-					required
-					icon='edit outline'
-					iconPosition='left'
-				/>
-				{touched.name && errors.name && <Label prompt>{errors.name}</Label>}
-			</Form.Field>
-			<Form.Field>
-				<label htmlFor={defaultDict.forms.inputs.description.name}>
-					{defaultDict.forms.inputs.description.labelText}
-				</label>
-				<FormikField
-					as={Input}
-					id={defaultDict.forms.inputs.description.name}
-					name={defaultDict.forms.inputs.description.name}
-					placeholder={defaultDict.forms.inputs.description.placeholder}
-					icon='edit outline'
-					iconPosition='left'
-				/>
-				{touched.description && errors.description && (
-					<Label prompt>{errors.description}</Label>
-				)}
-			</Form.Field>
-			<Form.Field required>
-				<label htmlFor={defaultDict.forms.inputs.startsOn.name}>
-					{defaultDict.forms.inputs.startsOn.labelText}
-				</label>
-				<FormikField
-					as={Input}
-					id={defaultDict.forms.inputs.startsOn.name}
-					name={defaultDict.forms.inputs.startsOn.name}
-					type='date'
-					placeholder={defaultDict.forms.inputs.startsOn.placeholder}
-					required
-					icon='calendar alternate outline'
-					iconPosition='left'
-				/>
-				{touched.startsOn && errors.startsOn && <Label prompt>{errors.startsOn}</Label>}
-			</Form.Field>
-			<Form.Field>
-				<label htmlFor={defaultDict.forms.inputs.endsOn.name}>
-					{defaultDict.forms.inputs.endsOn.labelText}
-				</label>
-				<FormikField
-					as={Input}
-					id={defaultDict.forms.inputs.endsOn.name}
-					name={defaultDict.forms.inputs.endsOn.name}
-					placeholder={defaultDict.forms.inputs.endsOn.placeholder}
-					type='date'
-					icon='calendar alternate outline'
-					iconPosition='left'
-				/>
-				{touched.endsOn && errors.endsOn && <Label prompt>{errors.endsOn}</Label>}
-			</Form.Field>
-			<ErrorMessage
-				name='commonFormError'
-				render={() => (
-					<Label
-						style={{ marginBottom: 10 }}
-						basic
-						color='red'
-						content={errors.commonFormError}
-					/>
-				)}
+		<Form onSubmit={handleSubmit}>
+			<Field
+				label={defaultDict.forms.inputs.name.labelText}
+				id={defaultDict.forms.inputs.name.name}
+				name={defaultDict.forms.inputs.name.name}
+				placeholder={defaultDict.forms.inputs.name.placeholder}
+				required
+				icon={faEdit}
 			/>
-			<Container>
+			<Field
+				label={defaultDict.forms.inputs.description.labelText}
+				id={defaultDict.forms.inputs.description.name}
+				name={defaultDict.forms.inputs.description.name}
+				placeholder={defaultDict.forms.inputs.description.placeholder}
+				icon={faEdit}
+			/>
+
+			<Field
+				label={defaultDict.forms.inputs.startsOn.labelText}
+				id={defaultDict.forms.inputs.startsOn.name}
+				name={defaultDict.forms.inputs.startsOn.name}
+				type='date'
+				placeholder={defaultDict.forms.inputs.startsOn.placeholder}
+				required
+				icon={faCalendar}
+			/>
+			<Field
+				label={defaultDict.forms.inputs.endsOn.labelText}
+				id={defaultDict.forms.inputs.endsOn.name}
+				name={defaultDict.forms.inputs.endsOn.name}
+				placeholder={defaultDict.forms.inputs.endsOn.placeholder}
+				type='date'
+				icon={faCalendar}
+			/>
+			{errors.commonFormError && (
+				<div className={styles.errorMessage}>{errors.commonFormError}</div>
+			)}
+			<div className={styles.buttonsContainer}>
 				<BackButton backUrl={routes.user.dashboard} />
-				<Button
-					color='black'
-					disabled={!isValid}
-					loading={isSubmitting}
-					floated='right'
-					type='submit'
-				>
+				<Button disabled={!isValid || isSubmitting} type='submit'>
 					{defaultDict.forms.buttons.add.text}
 				</Button>
-			</Container>
+			</div>
 		</Form>
 	);
 };

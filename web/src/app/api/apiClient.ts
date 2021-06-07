@@ -6,7 +6,7 @@ import axios, {
 	AxiosResponse
 } from 'axios';
 import { browserHistory } from '../../App';
-import routes from '../common/routing/routes';
+import routes from '../../features/common/routing/routes';
 import authStore from '../stores/authStore';
 
 export interface ApiClient {
@@ -23,6 +23,7 @@ export const createApiClient = (): AxiosInstance => {
 		const { response } = error;
 		switch (response?.status) {
 		case 401:
+			authStore.logout();
 			browserHistory.push(routes.auth.login);
 			break;
 		case 440:

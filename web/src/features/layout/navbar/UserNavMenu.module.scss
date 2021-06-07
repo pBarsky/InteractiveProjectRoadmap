@@ -1,0 +1,8 @@
+.loginButton {
+	color: white;
+	border-width: 2px;
+	border-color: white;
+	&:hover {
+		background-color: var(--highlightBlack);
+	}
+}

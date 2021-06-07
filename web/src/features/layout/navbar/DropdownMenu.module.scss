@@ -1,0 +1,48 @@
+.dropdown {
+	position: relative;
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	&:hover {
+		background-color: var(--highlightBlack);
+	}
+}
+
+.menu {
+	position: absolute;
+	top: 100%;
+	right: 0;
+	left: auto;
+	background-color: white;
+	visibility: hidden;
+	border-radius: 5px;
+	border: 1px solid var(--gray);
+	box-shadow: var(--defaultBoxShadow);
+	z-index: 2;
+	min-width: max-content;
+}
+
+.menuCaret {
+	position: absolute;
+	right: 1rem;
+	font-size: 2rem;
+	top: -1.2rem;
+	color: white;
+}
+
+.icon {
+	padding-left: 0.25em;
+	font-size: 1.5em;
+}
+
+.visible {
+	visibility: visible;
+}
+.text {
+	color: white;
+	font-weight: 500;
+	font-size: 1.2em;
+	display: flex;
+	align-items: center;
+}

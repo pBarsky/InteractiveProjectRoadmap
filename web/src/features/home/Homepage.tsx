@@ -1,10 +1,11 @@
 import { observer } from 'mobx-react-lite';
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Button, Container, Header, Segment } from 'semantic-ui-react';
-import routes from '../../app/common/routing/routes';
 import defaultDict from '../../app/dictionaries/defaultDict';
 import { useStore } from '../../app/stores/store';
+import Button from '../common/buttons/Button';
+import routes from '../common/routing/routes';
+import styles from './Homepage.module.scss';
 
 const Homepage = () => {
 	const {
@@ -16,25 +17,19 @@ const Homepage = () => {
 	}
 
 	return (
-		<Segment textAlign='center' vertical>
-			<Container text>
-				<Segment basic style={{ fontSize: '2em' }}>
-					<Header
-						size='medium'
-						as='h2'
-						style={{ marginBottom: -15, textDecoration: 'underline' }}
-					>
-						{defaultDict.common.welcomeMessage}
-					</Header>
-					<Header size='huge' as='h1' style={{ marginTop: 0 }}>
-						{defaultDict.common.appName}
-					</Header>
-				</Segment>
-				<Button as={Link} to={routes.auth.login} size='huge' color='black'>
+		<div className={styles.homepage}>
+			<div className={styles.headers}>
+				<h2 className={styles.welcomeHeader}>{defaultDict.common.welcomeMessage}</h2>
+				<h1 className={styles.appNameHeader} style={{ marginTop: 0 }}>
+					{defaultDict.common.appName}
+				</h1>
+			</div>
+			<Link to={routes.auth.login}>
+				<Button className={styles.loginButton} size='huge'>
 					{defaultDict.forms.buttons.login.text}
 				</Button>
-			</Container>
-		</Segment>
+			</Link>
+		</div>
 	);
 };
 

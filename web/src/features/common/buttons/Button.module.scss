@@ -1,0 +1,57 @@
+.button {
+	min-height: 1em;
+	background-color: var(--black);
+	text-align: center;
+	border: none;
+	border-radius: 5px;
+	padding: 0.8em 1.5em;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+	overflow: visible;
+	color: white;
+	min-width: 90px;
+	transition: all 0.1s ease-in;
+
+	&[type='submit'] {
+		&:disabled {
+			background-color: white;
+			border: 1px solid var(--secondaryText);
+			filter: none;
+			color: rgba(0, 0, 0, 0.4);
+			cursor: auto;
+		}
+	}
+
+	&:hover {
+		cursor: pointer;
+		background-color: var(--lighterBlack);
+	}
+
+	&:disabled {
+		filter: brightness(80%);
+	}
+	font-weight: 700;
+}
+
+.huge {
+	font-size: 1.4rem;
+}
+
+.medium {
+	font-size: 1rem;
+}
+
+.small {
+	font-size: 0.9rem;
+}
+
+.outlined {
+	background-color: transparent;
+	border: 1px solid var(--black);
+	font-weight: normal;
+	color: var(--black);
+	transition: all 0.1s ease-in;
+	&:hover {
+		background-color: var(--black);
+		color: white;
+	}
+}

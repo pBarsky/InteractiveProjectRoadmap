@@ -3,9 +3,9 @@ import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { Router } from 'react-router-dom';
 import { browserHistory } from '../../../App';
-import routes from '../../../app/common/routing/routes';
 import defaultDict from '../../../app/dictionaries/defaultDict';
 import customErrorMessages from '../../../app/validationSchemas/customErrorMessages';
+import routes from '../../common/routing/routes';
 import Login from '../Login';
 
 describe('<Login />', () => {
@@ -60,11 +60,9 @@ describe('<Login />', () => {
 	});
 
 	it('Should show error messages when user puts wrong input', async () => {
-		const onSubmit = jest.fn();
-
 		const { getByText, getByRole, getByLabelText } = render(
 			<Router history={browserHistory}>
-				<Login onSubmit={onSubmit} />
+				<Login />
 			</Router>
 		);
 

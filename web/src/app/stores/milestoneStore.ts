@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from 'mobx';
 import { browserHistory } from '../../App';
-import routes from '../common/routing/routes';
+import routes from '../../features/common/routing/routes';
 import defaultDict from '../dictionaries/defaultDict';
 import { Milestone, MilestoneFormValues } from '../models/milestone';
 import { Roadmap } from '../models/roadmap';

@@ -1,5 +1,5 @@
 .wrapper {
-	width: clamp(300px, 100%, 70%);
+	width: clamp(300px, 70%, 100%);
 	display: flex;
 	flex-direction: row;
 	word-wrap: break-word;
@@ -9,13 +9,21 @@
 	border: 1px solid var(--gray);
 	border-radius: 5px;
 	padding: 2em;
-	margin: auto auto 2em;
-	box-shadow: 0 5px 25px rgba(0, 0, 0, 0.05);
+	margin: 1em 0;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.05) inset;
+	transition: 0.1s ease-in;
+
 	hr {
 		margin-top: 2em;
 		width: 100%;
 		border: none;
 		border-bottom: 1px solid var(--gray);
+	}
+
+	&:hover {
+		transition: 0.1s ease-in;
+		background-color: rgba(0, 0, 0, 0.05);
+		transform: translateY(-5px);
 	}
 }
 

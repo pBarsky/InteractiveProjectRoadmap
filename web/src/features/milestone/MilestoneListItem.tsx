@@ -59,10 +59,10 @@ const MilestoneListItem = ({ onSubmit, milestone }: MilestoneListItemProps) => {
 				onSubmit={onSubmit || handleSubmit}
 				component={(props) => (
 					<MilestoneListItemInnerForm
+						{...props}
 						onDelete={handleDelete}
 						isEditing={isEditing}
 						toggleEdit={toggleEdit}
-						{...props}
 					/>
 				)}
 			/>

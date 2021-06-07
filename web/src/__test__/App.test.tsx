@@ -2,9 +2,9 @@ import { render } from '@testing-library/react';
 import React from 'react';
 import { Router } from 'react-router-dom';
 import App, { browserHistory } from '../App';
-import routes from '../app/common/routing/routes';
 import defaultDict from '../app/dictionaries/defaultDict';
 import { StoreProvider } from '../app/stores/store';
+import routes from '../features/common/routing/routes';
 
 describe('<App />', () => {
 	it('Should render homepage when location is "/"', () => {

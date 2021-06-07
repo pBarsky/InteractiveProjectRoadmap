@@ -1,0 +1,13 @@
+.errorMessage {
+	font-size: 1rem;
+	margin: 0.5em;
+	font-weight: bold;
+	color: var(--errorRed);
+}
+
+.buttonsContainer {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-top: 1rem;
+}
