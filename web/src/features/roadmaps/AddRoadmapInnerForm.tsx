@@ -14,10 +14,10 @@ const AddRoadmapInnerForm = ({
 	isValid,
 	errors,
 	isSubmitting,
-	submitForm
+	handleSubmit
 }: FormikProps<RoadmapFormValues>) => {
 	return (
-		<Form onSubmit={submitForm}>
+		<Form onSubmit={handleSubmit}>
 			<Field
 				label={defaultDict.forms.inputs.name.labelText}
 				id={defaultDict.forms.inputs.name.name}

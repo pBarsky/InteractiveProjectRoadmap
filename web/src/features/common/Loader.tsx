@@ -1,20 +1,19 @@
 import React from 'react';
-import { Dimmer, Loader as SemanticLoader, Segment } from 'semantic-ui-react';
-
+import defaultDict from '../../app/dictionaries/defaultDict';
+import styles from './Loader.module.scss';
 interface LoaderProps {
-	inverted?: boolean;
 	content?: string;
-	inline?: boolean | 'centered';
 	page?: boolean;
 }
 
-const Loader = ({ inverted = true, content = 'Loading...', inline, page = false }: LoaderProps) => {
+const Loader = ({ content = defaultDict.common.loading, page = false }: LoaderProps) => {
 	return (
-		<Segment style={{ minHeight: page ? '100vh' : '20vh' }}>
-			<Dimmer active={true} inverted={inverted}>
-				<SemanticLoader content={content} inline={inline} />
-			</Dimmer>
-		</Segment>
+		<div className={styles.dimmer} style={{ minHeight: page ? '100vh' : '20vh' }}>
+			<div className={styles.wrapper}>
+				<div className={styles.loader}></div>
+				<div className={styles.content}>{content}</div>
+			</div>
+		</div>
 	);
 };
 

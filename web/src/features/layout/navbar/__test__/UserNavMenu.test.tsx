@@ -10,7 +10,7 @@ import Navbar from '../Navbar';
 
 describe('<UserNavMenu />', () => {
 	it('Should contain login button when user is not authenticated', () => {
-		const { getByTestId, getByText } = render(
+		const { getByText } = render(
 			<StoreProvider>
 				<Router history={browserHistory}>
 					<Navbar />
@@ -20,7 +20,6 @@ describe('<UserNavMenu />', () => {
 
 		const loginButton = getByText(defaultDict.forms.buttons.login.text);
 
-		expect(getByTestId('menu')).toBeInTheDocument();
 		expect(loginButton).toBeInTheDocument();
 		expect(loginButton.closest('a')).toHaveAttribute('href', routes.auth.login);
 	});
@@ -31,24 +30,24 @@ describe('<UserNavMenu />', () => {
 			token: '',
 			username: 'test'
 		};
-		const { getByTestId, getByText } = render(
+		const { getByText } = render(
 			<StoreProvider store={store}>
 				<Router history={browserHistory}>
 					<Navbar />
 				</Router>
 			</StoreProvider>
 		);
-		expect(getByTestId('dropdown')).toBeInTheDocument();
 		expect(getByText('TestDisplayName')).toBeInTheDocument();
 	});
 
 	it('User menu should contain dashboard, logout', () => {
-		store.authStore.user = {
+		const user = {
 			displayName: 'TestDisplayName',
 			token: '',
 			username: 'test'
 		};
-		const { getByTestId, getByText } = render(
+		store.authStore.user = { ...user };
+		const { getByText } = render(
 			<StoreProvider store={store}>
 				<Router history={browserHistory}>
 					<Navbar />
@@ -56,7 +55,7 @@ describe('<UserNavMenu />', () => {
 			</StoreProvider>
 		);
 
-		userEvent.click(getByTestId('dropdown'));
+		userEvent.click(getByText(user.displayName));
 
 		const dashboard = getByText(defaultDict.forms.buttons.dashboard.text);
 		expect(dashboard).toBeInTheDocument();

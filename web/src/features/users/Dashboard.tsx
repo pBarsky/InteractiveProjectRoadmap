@@ -28,7 +28,7 @@ const Dashboard = () => {
 			<hr />
 			{roadmapStore.loading
 				? (
-					<Loader content={defaultDict.pages.dashboard.loading} inline='centered' />
+					<Loader content={defaultDict.pages.dashboard.loading} />
 				)
 				: (
 					<RoadmapList />

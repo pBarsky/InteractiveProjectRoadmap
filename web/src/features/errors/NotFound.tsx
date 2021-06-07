@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import defaultDict from '../../app/dictionaries/defaultDict';
-import authStore from '../../app/stores/authStore';
+import { useStore } from '../../app/stores/store';
 import Button from '../common/buttons/Button';
 import routes from '../common/routing/routes';
 import styles from './NotFound.module.scss';
@@ -9,7 +9,9 @@ interface NotFoundProps {
 	message?: string;
 }
 const NotFound = ({ message }: NotFoundProps) => {
-	const { isLoggedIn } = authStore;
+	const {
+		authStore: { isLoggedIn }
+	} = useStore();
 	const route = isLoggedIn ? routes.user.dashboard : routes.common.home;
 	const text = isLoggedIn
 		? defaultDict.forms.buttons.returnToDashboard.text

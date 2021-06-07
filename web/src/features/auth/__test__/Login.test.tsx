@@ -60,11 +60,9 @@ describe('<Login />', () => {
 	});
 
 	it('Should show error messages when user puts wrong input', async () => {
-		const onSubmit = jest.fn();
-
 		const { getByText, getByRole, getByLabelText } = render(
 			<Router history={browserHistory}>
-				<Login onSubmit={onSubmit} />
+				<Login />
 			</Router>
 		);
 

@@ -10,7 +10,8 @@ const common = {
 		[Status.New]: 'Nowy',
 		[Status.InProgress]: 'W trakcie',
 		[Status.Done]: 'Zakończony'
-	}
+	},
+	loading: 'Ładowanie...'
 };
 
 const errors = {

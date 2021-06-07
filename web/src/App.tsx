@@ -20,7 +20,7 @@ function App () {
 	}, [commonStore, authStore]);
 
 	if (!commonStore.appLoaded) {
-		return <Loader page content='Loading app...' />;
+		return <Loader page />;
 	}
 	return (
 		<StoreProvider>

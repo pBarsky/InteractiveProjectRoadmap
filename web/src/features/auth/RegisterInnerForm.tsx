@@ -12,7 +12,8 @@ const RegisterInnerForm = ({
 	isValid,
 	errors,
 	handleSubmit,
-	handleReset
+	handleReset,
+	isSubmitting
 }: FormikProps<UserFormValues>) => {
 	return (
 		<Form onReset={handleReset} onSubmit={handleSubmit}>
@@ -46,7 +47,7 @@ const RegisterInnerForm = ({
 			)}
 			<hr />
 			<div className={styles.buttonsContainer}>
-				<Button disabled={!isValid} type='submit'>
+				<Button disabled={!isValid || isSubmitting} type='submit'>
 					{defaultDict.forms.buttons.register.text}
 				</Button>
 			</div>
