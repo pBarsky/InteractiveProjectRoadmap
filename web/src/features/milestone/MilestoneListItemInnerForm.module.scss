@@ -4,9 +4,12 @@
 	flex-direction: row;
 	justify-content: space-between;
 	width: 100%;
-	.name textarea {
-		font-size: 1em;
-		font-weight: 500;
+	flex-wrap: wrap;
+	.name {
+		textarea {
+			font-size: 1em;
+			font-weight: 500;
+		}
 	}
 	input {
 		border: none;
@@ -24,18 +27,14 @@
 		margin: 0.5em 0;
 		font-weight: bold;
 	}
-	.dates {
-		margin-left: 1em;
-		margin: 0.5em 0;
-		color: var(--secondaryText);
-		display: flex;
-		flex-direction: column;
-		font-size: 1.25em;
-		.date {
-			color: var(--black);
+	.date {
+		input {
+			padding: 0 !important;
 		}
+		color: var(--black);
 	}
 	.description {
+		width: 100%;
 		textarea {
 			line-height: 1.5em;
 			&:disabled {

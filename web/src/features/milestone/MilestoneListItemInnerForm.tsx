@@ -27,6 +27,17 @@ const MilestoneListItemInnerForm = ({
 		forms: { inputs }
 	} = defaultDict;
 
+	const shortenDescription = (description: string): string => {
+		return `${description.slice(0, 50)}...`;
+	};
+
+	const displayedDescription = (): string => {
+		if (isEditing) {
+			return values.description!;
+		}
+		return shortenDescription(values.description!);
+	};
+
 	const handleCancel = () => {
 		resetForm();
 		toggleEdit();
@@ -79,6 +90,7 @@ const MilestoneListItemInnerForm = ({
 						name={inputs.description.name}
 						id={`${inputs.description.name}RoadmapCard`}
 						disabled={!isEditing}
+						value={displayedDescription()}
 					/>
 				)}
 				{isEditing && (

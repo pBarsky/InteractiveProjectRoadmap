@@ -14,7 +14,7 @@ const RoadmapList = () => {
 		return (
 			<h1>
 				{defaultDict.pages.roadmap.noRoadmaps}
-				<br />{' '}
+				<br />
 				<Link to={routes.roadmap.add}>{defaultDict.pages.roadmap.proposalOfCreation}</Link>
 			</h1>
 		);

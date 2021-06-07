@@ -12,20 +12,34 @@ interface InputProps {
 const Input = ({ icon, ...props }: InputProps & FieldHookConfig<string>): JSX.Element => {
 	const [field, meta] = useField(props);
 
+	const inputWrapperClasses = (): string | undefined => {
+		const classes = [props.className, icon ? styles.withIcon : undefined]
+			.filter((x) => x)
+			.join(' ');
+		return classes.length > 0 ? classes : undefined;
+	};
+
 	return (
 		<div className={styles.input}>
 			{props.type === 'textarea'
 				? (
 					<TextareaAutosize
+						{...field}
+						value={props.value ?? field.value}
 						className={props.className}
 						disabled={props.disabled}
-						{...field}
 						id={props.id}
 					/>
 				)
 				: (
-					<div className={`${props.className || ''} ${icon ? styles.withIcon : ''}`}>
-						<input disabled={props.disabled} {...field} type={props.type} id={props.id} />
+					<div className={inputWrapperClasses()}>
+						<input
+							{...field}
+							value={props.value ?? field.value}
+							disabled={props.disabled}
+							type={props.type}
+							id={props.id}
+						/>
 						{icon && (
 							<div className={styles.iconWrapper}>
 								<FontAwesomeIcon icon={icon} className={styles.icon} />
