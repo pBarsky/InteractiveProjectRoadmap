@@ -23,6 +23,7 @@ export const createApiClient = (): AxiosInstance => {
 		const { response } = error;
 		switch (response?.status) {
 		case 401:
+			authStore.logout();
 			browserHistory.push(routes.auth.login);
 			break;
 		case 440:

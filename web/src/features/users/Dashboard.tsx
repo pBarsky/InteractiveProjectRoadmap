@@ -21,10 +21,9 @@ const Dashboard = () => {
 		<div className={styles.wrapper}>
 			<h2 className={styles.greeting}>{defaultDict.pages.dashboard.greeting}</h2>
 			<h1 className={styles.name}>{user?.displayName}</h1>
-			<Link
-				to={routes.roadmap.add}
-				component={() => <Button>{defaultDict.forms.buttons.addNewRoadmap.text}</Button>}
-			/>
+			<Link to={routes.roadmap.add}>
+				<Button>{defaultDict.forms.buttons.addNewRoadmap.text}</Button>
+			</Link>
 			<hr />
 			{roadmapStore.loading
 				? (
