@@ -2,7 +2,7 @@ import { render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Router } from 'react-router';
 import { browserHistory } from '../../../../App';
-import defaultDict from '../../../dictionaries/defaultDict';
+import defaultDict from '../../../../app/dictionaries/defaultDict';
 import BackButton from '../BackButton';
 
 describe('<BackButton />', () => {

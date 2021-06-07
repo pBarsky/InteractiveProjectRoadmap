@@ -2,19 +2,36 @@
 	min-height: 1em;
 	background-color: var(--black);
 	text-align: center;
-	border: 1px solid black;
-	padding: 0.6em;
+	border: none;
 	border-radius: 5px;
+	padding: 0.8em 1.5em;
 	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
 	overflow: visible;
 	color: white;
 	min-width: 90px;
+	transition: all 0.1s ease-in;
+
 	&:hover {
 		cursor: pointer;
+		background-color: var(--lighterBlack);
 	}
+
 	&:disabled {
 		filter: brightness(80%);
 	}
+	font-weight: 700;
+}
+
+.huge {
+	font-size: 1.4rem;
+}
+
+.medium {
+	font-size: 1rem;
+}
+
+.small {
+	font-size: 0.9rem;
 }
 
 .outlined {

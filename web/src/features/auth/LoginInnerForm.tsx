@@ -1,10 +1,10 @@
 import { ErrorMessage, Field as FormikField, Form as FormikForm, FormikProps } from 'formik';
 import React from 'react';
 import { Button, Container, Divider, Form, Input, Label } from 'semantic-ui-react';
-import LinkButton from '../../app/common/buttons/LinkButton';
-import routes from '../../app/common/routing/routes';
 import defaultDict from '../../app/dictionaries/defaultDict';
 import { UserFormValues } from '../../app/models/user';
+import LinkButton from '../common/buttons/LinkButton';
+import routes from '../common/routing/routes';
 import styles from './LoginInnerForm.module.scss';
 
 const LoginInnerForm = ({

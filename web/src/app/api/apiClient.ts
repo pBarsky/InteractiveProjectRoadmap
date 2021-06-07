@@ -6,7 +6,7 @@ import axios, {
 	AxiosResponse
 } from 'axios';
 import { browserHistory } from '../../App';
-import routes from '../common/routing/routes';
+import routes from '../../features/common/routing/routes';
 import authStore from '../stores/authStore';
 
 export interface ApiClient {

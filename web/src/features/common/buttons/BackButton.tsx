@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from 'semantic-ui-react';
 import { browserHistory } from '../../../App';
-import defaultDict from '../../dictionaries/defaultDict';
+import defaultDict from '../../../app/dictionaries/defaultDict';
 
 interface BackButtonProps {
 	content?: string;

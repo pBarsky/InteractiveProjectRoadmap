@@ -3,9 +3,9 @@ import userEvent from '@testing-library/user-event';
 import React from 'react';
 import { Router } from 'react-router';
 import { browserHistory } from '../../../../App';
+import defaultDict from '../../../../app/dictionaries/defaultDict';
+import { store, StoreProvider } from '../../../../app/stores/store';
 import routes from '../../../common/routing/routes';
-import defaultDict from '../../../dictionaries/defaultDict';
-import { store, StoreProvider } from '../../../stores/store';
 import Navbar from '../Navbar';
 
 describe('<UserNavMenu />', () => {

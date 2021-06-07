@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite';
 import defaultDict from '../../app/dictionaries/defaultDict';
-import Loader from '../../app/layout/Loader';
 import { useStore } from '../../app/stores/store';
+import Loader from '../common/Loader';
 import MilestoneListItem from './MilestoneListItem';
 
 const MilestonesList = () => {

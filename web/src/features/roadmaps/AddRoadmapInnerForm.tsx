@@ -1,10 +1,10 @@
 import { ErrorMessage, Field as FormikField, Form as FormikForm, FormikProps } from 'formik';
 import React from 'react';
 import { Button, Container, Form, Input, Label } from 'semantic-ui-react';
-import BackButton from '../../app/common/buttons/BackButton';
-import routes from '../../app/common/routing/routes';
 import defaultDict from '../../app/dictionaries/defaultDict';
 import { RoadmapFormValues } from '../../app/models/roadmap';
+import BackButton from '../common/buttons/BackButton';
+import routes from '../common/routing/routes';
 
 const AddRoadmapInnerForm = ({
 	isValid,

@@ -1,6 +1,6 @@
 import { AxiosPromise } from 'axios';
+import routes from '../../features/common/routing/routes';
 import { ApiClient, createApiClient } from '../api/apiClient';
-import routes from '../common/routing/routes';
 import { Roadmap, RoadmapFormValues } from '../models/roadmap';
 
 export interface RoadmapService {

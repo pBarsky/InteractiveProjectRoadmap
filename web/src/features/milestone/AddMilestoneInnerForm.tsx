@@ -1,8 +1,8 @@
 import { FormikProps } from 'formik';
 import React from 'react';
-import Field from '../../app/common/inputs/Field';
 import defaultDict from '../../app/dictionaries/defaultDict';
 import { MilestoneFormValues } from '../../app/models/milestone';
+import Field from '../common/inputs/Field';
 import styles from './AddMilestoneInnerForm.module.scss';
 
 const AddMilestoneInnerForm = ({

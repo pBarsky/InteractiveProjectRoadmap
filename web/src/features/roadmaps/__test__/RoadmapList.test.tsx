@@ -1,9 +1,9 @@
 import { render } from '@testing-library/react';
 import { Router } from 'react-router';
 import { browserHistory } from '../../../App';
-import routes from '../../../app/common/routing/routes';
 import defaultDict from '../../../app/dictionaries/defaultDict';
 import { store, StoreProvider } from '../../../app/stores/store';
+import routes from '../../common/routing/routes';
 import RoadmapList from '../RoadmapList';
 
 describe('<RoadmapList />', () => {

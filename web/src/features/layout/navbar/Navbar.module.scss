@@ -1,0 +1,31 @@
+.navBar {
+	background-color: var(--black);
+	display: flex;
+	justify-content: center;
+	.active {
+		background-color: var(--highlightBlack);
+	}
+}
+
+.wrapper {
+	width: 70%;
+	display: flex;
+	justify-content: space-between;
+	& > * {
+		padding: 1em;
+	}
+}
+
+.rootLink {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 1.5rem;
+	font-weight: bold;
+	color: white;
+	transition: all 0.1s ease-in;
+	&:hover {
+		background-color: var(--highlightBlack);
+		color: white;
+	}
+}

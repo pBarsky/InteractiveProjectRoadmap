@@ -2,7 +2,7 @@ import { render } from '@testing-library/react';
 import React from 'react';
 import { Router } from 'react-router';
 import { browserHistory } from '../../../../App';
-import { store, StoreProvider } from '../../../stores/store';
+import { store, StoreProvider } from '../../../../app/stores/store';
 import ProtectedRoute from '../ProtectedRoute';
 import routes from '../routes';
 

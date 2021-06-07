@@ -2,10 +2,10 @@ import { observer } from 'mobx-react-lite';
 import React, { useEffect } from 'react';
 import { Button, Divider, Header, Segment } from 'semantic-ui-react';
 import { browserHistory } from '../../App';
-import routes from '../../app/common/routing/routes';
 import defaultDict from '../../app/dictionaries/defaultDict';
-import Loader from '../../app/layout/Loader';
 import { useStore } from '../../app/stores/store';
+import Loader from '../common/Loader';
+import routes from '../common/routing/routes';
 import RoadmapList from '../roadmaps/RoadmapList';
 
 const Dashboard = () => {
