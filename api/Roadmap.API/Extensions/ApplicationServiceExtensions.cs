@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,6 +30,7 @@ namespace Roadmap.API.Extensions
                             .AllowAnyHeader()
                             .WithExposedHeaders("WWW-Authenticate")
                             .AllowCredentials()
+                            .SetIsOriginAllowedToAllowWildcardSubdomains()
                             .WithOrigins(config["CorsOrigin"]);
                     });
             });
