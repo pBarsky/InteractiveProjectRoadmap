@@ -31,7 +31,7 @@ namespace Roadmap.API.Extensions
                             .WithExposedHeaders("WWW-Authenticate")
                             .AllowCredentials()
                             .SetIsOriginAllowedToAllowWildcardSubdomains()
-                            .WithOrigins(config["CorsOrigin"]);
+                            .WithOrigins(config.GetValue<string>("CorsOrigin").Split(' '));
                     });
             });
             return services;
