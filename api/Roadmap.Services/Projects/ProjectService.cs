@@ -134,7 +134,15 @@ namespace Roadmap.Services.Projects
                 return false;
             }
 
-            return await _imageService.DeleteImageAsync(project.ImageBlobName);
+            var imageDeleted = await _imageService.DeleteImageAsync(project.ImageBlobName);
+            if (!imageDeleted)
+            {
+                return false;
+            }
+
+            project.ImageBlobName = null;
+
+            return await UpdateAsync(project, user);
         }
     }
 }

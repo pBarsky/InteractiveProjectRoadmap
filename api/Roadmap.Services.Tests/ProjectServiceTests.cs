@@ -464,6 +464,31 @@ namespace Roadmap.Services.Tests
         }
 
         [Fact]
+        public async void DeleteImageAsync_False_CouldNotUpdateDatabaseAfterDeletion()
+        {
+            // Arrange
+            var user = new AppUser
+            {
+                Id = "id"
+            };
+            var project = new Project
+            {
+                Id = 1,
+                ImageBlobName = "cośtam",
+                UserId = user.Id
+            };
+
+            _projectRepository.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync(project);
+            _projectRepository.Setup(x => x.UpdateAsync(It.IsAny<Project>())).ReturnsAsync(false);
+            _imageService.Setup(x => x.DeleteImageAsync(It.IsAny<string>())).ReturnsAsync(true);
+            // Act
+            var imageDeleted = await _projectService.DeleteImageAsync(project.Id, user);
+
+            // Assert
+            imageDeleted.Should().BeFalse();
+        }
+
+        [Fact]
         public async void DeleteImageAsync_True_ImageDeleted()
         {
             // Arrange
@@ -479,6 +504,7 @@ namespace Roadmap.Services.Tests
             };
 
             _projectRepository.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync(project);
+            _projectRepository.Setup(x => x.UpdateAsync(It.IsAny<Project>())).ReturnsAsync(true);
             _imageService.Setup(x => x.DeleteImageAsync(It.IsAny<string>())).ReturnsAsync(true);
             // Act
             var imageDeleted = await _projectService.DeleteImageAsync(project.Id, user);
