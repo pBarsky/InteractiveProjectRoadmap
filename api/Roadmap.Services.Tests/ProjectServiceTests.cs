@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Threading;
 using FluentAssertions;
+using Microsoft.AspNetCore.Http;
 using Moq;
 using Roadmap.Domain.Models;
 using Roadmap.Domain.Repositories.Interfaces;
+using Roadmap.Services.Images;
 using Roadmap.Services.Projects;
 using Xunit;
 
@@ -13,13 +16,15 @@ namespace Roadmap.Services.Tests
     public class ProjectServiceTests
     {
         private readonly Mock<IProjectRepository> _projectRepository;
+        private readonly Mock<IImageService> _imageService;
 
         private readonly ProjectService _projectService;
 
         public ProjectServiceTests()
         {
             _projectRepository = new Mock<IProjectRepository>();
-            _projectService = new ProjectService(_projectRepository.Object);
+            _imageService = new Mock<IImageService>();
+            _projectService = new ProjectService(_projectRepository.Object, _imageService.Object);
         }
 
         [Fact]
@@ -244,7 +249,7 @@ namespace Roadmap.Services.Tests
             const int projectId = 1;
             const string userId = "123";
             var user = new AppUser {Id = userId};
-            var project = new Project {UserId = userId, Id=projectId};
+            var project = new Project {UserId = userId, Id = projectId};
             _projectRepository
                 .Setup(x => x.GetAsync(It.IsAny<int>()))
                 .ReturnsAsync(project);
@@ -255,6 +260,231 @@ namespace Roadmap.Services.Tests
 
             // Assert  
             result.Should().BeTrue();
+        }
+
+        [Fact]
+        public async void AddImageAsync_False_ProjectNotFoundOrUserIsNotOwner()
+        {
+            // Arrange
+            _projectRepository.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync((Project) null);
+
+            // Act
+            var imageAdded = await _projectService.AddImageAsync(It.IsAny<int>(), It.IsAny<AppUser>(),
+                It.IsAny<IFormFile>(), It.IsAny<CancellationToken>());
+
+            // Assert
+            imageAdded.Should().BeFalse();
+        }
+
+        [Fact]
+        public async void AddImageAsync_False_FileNotUploaded()
+        {
+            // Arrange
+            var user = new AppUser
+            {
+                Id = "testId"
+            };
+            var project = new Project
+            {
+                Id = 1,
+                UserId = user.Id
+            };
+
+            _projectRepository.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync(project);
+            _imageService.Setup(x => x.UploadImageAsync(It.IsAny<IFormFile>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync((string) null);
+
+            // Act
+            var imageAdded = await _projectService.AddImageAsync(project.Id, user, It.IsAny<IFormFile>(),
+                It.IsAny<CancellationToken>());
+
+            // Assert
+            imageAdded.Should().BeFalse();
+        }
+
+        [Fact]
+        public async void AddImageAsync_False_FailedToSaveToDb()
+        {
+            // Arrange
+            var user = new AppUser
+            {
+                Id = "testId"
+            };
+            var project = new Project
+            {
+                Id = 1,
+                UserId = user.Id
+            };
+
+            _projectRepository.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync(project);
+            _imageService.Setup(x => x.UploadImageAsync(It.IsAny<IFormFile>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync("");
+            _projectRepository.Setup(x => x.UpdateAsync(It.IsAny<Project>())).ReturnsAsync(false);
+
+            // Act
+            var imageAdded = await _projectService.AddImageAsync(project.Id, user, It.IsAny<IFormFile>(),
+                It.IsAny<CancellationToken>());
+
+            // Assert
+            imageAdded.Should().BeFalse();
+        }
+
+        [Fact]
+        public async void AddImageAsync_True_FileUploadedToStorageAndFilenameSavedToDb()
+        {
+            // Arrange
+            var user = new AppUser
+            {
+                Id = "testId"
+            };
+            var project = new Project
+            {
+                Id = 1,
+                UserId = user.Id
+            };
+
+            _projectRepository.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync(project);
+            _imageService.Setup(x => x.UploadImageAsync(It.IsAny<IFormFile>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync("");
+            _projectRepository.Setup(x => x.UpdateAsync(It.IsAny<Project>())).ReturnsAsync(true);
+            _projectRepository.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync(project);
+
+            // Act
+            var imageAdded = await _projectService.AddImageAsync(project.Id, user, It.IsAny<IFormFile>(),
+                It.IsAny<CancellationToken>());
+
+            // Assert
+            imageAdded.Should().BeTrue();
+        }
+
+        [Fact]
+        public async void UpdateImageAsync_False_ProjectNotFoundOrUserIsNotOwner()
+        {
+            // Arrange
+
+            _projectRepository.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync((Project) null);
+
+            // Act
+            var imageUpdated = await _projectService.UpdateImageAsync(It.IsAny<int>(), It.IsAny<AppUser>(),
+                It.IsAny<IFormFile>(),
+                It.IsAny<CancellationToken>());
+
+            // Assert
+            imageUpdated.Should().BeFalse();
+        }
+
+        [Fact]
+        public async void UpdateImageAsync_False_CouldNotAddImage()
+        {
+            // Arrange
+            var user = new AppUser
+            {
+                Id = "testId"
+            };
+            var project = new Project
+            {
+                Id = 1,
+                UserId = user.Id
+            };
+
+            _projectRepository.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync(project);
+            _imageService.Setup(x => x.UploadImageAsync(It.IsAny<IFormFile>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync("");
+            _projectRepository.Setup(x => x.UpdateAsync(It.IsAny<Project>())).ReturnsAsync(true);
+            _projectRepository.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync(project);
+            _projectRepository.Setup(x => x.UpdateAsync(It.IsAny<Project>())).ReturnsAsync(true);
+
+            // Act
+            var imageUpdated = await _projectService.UpdateImageAsync(project.Id, user, It.IsAny<IFormFile>(),
+                It.IsAny<CancellationToken>());
+
+            // Assert
+            imageUpdated.Should().BeTrue();
+        }
+
+        [Fact]
+        public async void DeleteImageAsync_False_ProjectNotFoundOrUserIsNotOwner()
+        {
+            // Arrange
+            _projectRepository.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync((Project) null);
+
+            // Act
+            var imageDeleted = await _projectService.DeleteImageAsync(It.IsAny<int>(), It.IsAny<AppUser>());
+
+            // Assert
+            imageDeleted.Should().BeFalse();
+        }
+
+        [Fact]
+        public async void DeleteImageAsync_False_ProjectHasNoImage()
+        {
+            // Arrange
+            var user = new AppUser
+            {
+                Id = "id"
+            };
+            var project = new Project
+            {
+                Id = 1,
+                ImageBlobName = null,
+                UserId = user.Id
+            };
+
+            _projectRepository.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync(project);
+
+            // Act
+            var imageDeleted = await _projectService.DeleteImageAsync(project.Id, user);
+
+            // Assert
+            imageDeleted.Should().BeFalse();
+        }
+
+        [Fact]
+        public async void DeleteImageAsync_False_CouldNotDeleteImage()
+        {
+            // Arrange
+            var user = new AppUser
+            {
+                Id = "id"
+            };
+            var project = new Project
+            {
+                Id = 1,
+                ImageBlobName = "cośtam",
+                UserId = user.Id
+            };
+
+            _projectRepository.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync(project);
+            _imageService.Setup(x => x.DeleteImageAsync(It.IsAny<string>())).ReturnsAsync(false);
+            // Act
+            var imageDeleted = await _projectService.DeleteImageAsync(project.Id, user);
+
+            // Assert
+            imageDeleted.Should().BeFalse();
+        }
+
+        [Fact]
+        public async void DeleteImageAsync_True_ImageDeleted()
+        {
+            // Arrange
+            var user = new AppUser
+            {
+                Id = "id"
+            };
+            var project = new Project
+            {
+                Id = 1,
+                ImageBlobName = "cośtam",
+                UserId = user.Id
+            };
+
+            _projectRepository.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync(project);
+            _imageService.Setup(x => x.DeleteImageAsync(It.IsAny<string>())).ReturnsAsync(true);
+            // Act
+            var imageDeleted = await _projectService.DeleteImageAsync(project.Id, user);
+
+            // Assert
+            imageDeleted.Should().BeTrue();
         }
     }
 }

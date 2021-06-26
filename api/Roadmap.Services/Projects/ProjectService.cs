@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Roadmap.Domain.Models;
 using Roadmap.Domain.Repositories.Interfaces;
+using Roadmap.Services.Images;
 using Roadmap.Services.Mapper;
 
 namespace Roadmap.Services.Projects
@@ -11,10 +14,12 @@ namespace Roadmap.Services.Projects
     {
         private readonly IMapper _mapper;
         private readonly IProjectRepository _projectRepository;
+        private readonly IImageService _imageService;
 
-        public ProjectService(IProjectRepository projectRepository)
+        public ProjectService(IProjectRepository projectRepository, IImageService imageService)
         {
             _projectRepository = projectRepository;
+            _imageService = imageService;
             _mapper = new AutoMapper.Mapper(new MapperConfiguration(cfg => cfg.AddProfile(new AutoMapperProfile())));
         }
 
@@ -79,6 +84,57 @@ namespace Roadmap.Services.Projects
             _mapper.Map(srcProject, destProject);
 
             return await _projectRepository.UpdateAsync(destProject);
+        }
+
+        public async Task<bool> AddImageAsync(int projectId, AppUser user, IFormFile file,
+            CancellationToken cancellationToken)
+        {
+            var project = await GetAsync(projectId, user);
+            if (project == null)
+            {
+                return false;
+            }
+
+            var imageBlobName = await _imageService.UploadImageAsync(file, cancellationToken);
+            if (imageBlobName == null)
+            {
+                return false;
+            }
+
+            project.ImageBlobName = imageBlobName;
+            var saved = await UpdateAsync(project, user);
+
+            return saved;
+        }
+
+        public async Task<bool> UpdateImageAsync(int projectId, AppUser user, IFormFile file,
+            CancellationToken cancellationToken)
+        {
+            var project = await GetAsync(projectId, user);
+            if (project == null)
+            {
+                return false;
+            }
+
+            await DeleteImageAsync(projectId, user);
+
+            return await AddImageAsync(projectId, user, file, cancellationToken);
+        }
+
+        public async Task<bool> DeleteImageAsync(int projectId, AppUser user)
+        {
+            var project = await GetAsync(projectId, user);
+            if (project == null)
+            {
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(project.ImageBlobName))
+            {
+                return false;
+            }
+
+            return await _imageService.DeleteImageAsync(project.ImageBlobName);
         }
     }
 }

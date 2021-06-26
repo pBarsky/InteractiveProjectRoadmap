@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Azure.Storage.Blobs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +19,7 @@ using Roadmap.API.Extensions;
 using Roadmap.Domain;
 using Roadmap.Domain.Repositories.Implementations;
 using Roadmap.Domain.Repositories.Interfaces;
+using Roadmap.Services.Images;
 using Roadmap.Services.Milestones;
 using Roadmap.Services.Projects;
 using Roadmap.Services.Token;
@@ -65,11 +67,6 @@ namespace Roadmap.API
             });
             services.AddApplicationServices(Configuration);
             services.AddIdentityServices(Configuration);
-            services.AddScoped<ITokenService, TokenService>();
-            services.AddScoped<IProjectService, ProjectService>();
-            services.AddScoped<IProjectRepository, ProjectRepository>();
-            services.AddScoped<IMilestoneRepository, MilestoneRepository>();
-            services.AddScoped<IMilestoneService, MilestoneService>();
         }
     }
 }
