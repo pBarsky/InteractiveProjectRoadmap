@@ -13,5 +13,7 @@ namespace Roadmap.API.DTOs
         public string Name { get; set; }
 
         public DateTime StartsOn { get; set; }
+        public string ImageUrl { get; set; }
+
     }
 }

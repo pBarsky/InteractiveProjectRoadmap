@@ -1,10 +1,17 @@
 using System.Reflection;
+using Azure.Storage.Blobs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Roadmap.API.Mapper;
 using Roadmap.Domain;
+using Roadmap.Domain.Repositories.Implementations;
+using Roadmap.Domain.Repositories.Interfaces;
+using Roadmap.Services.Images;
+using Roadmap.Services.Milestones;
+using Roadmap.Services.Projects;
+using Roadmap.Services.Token;
 
 namespace Roadmap.API.Extensions
 {
@@ -18,7 +25,18 @@ namespace Roadmap.API.Extensions
                 opt.UseSqlServer(config.GetConnectionString("DefaultConnection"));
             });
 
-            services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
+            services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IProjectService, ProjectService>();
+            services.AddScoped<IProjectRepository, ProjectRepository>();
+            services.AddScoped<IMilestoneRepository, MilestoneRepository>();
+            services.AddScoped<IMilestoneService, MilestoneService>();
+            services.AddSingleton(x => new BlobServiceClient(
+                config.GetConnectionString("AzureBlobStorageConnection")));
+            services.AddSingleton<IImageService, ImageService>();
+
+            var provider = services.BuildServiceProvider();
+
+            services.AddAutoMapper(config => config.AddProfile(new AutoMapperProfile(provider.GetService<IImageService>())));
 
             services.AddCors(opt =>
             {

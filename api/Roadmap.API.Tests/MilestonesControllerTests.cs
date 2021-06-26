@@ -11,6 +11,7 @@ using Roadmap.API.Mapper;
 using Roadmap.API.Tests.FakeClasses;
 using Roadmap.API.Tests.FakeClasses.Builders;
 using Roadmap.Domain.Models;
+using Roadmap.Services.Images;
 using Roadmap.Services.Milestones;
 using Roadmap.Services.Projects;
 using Xunit;
@@ -24,15 +25,17 @@ namespace Roadmap.API.Tests
         private readonly Mock<IProjectService> _projectService;
         private readonly AppUser _testUser;
         private readonly Mock<FakeUserManager> _userManager;
+        private readonly Mock<IImageService> _imageService;
 
         public MilestonesControllerTests()
         {
-            _testUser = new AppUser {Id = "SomeUserId"};
+            _testUser = new AppUser { Id = "SomeUserId" };
             _userManager = new FakeUserManagerBuilder().With(s =>
                 s.Setup(x => x.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(_testUser)).Build();
             _milestoneService = new Mock<IMilestoneService>();
             _projectService = new Mock<IProjectService>();
-            _mapper = new AutoMapper.Mapper(new MapperConfiguration(cfg => cfg.AddProfile(new AutoMapperProfile())));
+            _imageService = new Mock<IImageService>();
+            _mapper = new AutoMapper.Mapper(new MapperConfiguration(cfg => cfg.AddProfile(new AutoMapperProfile(_imageService.Object))));
         }
 
         [Fact]
@@ -41,7 +44,7 @@ namespace Roadmap.API.Tests
             // Arrange
 
             _milestoneService.Setup(x => x.GetAsync(It.IsAny<int>(), It.IsAny<AppUser>()))
-                .ReturnsAsync((Milestone) null);
+                .ReturnsAsync((Milestone)null);
 
             var controller = new MilestonesController(_milestoneService.Object, _projectService.Object,
                 _userManager.Object, _mapper);
@@ -75,7 +78,7 @@ namespace Roadmap.API.Tests
         public async void GetAllOfProject_EmptyList_NoMilestonesOfAnProjectFound()
         {
             // Arrange
-            var project = new Project {Id = 1, UserId = _testUser.Id};
+            var project = new Project { Id = 1, UserId = _testUser.Id };
 
 
             _milestoneService.Setup(x => x.GetAllOfProjectAsync(project, _testUser))
@@ -96,7 +99,7 @@ namespace Roadmap.API.Tests
         public async void GetAllOfProject_BadRequest_NoProjectFound()
         {
             // Arrange
-            var project = new Project {Id = 1, UserId = _testUser.Id};
+            var project = new Project { Id = 1, UserId = _testUser.Id };
             const int wrongId = 2;
 
             _milestoneService.Setup(x => x.GetAllOfProjectAsync(project, _testUser))
@@ -117,7 +120,7 @@ namespace Roadmap.API.Tests
         public async void GetAllOfProject_PopulatedList_MilestonesOfAProjectFound()
         {
             // Arrange
-            var project = new Project {Id = 1, UserId = _testUser.Id};
+            var project = new Project { Id = 1, UserId = _testUser.Id };
 
 
             var testMilestones = new List<Milestone>
@@ -150,7 +153,7 @@ namespace Roadmap.API.Tests
 
             // Assert
             result.Result.Should().BeOfType<BadRequestObjectResult>();
-        }     
+        }
         [Fact]
         public async void Post_UnauthorizedObjectResult_UserWasNotFound()
         {

@@ -9,6 +9,7 @@ using Roadmap.API.DTOs;
 using Roadmap.API.Mapper;
 using Roadmap.API.Tests.FakeClasses.Builders;
 using Roadmap.Domain.Models;
+using Roadmap.Services.Images;
 using Roadmap.Services.Projects;
 using Xunit;
 
@@ -18,11 +19,13 @@ namespace Roadmap.API.Tests
     {
         private readonly AutoMapper.Mapper _mapper;
         private readonly Mock<IProjectService> _projectService;
+        private readonly Mock<IImageService> _imageService;
 
         public RoadmapControllerTests()
         {
             _projectService = new Mock<IProjectService>();
-            _mapper = new AutoMapper.Mapper(new MapperConfiguration(cfg => cfg.AddProfile(new AutoMapperProfile())));
+            _imageService = new Mock<IImageService>();
+            _mapper = new AutoMapper.Mapper(new MapperConfiguration(cfg => cfg.AddProfile(new AutoMapperProfile(_imageService.Object))));
         }
 
         [Fact]
@@ -32,7 +35,7 @@ namespace Roadmap.API.Tests
             var userManager =
                 new FakeUserManagerBuilder().With(s =>
                     s.Setup(x => x.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(new AppUser())).Build();
-            _projectService.Setup(x => x.GetAsync(It.IsAny<int>(), It.IsAny<AppUser>())).ReturnsAsync((Project) null);
+            _projectService.Setup(x => x.GetAsync(It.IsAny<int>(), It.IsAny<AppUser>())).ReturnsAsync((Project)null);
 
             var controller = new RoadmapController(userManager.Object, _projectService.Object, _mapper);
 
@@ -70,7 +73,7 @@ namespace Roadmap.API.Tests
                 new FakeUserManagerBuilder().With(s =>
                     s.Setup(x => x.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(new AppUser())).Build();
             _projectService.Setup(x => x.GetAllAsync(It.IsAny<AppUser>()))
-                .ReturnsAsync(new List<Project> {new Project(), new Project()});
+                .ReturnsAsync(new List<Project> { new Project(), new Project() });
 
             var controller = new RoadmapController(userManager.Object, _projectService.Object, _mapper);
 
