@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Security.Claims;
+using System.Threading;
 using AutoMapper;
 using FluentAssertions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Roadmap.API.Controllers;
@@ -195,6 +197,126 @@ namespace Roadmap.API.Tests
             // Assert
 
             result.Result.Should().BeOfType<BadRequestObjectResult>();
+        }
+
+        [Fact]
+        public async void AddImage_BadRequestObjectResult_FailedToAddImage()
+        {
+            // Arrange
+            var user = new AppUser { Id = "id" };
+
+            var userManager =
+                new FakeUserManagerBuilder().With(s =>
+                    s.Setup(x => x.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user)).Build();
+            _projectService.Setup(x => x.AddImageAsync(It.IsAny<int>(), It.IsAny<AppUser>(), It.IsAny<IFormFile>(), It.IsAny<CancellationToken>())).ReturnsAsync((string)null);
+
+            var controller = new RoadmapController(userManager.Object, _projectService.Object, _mapper);
+
+            // Act
+            var result = await controller.AddImage(It.IsAny<int>(), It.IsAny<IFormFile>(), It.IsAny<CancellationToken>());
+
+            // Assert
+            result.Should().BeOfType<BadRequestObjectResult>().Which.Value.As<string>().Should().BeNullOrEmpty();
+        }
+
+        [Fact]
+        public async void AddImage_OkObjectResult_SuccessfullyAddedImage()
+        {
+            // Arrange
+            var user = new AppUser { Id = "id" };
+
+            var userManager =
+                new FakeUserManagerBuilder().With(s =>
+                    s.Setup(x => x.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user)).Build();
+            _projectService.Setup(x => x.AddImageAsync(It.IsAny<int>(), It.IsAny<AppUser>(), It.IsAny<IFormFile>(), It.IsAny<CancellationToken>())).ReturnsAsync("SomeUrl");
+
+            var controller = new RoadmapController(userManager.Object, _projectService.Object, _mapper);
+
+            // Act
+            var result = await controller.AddImage(It.IsAny<int>(), It.IsAny<IFormFile>(), It.IsAny<CancellationToken>());
+
+            // Assert
+            result.Should().BeOfType<OkObjectResult>().Which.Value.As<string>().Should().NotBeNullOrEmpty();
+        }
+
+        [Fact]
+        public async void UpdateImage_OkObjectResult_SuccessfullyAddedImage()
+        {
+            // Arrange
+            var user = new AppUser { Id = "id" };
+
+            var userManager =
+                new FakeUserManagerBuilder().With(s =>
+                    s.Setup(x => x.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user)).Build();
+            _projectService.Setup(x => x.UpdateImageAsync(It.IsAny<int>(), It.IsAny<AppUser>(), It.IsAny<IFormFile>(), It.IsAny<CancellationToken>())).ReturnsAsync("jakiśurl");
+
+            var controller = new RoadmapController(userManager.Object, _projectService.Object, _mapper);
+
+            // Act
+            var result = await controller.UpdateImage(It.IsAny<int>(), It.IsAny<IFormFile>(), It.IsAny<CancellationToken>());
+
+            // Assert
+            result.Should().BeOfType<OkObjectResult>().Which.Value.As<string>().Should().NotBeNullOrEmpty();
+        }
+
+        [Fact]
+        public async void UpdateImage_BadRequestObjectResult_()
+        {
+            // Arrange
+            var user = new AppUser { Id = "id" };
+
+            var userManager =
+                new FakeUserManagerBuilder().With(s =>
+                    s.Setup(x => x.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user)).Build();
+            _projectService.Setup(x => x.UpdateImageAsync(It.IsAny<int>(), It.IsAny<AppUser>(), It.IsAny<IFormFile>(), It.IsAny<CancellationToken>())).ReturnsAsync((string)null);
+
+            var controller = new RoadmapController(userManager.Object, _projectService.Object, _mapper);
+
+            // Act
+            var result = await controller.UpdateImage(It.IsAny<int>(), It.IsAny<IFormFile>(), It.IsAny<CancellationToken>());
+
+            // Assert
+            result.Should().BeOfType<BadRequestObjectResult>().Which.Value.As<string>().Should().BeNullOrEmpty();
+        }
+
+        [Fact]
+        public async void DeleteImage_OkObjectResult_SuccessfullyAddedImage()
+        {
+            // Arrange
+            var user = new AppUser { Id = "id" };
+
+            var userManager =
+                new FakeUserManagerBuilder().With(s =>
+                    s.Setup(x => x.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user)).Build();
+            _projectService.Setup(x => x.DeleteImageAsync(It.IsAny<int>(), It.IsAny<AppUser>())).ReturnsAsync(true);
+
+            var controller = new RoadmapController(userManager.Object, _projectService.Object, _mapper);
+
+            // Act
+            var result = await controller.DeleteImage(It.IsAny<int>());
+
+            // Assert
+            result.Should().BeOfType<OkObjectResult>().Which.Value.As<bool>().Should().BeTrue();
+        }
+
+        [Fact]
+        public async void DeleteImage_BadRequestObjectResult_()
+        {
+            // Arrange
+            var user = new AppUser { Id = "id" };
+
+            var userManager =
+                new FakeUserManagerBuilder().With(s =>
+                    s.Setup(x => x.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user)).Build();
+            _projectService.Setup(x => x.DeleteImageAsync(It.IsAny<int>(), It.IsAny<AppUser>())).ReturnsAsync(false);
+
+            var controller = new RoadmapController(userManager.Object, _projectService.Object, _mapper);
+
+            // Act
+            var result = await controller.DeleteImage(It.IsAny<int>());
+
+            // Assert
+            result.Should().BeOfType<BadRequestObjectResult>().Which.Value.As<bool>().Should().BeFalse();
         }
     }
 }

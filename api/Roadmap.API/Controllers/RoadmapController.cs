@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Roadmap.API.DTOs;
@@ -92,6 +94,48 @@ namespace Roadmap.API.Controllers
             }
 
             return BadRequest("Could not delete roadmap.");
+        }
+
+        [HttpPost("add-image")]
+        public async Task<IActionResult> AddImage([FromForm] int roadmapId, IFormFile file, CancellationToken cancellationToken)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var imageUrl = await _projectService.AddImageAsync(roadmapId, user, file, cancellationToken);
+
+            if (string.IsNullOrEmpty(imageUrl))
+            {
+                return BadRequest("");
+            }
+
+            return Ok(imageUrl);
+        }
+
+        [HttpPut("update-image")]
+        public async Task<IActionResult> UpdateImage([FromForm] int roadmapId, IFormFile file, CancellationToken cancellationToken)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var imageUrl = await _projectService.UpdateImageAsync(roadmapId, user, file, cancellationToken);
+
+            if (string.IsNullOrEmpty(imageUrl))
+            {
+                return BadRequest("");
+            }
+
+            return Ok(imageUrl);
+        }
+
+        [HttpDelete("delete-image/{id}")]
+        public async Task<IActionResult> DeleteImage(int id)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var result = await _projectService.DeleteImageAsync(id, user);
+
+            if (!result)
+            {
+                return BadRequest(false);
+            }
+
+            return Ok(true);
         }
     }
 }

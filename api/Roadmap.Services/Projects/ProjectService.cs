@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -86,34 +87,38 @@ namespace Roadmap.Services.Projects
             return await _projectRepository.UpdateAsync(destProject);
         }
 
-        public async Task<bool> AddImageAsync(int projectId, AppUser user, IFormFile file,
+        public async Task<string> AddImageAsync(int projectId, AppUser user, IFormFile file,
             CancellationToken cancellationToken)
         {
             var project = await GetAsync(projectId, user);
             if (project == null)
             {
-                return false;
+                return null;
             }
 
             var imageBlobName = await _imageService.UploadImageAsync(file, cancellationToken);
             if (imageBlobName == null)
             {
-                return false;
+                return null;
             }
 
             project.ImageBlobName = imageBlobName;
             var saved = await UpdateAsync(project, user);
+            if (!saved)
+            {
+                throw new DataException("Could not update database");
+            }
 
-            return saved;
+            return await _imageService.GetImageUriAsync(imageBlobName);
         }
 
-        public async Task<bool> UpdateImageAsync(int projectId, AppUser user, IFormFile file,
+        public async Task<string> UpdateImageAsync(int projectId, AppUser user, IFormFile file,
             CancellationToken cancellationToken)
         {
             var project = await GetAsync(projectId, user);
             if (project == null)
             {
-                return false;
+                return null;
             }
 
             await DeleteImageAsync(projectId, user);
@@ -134,7 +139,15 @@ namespace Roadmap.Services.Projects
                 return false;
             }
 
-            return await _imageService.DeleteImageAsync(project.ImageBlobName);
+            var imageDeleted = await _imageService.DeleteImageAsync(project.ImageBlobName);
+            if (!imageDeleted)
+            {
+                return false;
+            }
+
+            project.ImageBlobName = null;
+
+            return await UpdateAsync(project, user);
         }
     }
 }
