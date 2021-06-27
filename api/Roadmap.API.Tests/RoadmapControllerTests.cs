@@ -208,7 +208,7 @@ namespace Roadmap.API.Tests
             var userManager =
                 new FakeUserManagerBuilder().With(s =>
                     s.Setup(x => x.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user)).Build();
-            _projectService.Setup(x => x.AddImageAsync(It.IsAny<int>(), It.IsAny<AppUser>(), It.IsAny<IFormFile>(), It.IsAny<CancellationToken>())).ReturnsAsync(false);
+            _projectService.Setup(x => x.AddImageAsync(It.IsAny<int>(), It.IsAny<AppUser>(), It.IsAny<IFormFile>(), It.IsAny<CancellationToken>())).ReturnsAsync((string)null);
 
             var controller = new RoadmapController(userManager.Object, _projectService.Object, _mapper);
 
@@ -216,7 +216,7 @@ namespace Roadmap.API.Tests
             var result = await controller.AddImage(It.IsAny<int>(), It.IsAny<IFormFile>(), It.IsAny<CancellationToken>());
 
             // Assert
-            result.Should().BeOfType<BadRequestObjectResult>().Which.Value.As<bool>().Should().BeFalse();
+            result.Should().BeOfType<BadRequestObjectResult>().Which.Value.As<string>().Should().BeNullOrEmpty();
         }
 
         [Fact]
@@ -228,7 +228,7 @@ namespace Roadmap.API.Tests
             var userManager =
                 new FakeUserManagerBuilder().With(s =>
                     s.Setup(x => x.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user)).Build();
-            _projectService.Setup(x => x.AddImageAsync(It.IsAny<int>(), It.IsAny<AppUser>(), It.IsAny<IFormFile>(), It.IsAny<CancellationToken>())).ReturnsAsync(true);
+            _projectService.Setup(x => x.AddImageAsync(It.IsAny<int>(), It.IsAny<AppUser>(), It.IsAny<IFormFile>(), It.IsAny<CancellationToken>())).ReturnsAsync("SomeUrl");
 
             var controller = new RoadmapController(userManager.Object, _projectService.Object, _mapper);
 
@@ -236,7 +236,7 @@ namespace Roadmap.API.Tests
             var result = await controller.AddImage(It.IsAny<int>(), It.IsAny<IFormFile>(), It.IsAny<CancellationToken>());
 
             // Assert
-            result.Should().BeOfType<OkObjectResult>().Which.Value.As<bool>().Should().BeTrue();
+            result.Should().BeOfType<OkObjectResult>().Which.Value.As<string>().Should().NotBeNullOrEmpty();
         }
 
         [Fact]
@@ -248,7 +248,7 @@ namespace Roadmap.API.Tests
             var userManager =
                 new FakeUserManagerBuilder().With(s =>
                     s.Setup(x => x.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user)).Build();
-            _projectService.Setup(x => x.UpdateImageAsync(It.IsAny<int>(), It.IsAny<AppUser>(), It.IsAny<IFormFile>(), It.IsAny<CancellationToken>())).ReturnsAsync(true);
+            _projectService.Setup(x => x.UpdateImageAsync(It.IsAny<int>(), It.IsAny<AppUser>(), It.IsAny<IFormFile>(), It.IsAny<CancellationToken>())).ReturnsAsync("jakiśurl");
 
             var controller = new RoadmapController(userManager.Object, _projectService.Object, _mapper);
 
@@ -256,7 +256,7 @@ namespace Roadmap.API.Tests
             var result = await controller.UpdateImage(It.IsAny<int>(), It.IsAny<IFormFile>(), It.IsAny<CancellationToken>());
 
             // Assert
-            result.Should().BeOfType<OkObjectResult>().Which.Value.As<bool>().Should().BeTrue();
+            result.Should().BeOfType<OkObjectResult>().Which.Value.As<string>().Should().NotBeNullOrEmpty();
         }
 
         [Fact]
@@ -268,7 +268,7 @@ namespace Roadmap.API.Tests
             var userManager =
                 new FakeUserManagerBuilder().With(s =>
                     s.Setup(x => x.GetUserAsync(It.IsAny<ClaimsPrincipal>())).ReturnsAsync(user)).Build();
-            _projectService.Setup(x => x.UpdateImageAsync(It.IsAny<int>(), It.IsAny<AppUser>(), It.IsAny<IFormFile>(), It.IsAny<CancellationToken>())).ReturnsAsync(false);
+            _projectService.Setup(x => x.UpdateImageAsync(It.IsAny<int>(), It.IsAny<AppUser>(), It.IsAny<IFormFile>(), It.IsAny<CancellationToken>())).ReturnsAsync((string)null);
 
             var controller = new RoadmapController(userManager.Object, _projectService.Object, _mapper);
 
@@ -276,7 +276,7 @@ namespace Roadmap.API.Tests
             var result = await controller.UpdateImage(It.IsAny<int>(), It.IsAny<IFormFile>(), It.IsAny<CancellationToken>());
 
             // Assert
-            result.Should().BeOfType<BadRequestObjectResult>().Which.Value.As<bool>().Should().BeFalse();
+            result.Should().BeOfType<BadRequestObjectResult>().Which.Value.As<string>().Should().BeNullOrEmpty();
         }
 
         [Fact]

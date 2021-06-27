@@ -100,28 +100,28 @@ namespace Roadmap.API.Controllers
         public async Task<IActionResult> AddImage([FromForm] int roadmapId, IFormFile file, CancellationToken cancellationToken)
         {
             var user = await _userManager.GetUserAsync(User);
-            var result = await _projectService.AddImageAsync(roadmapId, user, file, cancellationToken);
+            var imageUrl = await _projectService.AddImageAsync(roadmapId, user, file, cancellationToken);
 
-            if (!result)
+            if (string.IsNullOrEmpty(imageUrl))
             {
-                return BadRequest(false);
+                return BadRequest("");
             }
 
-            return Ok(true);
+            return Ok(imageUrl);
         }
 
         [HttpPut("update-image")]
         public async Task<IActionResult> UpdateImage([FromForm] int roadmapId, IFormFile file, CancellationToken cancellationToken)
         {
             var user = await _userManager.GetUserAsync(User);
-            var result = await _projectService.UpdateImageAsync(roadmapId, user, file, cancellationToken);
+            var imageUrl = await _projectService.UpdateImageAsync(roadmapId, user, file, cancellationToken);
 
-            if (!result)
+            if (string.IsNullOrEmpty(imageUrl))
             {
-                return BadRequest(false);
+                return BadRequest("");
             }
 
-            return Ok(true);
+            return Ok(imageUrl);
         }
 
         [HttpDelete("delete-image/{id}")]

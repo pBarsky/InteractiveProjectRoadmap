@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq.Expressions;
 using System.Threading;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Moq;
@@ -273,7 +275,7 @@ namespace Roadmap.Services.Tests
                 It.IsAny<IFormFile>(), It.IsAny<CancellationToken>());
 
             // Assert
-            imageAdded.Should().BeFalse();
+            imageAdded.Should().BeNullOrEmpty();
         }
 
         [Fact]
@@ -299,11 +301,11 @@ namespace Roadmap.Services.Tests
                 It.IsAny<CancellationToken>());
 
             // Assert
-            imageAdded.Should().BeFalse();
+            imageAdded.Should().BeNullOrEmpty();
         }
 
         [Fact]
-        public async void AddImageAsync_False_FailedToSaveToDb()
+        public void AddImageAsync_False_FailedToSaveToDb()
         {
             // Arrange
             var user = new AppUser
@@ -322,11 +324,11 @@ namespace Roadmap.Services.Tests
             _projectRepository.Setup(x => x.UpdateAsync(It.IsAny<Project>())).ReturnsAsync(false);
 
             // Act
-            var imageAdded = await _projectService.AddImageAsync(project.Id, user, It.IsAny<IFormFile>(),
+            Func<Task> imageAddedAction = async () => await _projectService.AddImageAsync(project.Id, user, It.IsAny<IFormFile>(),
                 It.IsAny<CancellationToken>());
 
             // Assert
-            imageAdded.Should().BeFalse();
+            imageAddedAction.Should().Throw<DataException>();
         }
 
         [Fact]
@@ -345,7 +347,8 @@ namespace Roadmap.Services.Tests
 
             _projectRepository.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync(project);
             _imageService.Setup(x => x.UploadImageAsync(It.IsAny<IFormFile>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync("");
+                .ReturnsAsync("SomeUrl");
+            _imageService.Setup(x => x.GetImageUriAsync(It.IsAny<string>())).ReturnsAsync("Someurl");
             _projectRepository.Setup(x => x.UpdateAsync(It.IsAny<Project>())).ReturnsAsync(true);
             _projectRepository.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync(project);
 
@@ -354,7 +357,7 @@ namespace Roadmap.Services.Tests
                 It.IsAny<CancellationToken>());
 
             // Assert
-            imageAdded.Should().BeTrue();
+            imageAdded.Should().NotBeNullOrEmpty();
         }
 
         [Fact]
@@ -370,7 +373,7 @@ namespace Roadmap.Services.Tests
                 It.IsAny<CancellationToken>());
 
             // Assert
-            imageUpdated.Should().BeFalse();
+            imageUpdated.Should().BeNullOrEmpty();
         }
 
         [Fact]
@@ -389,7 +392,7 @@ namespace Roadmap.Services.Tests
 
             _projectRepository.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync(project);
             _imageService.Setup(x => x.UploadImageAsync(It.IsAny<IFormFile>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync("");
+                .ReturnsAsync((string)null);
             _projectRepository.Setup(x => x.UpdateAsync(It.IsAny<Project>())).ReturnsAsync(true);
             _projectRepository.Setup(x => x.GetAsync(It.IsAny<int>())).ReturnsAsync(project);
             _projectRepository.Setup(x => x.UpdateAsync(It.IsAny<Project>())).ReturnsAsync(true);
@@ -399,7 +402,7 @@ namespace Roadmap.Services.Tests
                 It.IsAny<CancellationToken>());
 
             // Assert
-            imageUpdated.Should().BeTrue();
+            imageUpdated.Should().BeNullOrEmpty();
         }
 
         [Fact]
