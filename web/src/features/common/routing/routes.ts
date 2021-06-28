@@ -19,6 +19,11 @@ export default {
 			add: '/api/milestones',
 			update: '/api/milestones',
 			delete: (id: number) => `/api/milestones/${id}`
+		},
+		image: {
+			add: '/api/roadmap/add-image',
+			update: '/api/roadmap/update-image',
+			delete: (roadmapId: number) => `/api/roadmap/delete-image/${roadmapId}`
 		}
 	},
 	common: {

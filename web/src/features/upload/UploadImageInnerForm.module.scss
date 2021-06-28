@@ -1,0 +1,22 @@
+.uploadImageForm {
+    max-width: 100%;
+}
+
+.wrapper {
+    img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 5px;
+        max-height: 200px;
+        max-width: 200px;
+    }
+}
+
+.buttons {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}

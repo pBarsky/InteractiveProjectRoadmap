@@ -80,9 +80,16 @@ const forms = {
 			label: 'status',
 			placeholder: 'Status',
 			labelText: 'Status'
+		},
+		upload: {
+			name: 'file',
+			label: 'file'
 		}
 	},
 	buttons: {
+		cancel: {
+			text: 'Anuluj'
+		},
 		edit: {
 			text: 'Edytuj'
 		},
@@ -104,6 +111,9 @@ const forms = {
 		add: {
 			text: 'Dodaj'
 		},
+		save: {
+			text: 'Zapisz'
+		},
 		addNewMilestone: {
 			text: "Dodaj nowego milestone'a"
 		},
@@ -115,6 +125,15 @@ const forms = {
 		},
 		returnToHomepage: {
 			text: 'Powrót na stronę główną'
+		},
+		editImage: {
+			text: 'Zmień tło'
+		},
+		addImage: {
+			text: 'Dodaj tło'
+		},
+		deleteImage: {
+			text: 'Usuń tło'
 		}
 	}
 };

@@ -12,7 +12,8 @@ export default {
 	common: {
 		failedLogin: 'Nieprawidłowy email lub hasło.',
 		failedAdd: 'Wystąpił problem przy dodawaniu roadmapy.',
-		failedAddMilestone: 'Wystąpił problem przy dodawaniu milestone.'
+		failedAddMilestone: 'Wystąpił problem przy dodawaniu milestone.',
+		failedAddImage: 'Wystąpił problem przy dodawaniu zdjęcia.'
 	},
 	username: {
 		required: 'Nazwa użytkownika jest wymagana'
@@ -31,5 +32,11 @@ export default {
 	endsOn: {
 		failedTime: 'Data końca nie może wystąpić przed datą początka.',
 		requiredMilestone: 'Data końca milestone jest wymagana'
+	},
+	fileSize: {
+		fileTooLarge: `Plik jest zbyt duży. Maksymalna wielkość pliku to ${process.env.REACT_APP_FILE_SIZE}`
+	},
+	fileFormat: {
+		unsupportedFormat: 'Wskazany format pliku nie jest wspierany.'
 	}
 };

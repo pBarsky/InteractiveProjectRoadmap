@@ -1,16 +1,17 @@
 import format from 'date-fns/format';
 import { Formik, FormikHelpers } from 'formik';
+import { observer } from 'mobx-react-lite';
 import React, { useState } from 'react';
 import constants from '../../app/constants/constants';
 import defaultDict from '../../app/dictionaries/defaultDict';
 import { Roadmap, RoadmapFormValues } from '../../app/models/roadmap';
-import roadmapStore from '../../app/stores/roadmapStore';
+import { useStore } from '../../app/stores/store';
 import { roadmapFormValuesSchema } from '../../app/validationSchemas/roadmapSchemas';
 import MilestonesList from '../milestone/MilestonesList';
+import EditImage from '../upload/EditImage';
 import styles from './RoadmapCard.module.scss';
 import RoadmapCardInnerForm from './RoadmapCardInnerForm';
 interface RoadmapCardProps {
-	roadmap: Roadmap;
 	testDate?: Date;
 	onSubmit?: (
 		values: RoadmapFormValues,
@@ -18,12 +19,13 @@ interface RoadmapCardProps {
 	) => Promise<void>;
 }
 
-const RoadmapCard = ({ onSubmit, roadmap, testDate }: RoadmapCardProps): JSX.Element => {
+const RoadmapCard = ({ onSubmit, testDate }: RoadmapCardProps): JSX.Element => {
+	const { roadmapStore } = useStore();
 	const [isEditing, setIsEditing] = useState(false);
 	const toggleEdit = () => {
 		setIsEditing((oldState) => !oldState);
 	};
-
+	const roadmap = roadmapStore.selectedRoadmap!;
 	const roadmapDict = defaultDict.pages.roadmap;
 
 	let isFailing: boolean = false;
@@ -74,6 +76,7 @@ const RoadmapCard = ({ onSubmit, roadmap, testDate }: RoadmapCardProps): JSX.Ele
 					/>
 				)}
 			/>
+			<EditImage />
 			{roadmap.imageUrl && (
 				<div className={styles.backgroundImage}>
 					<img src={roadmap.imageUrl} alt={roadmapDict.roadmapImageAltText} />
@@ -86,4 +89,4 @@ const RoadmapCard = ({ onSubmit, roadmap, testDate }: RoadmapCardProps): JSX.Ele
 	);
 };
 
-export default RoadmapCard;
+export default observer(RoadmapCard);
