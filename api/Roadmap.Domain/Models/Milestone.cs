@@ -22,5 +22,8 @@ namespace Roadmap.Domain.Models
 
         [EnumDataType(typeof(Status))]
         public Status Status { get; set; } = Status.ToBeStarted;
+
+        public int PosX { get; set; }
+        public int PosY { get; set; }
     }
 }
