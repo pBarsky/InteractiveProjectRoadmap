@@ -1,9 +1,12 @@
 import { render } from '@testing-library/react';
 import format from 'date-fns/format';
 import React from 'react';
+import { Router } from 'react-router-dom';
+import { browserHistory } from '../../../App';
 import constants from '../../../app/constants/constants';
 import defaultDict from '../../../app/dictionaries/defaultDict';
 import { Roadmap } from '../../../app/models/roadmap';
+import { store, StoreProvider } from '../../../app/stores/store';
 import RoadmapCard from '../RoadmapCard';
 
 describe('<RoadmapCard/>', () => {
@@ -17,7 +20,14 @@ describe('<RoadmapCard/>', () => {
 
 	it('Should render all properties of roadmap', () => {
 		const testRoadmap: Roadmap = { ...defaultTestRoadmap };
-		const { getByDisplayValue } = render(<RoadmapCard roadmap={testRoadmap} />);
+		store.roadmapStore.selectedRoadmap = testRoadmap;
+		const { getByDisplayValue } = render(
+			<StoreProvider store={store}>
+				<Router history={browserHistory}>
+					<RoadmapCard />
+				</Router>
+			</StoreProvider>
+		);
 
 		expect(getByDisplayValue(testRoadmap.description!)).toBeInTheDocument();
 		expect(getByDisplayValue(testRoadmap.name)).toBeInTheDocument();
@@ -31,7 +41,9 @@ describe('<RoadmapCard/>', () => {
 
 	it('Should mark card when todays date is past endsOn date', () => {
 		const { getByText } = render(
-			<RoadmapCard roadmap={defaultTestRoadmap} testDate={new Date('2033-03-16T23:00')} />
+			<StoreProvider store={store}>
+				<RoadmapCard testDate={new Date('2033-03-16T23:00')} />
+			</StoreProvider>
 		);
 
 		expect(getByText(defaultDict.pages.roadmap.roadmapLate)).toBeInTheDocument();
@@ -42,7 +54,14 @@ describe('<RoadmapCard/>', () => {
 			...defaultTestRoadmap,
 			imageUrl: 'https://via.placeholder.com/100'
 		};
-		const { getByAltText } = render(<RoadmapCard roadmap={testRoadmap} />);
+
+		store.roadmapStore.selectedRoadmap = testRoadmap;
+
+		const { getByAltText } = render(
+			<StoreProvider store={store}>
+				<RoadmapCard />
+			</StoreProvider>
+		);
 
 		const roadmapDict = defaultDict.pages.roadmap;
 

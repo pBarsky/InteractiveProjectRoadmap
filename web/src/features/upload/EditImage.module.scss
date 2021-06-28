@@ -1,0 +1,16 @@
+.wrapper {
+	margin: 1.5rem 0;
+
+	.uploadImageForm {
+		margin: 1.5rem 0;
+	}
+
+	.buttons {
+		display: flex;
+		justify-content: space-between;
+		.deleteButton {
+			margin-right: 0;
+			margin-left: auto;
+		}
+	}
+}

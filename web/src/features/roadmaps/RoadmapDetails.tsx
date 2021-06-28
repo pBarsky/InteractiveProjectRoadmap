@@ -37,9 +37,11 @@ const RoadmapDetails = () => {
 		setIsAddMilestoneVisible((oldState) => !oldState);
 		setIsButtonVisible((oldState) => !oldState);
 	};
+
 	return (
 		<div className={styles.container}>
-			<RoadmapCard roadmap={roadmapStore.selectedRoadmap} />
+			<RoadmapCard />
+
 			{isButtonVisible && (
 				<Button className={styles.addMilestoneButton} onClick={toggleAddMilestoneForm}>
 					{defaultDict.forms.buttons.addNewMilestone.text}

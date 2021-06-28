@@ -7,7 +7,7 @@ const Form = ({
 	...props
 }: FormikFormProps & React.FormHTMLAttributes<HTMLFormElement>) => {
 	return (
-		<form {...props} className={`${styles.form} ${props.className}`}>
+		<form {...props} className={`${styles.form} ${props.className || ''}`}>
 			{children}
 		</form>
 	);

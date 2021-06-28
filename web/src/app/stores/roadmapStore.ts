@@ -3,6 +3,7 @@ import { browserHistory } from '../../App';
 import routes from '../../features/common/routing/routes';
 import defaultDict from '../dictionaries/defaultDict';
 import { Roadmap, RoadmapFormValues } from '../models/roadmap';
+import imageService from '../services/imageService';
 import roadmapService from '../services/roadmapService';
 
 export interface RoadmapStore {
@@ -14,6 +15,8 @@ export interface RoadmapStore {
 	addRoadmap(roadmap: RoadmapFormValues): Promise<void>;
 	updateRoadmap(roadmap: Roadmap): Promise<void>;
 	deleteRoadmap(id: number): Promise<void>;
+	updateImage(formData: FormData): Promise<void>;
+	deleteImage(id: number): Promise<void>;
 }
 
 export class DefaultRoadmapStore implements RoadmapStore {
@@ -149,6 +152,23 @@ export class DefaultRoadmapStore implements RoadmapStore {
 			this.loading = false;
 		}
 	};
+
+	updateImage = async (formData: FormData) => {
+		const { data: backgroundUrl } = await imageService.update(formData);
+		runInAction(() => {
+			this.selectedRoadmap!.imageUrl = backgroundUrl;
+		});
+	}
+
+	deleteImage = async (id: number) => {
+		const { data: result } = await imageService.delete(id);
+		if (!result) {
+			throw Error('Could not delete image');
+		}
+		runInAction(() => {
+			this.selectedRoadmap!.imageUrl = null;
+		});
+	}
 
 	private dtoToRoadmap: (dto: Roadmap) => Roadmap = (dto: Roadmap) => {
 		return {
