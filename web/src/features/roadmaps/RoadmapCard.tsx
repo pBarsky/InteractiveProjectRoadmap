@@ -20,10 +20,11 @@ interface RoadmapCardProps {
 
 const RoadmapCard = ({ onSubmit, roadmap, testDate }: RoadmapCardProps): JSX.Element => {
 	const [isEditing, setIsEditing] = useState(false);
-
 	const toggleEdit = () => {
 		setIsEditing((oldState) => !oldState);
 	};
+
+	const roadmapDict = defaultDict.pages.roadmap;
 
 	let isFailing: boolean = false;
 	if (roadmap.endsOn) {
@@ -36,7 +37,7 @@ const RoadmapCard = ({ onSubmit, roadmap, testDate }: RoadmapCardProps): JSX.Ele
 	) => {
 		try {
 			const updatedRoadmap: Roadmap = {
-				id: roadmap.id,
+				...roadmap,
 				name: values.name,
 				description: values.description,
 				endsOn: values.endsOn ? new Date(values.endsOn) : null,
@@ -73,6 +74,11 @@ const RoadmapCard = ({ onSubmit, roadmap, testDate }: RoadmapCardProps): JSX.Ele
 					/>
 				)}
 			/>
+			{roadmap.imageUrl && (
+				<div className={styles.backgroundImage}>
+					<img src={roadmap.imageUrl} alt={roadmapDict.roadmapImageAltText} />
+				</div>
+			)}
 			<div>
 				<MilestonesList />
 			</div>

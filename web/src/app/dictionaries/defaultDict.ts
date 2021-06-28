@@ -133,7 +133,8 @@ const pages = {
 		noRoadmaps: 'Nie masz jeszcze żadnych roadmap...',
 		proposalOfCreation: 'Może chcesz zrobić nową? 😸',
 		roadmapLate: 'Jesteś spóźniony... 😥',
-		loadingDetails: "Wczytywanie roadmap'y..."
+		loadingDetails: "Wczytywanie roadmap'y...",
+		roadmapImageAltText: '(Tło roadmapy)'
 	},
 	milestone: {
 		name: 'Nazwa: ',
