@@ -13,6 +13,8 @@ export interface Milestone {
 	name: string;
 	description: string | null;
 	endsOn: Date | null;
+	posX?: number;
+	posY?: number;
 	status: Status;
 }
 
@@ -21,6 +23,8 @@ export interface MilestoneFormValues {
 	description: string | null;
 	endsOn: string;
 	parentProjectId: number;
+	posX?: number;
+	posY?: number;
 	status: Status;
 	commonFormError?: string;
 }
@@ -29,6 +33,8 @@ export class DefaultMilestoneFormValues implements MilestoneFormValues {
 	name: string = '';
 	description: string | null = '';
 	parentProjectId: number = 0;
+	posX?: number = 0;
+	posY?: number = 0;
 	endsOn: string = format(new Date().setDate(new Date().getDate() + 1), constants.dateFormat);
 	status: Status = Status.New;
 	commonFormError?: string;

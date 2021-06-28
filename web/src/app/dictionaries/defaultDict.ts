@@ -21,7 +21,8 @@ const errors = {
 	},
 	milestones: {
 		failedEdit: "Nie udało się zaktualizować milestone'a.",
-		failedDelete: "Nie udało się usunąć milestone'a."
+		failedDelete: "Nie udało się usunąć milestone'a.",
+		failedPositionUpdate: "Nie udało się zaktualizować pozycji milestone'a."
 	}
 };
 
