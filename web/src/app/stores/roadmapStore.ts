@@ -92,6 +92,7 @@ export class DefaultRoadmapStore implements RoadmapStore {
 			const roadmap: Roadmap = {
 				...values,
 				id: id,
+				imageUrl: null,
 				startsOn: new Date(values.startsOn),
 				endsOn: values.endsOn ? new Date(values.endsOn) : null
 			};
