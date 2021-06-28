@@ -7,6 +7,7 @@ import defaultDict from '../../app/dictionaries/defaultDict';
 import { Roadmap, RoadmapFormValues } from '../../app/models/roadmap';
 import { useStore } from '../../app/stores/store';
 import { roadmapFormValuesSchema } from '../../app/validationSchemas/roadmapSchemas';
+import AddMilestone from '../milestone/AddMilestone';
 import MilestonesList from '../milestone/MilestonesList';
 import EditImage from '../upload/EditImage';
 import styles from './RoadmapCard.module.scss';
@@ -82,8 +83,14 @@ const RoadmapCard = ({ onSubmit, testDate }: RoadmapCardProps): JSX.Element => {
 					<img src={roadmap.imageUrl} alt={roadmapDict.roadmapImageAltText} />
 				</div>
 			)}
-			<div>
-				<MilestonesList />
+			<div className={styles.milestones}>
+				<div className={styles.milestonesHeader}>
+					<span>{defaultDict.pages.roadmap.milestonesHeader}</span>
+					<AddMilestone roadmapId={roadmap.id} />
+				</div>
+				<div>
+					<MilestonesList />
+				</div>
 			</div>
 		</div>
 	);

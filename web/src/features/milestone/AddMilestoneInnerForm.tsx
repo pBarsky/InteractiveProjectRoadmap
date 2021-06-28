@@ -19,6 +19,7 @@ const AddMilestoneInnerForm = ({
 					id={`${defaultDict.forms.inputs.name.name}AddMilestone`}
 					required
 					className={styles.field}
+					errorMessageAbsolutePosition
 				/>
 				<Field
 					label={defaultDict.forms.inputs.endsOn.labelText}
@@ -27,6 +28,7 @@ const AddMilestoneInnerForm = ({
 					required
 					type='date'
 					className={styles.field}
+					errorMessageAbsolutePosition
 				/>
 				<div className={styles.buttonDiv}>
 					<Button className={styles.submitButton} disabled={isSubmitting} type='submit'>

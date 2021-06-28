@@ -7,13 +7,13 @@ import { browserHistory } from '../../../App';
 import constants from '../../../app/constants/constants';
 import defaultDict from '../../../app/dictionaries/defaultDict';
 import customErrorMessages from '../../../app/validationSchemas/customErrorMessages';
-import AddMilestone from '../AddMilestone';
+import AddMilestoneForm from '../AddMilestoneForm';
 
 describe('<AddMilestone />', () => {
 	it('Should render form with name, description and endsOn input fields, with a submit button', async () => {
 		const { getByLabelText, getByRole } = render(
 			<Router history={browserHistory}>
-				<AddMilestone roadmapId={1} />
+				<AddMilestoneForm roadmapId={1} />
 			</Router>
 		);
 		await waitFor(() => {
@@ -30,7 +30,7 @@ describe('<AddMilestone />', () => {
 
 		const { getByRole, getByLabelText } = render(
 			<Router history={browserHistory}>
-				<AddMilestone roadmapId={1} onSubmit={onSubmit} />
+				<AddMilestoneForm roadmapId={1} onSubmit={onSubmit} />
 			</Router>
 		);
 
@@ -55,7 +55,7 @@ describe('<AddMilestone />', () => {
 
 		const { getByText, getByRole, getByLabelText } = render(
 			<Router history={browserHistory}>
-				<AddMilestone roadmapId={1} onSubmit={onSubmit} />
+				<AddMilestoneForm roadmapId={1} onSubmit={onSubmit} />
 			</Router>
 		);
 		userEvent.click(getByLabelText(defaultDict.forms.inputs.name.labelText));

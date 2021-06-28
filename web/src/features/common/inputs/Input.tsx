@@ -2,14 +2,18 @@ import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FieldHookConfig, useField } from 'formik';
 import React from 'react';
-import TextareaAutosize from 'react-textarea-autosize';
 import styles from './Input.module.scss';
 
 interface InputProps {
 	icon?: IconProp;
+	errorMessageAbsolutePosition?: boolean;
 }
 
-const Input = ({ icon, ...props }: InputProps & FieldHookConfig<string>): JSX.Element => {
+const Input = ({
+	icon,
+	errorMessageAbsolutePosition,
+	...props
+}: InputProps & FieldHookConfig<string>): JSX.Element => {
 	const [field, meta] = useField(props);
 
 	const inputWrapperClasses = (): string | undefined => {
@@ -23,13 +27,19 @@ const Input = ({ icon, ...props }: InputProps & FieldHookConfig<string>): JSX.El
 		<div className={styles.input}>
 			{props.type === 'textarea'
 				? (
-					<TextareaAutosize
-						{...field}
-						value={props.value ?? field.value}
-						className={props.className}
-						disabled={props.disabled}
-						id={props.id}
-					/>
+					<div className={inputWrapperClasses()}>
+						<textarea
+							{...field}
+							value={props.value ?? field.value}
+							disabled={props.disabled}
+							id={props.id}
+						/>
+						{icon && (
+							<div className={styles.iconWrapper}>
+								<FontAwesomeIcon icon={icon} className={styles.icon} />
+							</div>
+						)}
+					</div>
 				)
 				: (
 					<div className={inputWrapperClasses()}>
@@ -47,7 +57,15 @@ const Input = ({ icon, ...props }: InputProps & FieldHookConfig<string>): JSX.El
 						)}
 					</div>
 				)}
-			{meta.touched && meta.error && <div className={styles.errorMessage}>{meta.error}</div>}
+			{meta.touched && meta.error && (
+				<div
+					className={`${styles.errorMessage} ${
+						errorMessageAbsolutePosition ? styles.absolute : ''
+					}`}
+				>
+					{meta.error}
+				</div>
+			)}
 		</div>
 	);
 };

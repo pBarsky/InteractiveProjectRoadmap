@@ -1,17 +1,13 @@
 .wrapper {
 	form {
-		flex-wrap: wrap;
-		margin-bottom: 2em;
-		width: 100%;
 		display: flex;
-		justify-content: center;
-		padding: 10px;
+		flex-wrap: wrap;
 		width: 100%;
-		flex-direction: row;
-		justify-content: space-between;
+		justify-content: center;
 		align-items: flex-end;
 		.field {
 			margin: 10px;
+			margin-left: 0;
 			flex-grow: 1;
 		}
 	}

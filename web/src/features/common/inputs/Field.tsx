@@ -8,6 +8,7 @@ interface FieldProps {
 	label: string;
 	inputClassName?: string;
 	icon?: IconProp;
+	errorMessageAbsolutePosition?: boolean;
 }
 
 const Field = ({ label, inputClassName, ...props }: FieldProps & FieldHookConfig<string>) => {

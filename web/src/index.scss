@@ -1,6 +1,6 @@
 @import-normalize;
 
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
 html,
 body,
 #root {
@@ -22,8 +22,8 @@ body {
 	-moz-osx-font-smoothing: grayscale;
 }
 body * {
-	font-family: 'Lato', 'Segoe UI', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
-		'Helvetica Neue', sans-serif;
+	font-family: 'Roboto', 'Segoe UI', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+		'Helvetica Neue', sans-serif !important;
 }
 
 code {
@@ -44,8 +44,10 @@ code {
 	--green: hsl(130, 100%, 40%);
 	--darkGreen: hsl(138, 100%, 25%);
 	--lightGray: rgba(0, 0, 0, 0.05);
-	--defaultBoxShadow: var(--lightGray) 0px 10px 25px;
-	--defaultDarkerBoxShadow: var(--gray) 0px 10px 25px;
+}
+
+:focus-visible {
+	outline: 2px solid black !important;
 }
 
 input[type='text'],
@@ -113,7 +115,7 @@ button:-moz-focusring,
 [type='button']:-moz-focusring,
 [type='reset']:-moz-focusring,
 [type='submit']:-moz-focusring {
-	outline: 1px dotted ButtonText;
+	outline: 1px solid ButtonText;
 }
 
 fieldset {

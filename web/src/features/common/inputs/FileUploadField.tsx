@@ -17,13 +17,13 @@ const UploadField = ({
 	afterOnChange,
 	...props
 }: UploadFieldProps & FieldHookConfig<string>): JSX.Element => {
-	const [field, meta] = useField(props);
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const [_, meta] = useField(props);
 	const loggingOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		if (afterOnChange) {
 			afterOnChange(event);
 		}
 		setFieldValue(props.name, event?.currentTarget?.files![0]);
-		console.debug(0 ?? field.value);
 	};
 
 	const acceptedFiles = (process.env.REACT_APP_ALLOWED_EXTENSIONS || 'image/*').replace(
