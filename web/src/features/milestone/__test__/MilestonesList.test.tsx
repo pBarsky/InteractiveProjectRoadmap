@@ -1,21 +1,32 @@
-import { render, waitFor } from '@testing-library/react';
+import { cleanup, render, waitFor } from '@testing-library/react';
+import { ReactFlowProvider } from 'react-flow-renderer';
 import { Router } from 'react-router';
 import { browserHistory } from '../../../App';
 import defaultDict from '../../../app/dictionaries/defaultDict';
 import { Milestone } from '../../../app/models/milestone';
 import { Roadmap } from '../../../app/models/roadmap';
-import { store, StoreProvider } from '../../../app/stores/store';
+import { store } from '../../../app/stores/store';
 import MilestonesList from '../MilestonesList';
+
+afterEach(cleanup);
+
+beforeEach(() => {
+	window.ResizeObserver = jest.fn().mockImplementation(() => ({
+		disconnect: jest.fn(),
+		observe: jest.fn(),
+		unobserve: jest.fn()
+	}));
+});
 
 describe('<MilestoneListItem />', () => {
 	it('Should display message when no milestones where found', () => {
 		store.milestoneStore.milestones = [];
 		const { getByText } = render(
-			<StoreProvider>
+			<ReactFlowProvider>
 				<Router history={browserHistory}>
 					<MilestonesList />
 				</Router>
-			</StoreProvider>
+			</ReactFlowProvider>
 		);
 
 		expect(getByText(defaultDict.pages.milestone.noMilestones)).toBeInTheDocument();
@@ -37,6 +48,8 @@ describe('<MilestoneListItem />', () => {
 			parentProjectId: defaultRoadmap.id,
 			status: 0,
 			id: 1,
+			posX: 0,
+			posY: 0,
 			description: firstDescription,
 			name: 'test name',
 			endsOn: new Date('2020-05-22')
@@ -47,11 +60,11 @@ describe('<MilestoneListItem />', () => {
 		];
 
 		const { getByText } = render(
-			<StoreProvider>
+			<ReactFlowProvider>
 				<Router history={browserHistory}>
 					<MilestonesList />
 				</Router>
-			</StoreProvider>
+			</ReactFlowProvider>
 		);
 
 		waitFor(() => {

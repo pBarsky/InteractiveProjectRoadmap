@@ -2,6 +2,7 @@ import format from 'date-fns/format';
 import { Formik, FormikHelpers } from 'formik';
 import { observer } from 'mobx-react-lite';
 import React, { useState } from 'react';
+import { ReactFlowProvider } from 'react-flow-renderer';
 import constants from '../../app/constants/constants';
 import defaultDict from '../../app/dictionaries/defaultDict';
 import { Roadmap, RoadmapFormValues } from '../../app/models/roadmap';
@@ -82,9 +83,9 @@ const RoadmapCard = ({ onSubmit, testDate }: RoadmapCardProps): JSX.Element => {
 					<img src={roadmap.imageUrl} alt={roadmapDict.roadmapImageAltText} />
 				</div>
 			)}
-			<div>
+			<ReactFlowProvider>
 				<MilestonesList />
-			</div>
+			</ReactFlowProvider>
 		</div>
 	);
 };
