@@ -10,6 +10,7 @@ export interface MilestoneStore {
 	milestones: Milestone[];
 	selectedMilestone: Milestone | null;
 	loading: boolean;
+	updatePosition(milestoneId: number, posX: number, posY: number): Promise<void>;
 	getAll(roadmap: Roadmap): Promise<void>;
 	get(id: number): Promise<void>;
 	addMilestone(milestone: MilestoneFormValues): Promise<void>;
@@ -112,6 +113,26 @@ export class DefaultMilestoneStore implements MilestoneStore {
 			}
 			this.setMilestone(values);
 			this.selectedMilestone = { ...values };
+		} catch (error) {
+			console.debug(error);
+			throw error;
+		}
+	};
+
+	updatePosition = async (milestoneId: number, posX: number, posY: number): Promise<void> => {
+		const milestone = this.milestones.find((x) => x.id === milestoneId);
+		if (!milestone) {
+			throw new Error(defaultDict.errors.milestones.failedPositionUpdate);
+		}
+		milestone.posX = Math.round(posX);
+		milestone.posY = Math.round(posY);
+		this.setMilestone(milestone);
+		// zamiast error można pokazać toast'a -P
+		try {
+			const { data } = await milestoneService.update(milestone);
+			if (!data) {
+				throw new Error(defaultDict.errors.milestones.failedPositionUpdate);
+			}
 		} catch (error) {
 			console.debug(error);
 			throw error;

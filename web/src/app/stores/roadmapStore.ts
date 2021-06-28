@@ -8,8 +8,10 @@ import roadmapService from '../services/roadmapService';
 
 export interface RoadmapStore {
 	roadmaps: Roadmap[];
+	backgroundImageSize: [number, number];
 	selectedRoadmap: Roadmap | null;
 	loading: boolean;
+	setBackgroundImageSize(size: [number, number]): void;
 	loadRoadmaps(): Promise<void>;
 	loadRoadmap(id: number): Promise<void>;
 	addRoadmap(roadmap: RoadmapFormValues): Promise<void>;
@@ -23,8 +25,18 @@ export class DefaultRoadmapStore implements RoadmapStore {
 	private _roadmaps: Roadmap[] = [];
 	private _selectedRoadmap: Roadmap | null = null;
 	private _loading: boolean = false;
+	private _backgroundImageSize: [number, number] = [1000, 1000];
+
 	constructor () {
 		makeAutoObservable(this);
+	}
+
+	public get backgroundImageSize (): [number, number] {
+		return this._backgroundImageSize;
+	}
+
+	public set backgroundImageSize (value: [number, number]) {
+		this._backgroundImageSize = value;
 	}
 
 	public get loading (): boolean {
@@ -49,6 +61,11 @@ export class DefaultRoadmapStore implements RoadmapStore {
 
 	public set selectedRoadmap (value: Roadmap | null) {
 		this._selectedRoadmap = value;
+	}
+
+	setBackgroundImageSize (size: [number, number]): void {
+		console.log(size);
+		this._backgroundImageSize = [...size];
 	}
 
 	loadRoadmaps = async () => {
@@ -158,7 +175,7 @@ export class DefaultRoadmapStore implements RoadmapStore {
 		runInAction(() => {
 			this.selectedRoadmap!.imageUrl = backgroundUrl;
 		});
-	}
+	};
 
 	deleteImage = async (id: number) => {
 		const { data: result } = await imageService.delete(id);
@@ -168,7 +185,7 @@ export class DefaultRoadmapStore implements RoadmapStore {
 		runInAction(() => {
 			this.selectedRoadmap!.imageUrl = null;
 		});
-	}
+	};
 
 	private dtoToRoadmap: (dto: Roadmap) => Roadmap = (dto: Roadmap) => {
 		return {

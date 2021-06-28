@@ -19,7 +19,6 @@ interface MilestoneListItemProps {
 
 const MilestoneListItem = ({ onSubmit, milestone }: MilestoneListItemProps) => {
 	const [isEditing, setIsEditing] = useState(false);
-
 	const toggleEdit = () => {
 		setIsEditing((oldState) => !oldState);
 	};
@@ -30,12 +29,10 @@ const MilestoneListItem = ({ onSubmit, milestone }: MilestoneListItemProps) => {
 	) => {
 		try {
 			const updatedMilestone: Milestone = {
-				id: milestone.id,
-				parentProjectId: milestone.parentProjectId,
+				...milestone,
 				name: values.name,
 				description: values.description,
-				endsOn: values.endsOn ? new Date(values.endsOn) : null,
-				status: milestone.status
+				endsOn: values.endsOn ? new Date(values.endsOn) : null
 			};
 			await milestoneStore.updateMilestone(updatedMilestone);
 		} catch {

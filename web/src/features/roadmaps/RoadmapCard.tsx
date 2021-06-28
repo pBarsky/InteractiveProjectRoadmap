@@ -8,7 +8,7 @@ import { Roadmap, RoadmapFormValues } from '../../app/models/roadmap';
 import { useStore } from '../../app/stores/store';
 import { roadmapFormValuesSchema } from '../../app/validationSchemas/roadmapSchemas';
 import AddMilestone from '../milestone/AddMilestone';
-import MilestonesList from '../milestone/MilestonesList';
+import MilestonesMap from '../milestone/MilestonesMap';
 import EditImage from '../upload/EditImage';
 import styles from './RoadmapCard.module.scss';
 import RoadmapCardInnerForm from './RoadmapCardInnerForm';
@@ -80,7 +80,13 @@ const RoadmapCard = ({ onSubmit, testDate }: RoadmapCardProps): JSX.Element => {
 			<EditImage />
 			{roadmap.imageUrl && (
 				<div className={styles.backgroundImage}>
-					<img src={roadmap.imageUrl} alt={roadmapDict.roadmapImageAltText} />
+					<img
+						src={roadmap.imageUrl}
+						alt={roadmapDict.roadmapImageAltText}
+						onLoad={({ currentTarget: { naturalWidth, naturalHeight } }) =>
+							roadmapStore.setBackgroundImageSize([naturalWidth, naturalHeight])
+						}
+					/>
 				</div>
 			)}
 			<div className={styles.milestones}>
@@ -88,9 +94,7 @@ const RoadmapCard = ({ onSubmit, testDate }: RoadmapCardProps): JSX.Element => {
 					<span>{defaultDict.pages.roadmap.milestonesHeader}</span>
 					<AddMilestone roadmapId={roadmap.id} />
 				</div>
-				<div>
-					<MilestonesList />
-				</div>
+				<MilestonesMap />
 			</div>
 		</div>
 	);

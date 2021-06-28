@@ -1,4 +1,5 @@
 import { render, waitFor } from '@testing-library/react';
+import { ReactFlowProvider } from 'react-flow-renderer';
 import { Router } from 'react-router';
 import { browserHistory } from '../../../App';
 import defaultDict from '../../../app/dictionaries/defaultDict';
@@ -35,9 +36,11 @@ describe('<RoadmapDetails />', () => {
 		store.roadmapStore.selectedRoadmap = testRoadmap;
 		const { getByDisplayValue } = render(
 			<StoreProvider>
-				<Router history={browserHistory}>
-					<RoadmapDetails />
-				</Router>
+				<ReactFlowProvider>
+					<Router history={browserHistory}>
+						<RoadmapDetails />
+					</Router>
+				</ReactFlowProvider>
 			</StoreProvider>
 		);
 		await waitFor(() => {
