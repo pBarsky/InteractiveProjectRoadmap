@@ -34,6 +34,7 @@ const UploadImageInnerForm = ({
 				setFieldValue={setFieldValue}
 				label={defaultDict.forms.inputs.upload.label}
 				afterOnChange={fileHandler}
+				id={`uploadimage${defaultDict.forms.inputs.upload.name}`}
 			/>
 			<div className={styles.buttons}>
 				<Button className={styles.imageButton} type='submit'>

@@ -26,8 +26,8 @@ const UploadField = ({
 		console.debug(0 ?? field.value);
 	};
 
-	const acceptedFiles = (process.env.REACT_APP_ALLOWED_EXTENSIONS || 'image/*').replaceAll(
-		' ',
+	const acceptedFiles = (process.env.REACT_APP_ALLOWED_EXTENSIONS || 'image/*').replace(
+		/ /g,
 		','
 	);
 

@@ -1,9 +1,11 @@
 import { render, waitFor } from '@testing-library/react';
-import { Form, Formik } from 'formik';
+import { Formik } from 'formik';
 import React from 'react';
 import { Router } from 'react-router-dom';
 import { browserHistory } from '../../../../App';
+import defaultDict from '../../../../app/dictionaries/defaultDict';
 import FileUploadField from '../FileUploadField';
+import Form from '../Form';
 
 describe('<FileUploadField/>', () => {
 	it('Should render FileUploadField', async () => {
@@ -11,7 +13,7 @@ describe('<FileUploadField/>', () => {
 		const setFieldValue = () => {};
 		const exampleLabelText = 'testLabel';
 		const exampleNameText = 'testFieldName';
-		const { getByDisplayValue, getByLabelText } = render(
+		const { getByLabelText } = render(
 			<Router history={browserHistory}>
 				<Formik
 					initialValues={{ [exampleNameText]: exampleNameText }}
@@ -22,14 +24,15 @@ describe('<FileUploadField/>', () => {
 								name={exampleNameText}
 								setFieldValue={setFieldValue}
 								label={exampleLabelText}
+								id={`uploadimage${defaultDict.forms.inputs.upload.name}`}
 							/>
 						</Form>
 					)}
 				/>
 			</Router>
 		);
+
 		await waitFor(() => {
-			expect(getByDisplayValue(exampleNameText)).toBeInTheDocument();
 			expect(getByLabelText(exampleLabelText)).toBeInTheDocument();
 		});
 	});

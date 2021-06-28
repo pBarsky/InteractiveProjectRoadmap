@@ -102,7 +102,7 @@ namespace Roadmap.Services.Images
                 return false;
             }
 
-            if (!_allowedExtensions.Contains(Path.GetExtension(file.FileName)))
+            if (!_allowedExtensions.Contains(Path.GetExtension(file.FileName).ToLower()))
             {
                 return false;
             }

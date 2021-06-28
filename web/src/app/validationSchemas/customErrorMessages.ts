@@ -33,10 +33,13 @@ export default {
 		failedTime: 'Data końca nie może wystąpić przed datą początka.',
 		requiredMilestone: 'Data końca milestone jest wymagana'
 	},
-	fileSize: {
-		fileTooLarge: `Plik jest zbyt duży. Maksymalna wielkość pliku to ${process.env.REACT_APP_FILE_SIZE}`
-	},
-	fileFormat: {
-		unsupportedFormat: 'Wskazany format pliku nie jest wspierany.'
+	file: {
+		size: {
+			fileTooLarge: `Plik jest zbyt duży. Maksymalna wielkość pliku to ${process.env.REACT_APP_FILE_SIZE}`
+		},
+		format: {
+			unsupportedFormat: 'Wskazany format pliku nie jest wspierany.'
+		},
+		required: 'Plik jest wymagany!'
 	}
 };

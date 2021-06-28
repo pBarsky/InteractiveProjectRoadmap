@@ -1,6 +1,8 @@
 import { render } from '@testing-library/react';
 import format from 'date-fns/format';
 import React from 'react';
+import { Router } from 'react-router-dom';
+import { browserHistory } from '../../../App';
 import constants from '../../../app/constants/constants';
 import defaultDict from '../../../app/dictionaries/defaultDict';
 import { Roadmap } from '../../../app/models/roadmap';
@@ -21,7 +23,9 @@ describe('<RoadmapCard/>', () => {
 		store.roadmapStore.selectedRoadmap = testRoadmap;
 		const { getByDisplayValue } = render(
 			<StoreProvider store={store}>
-				<RoadmapCard />
+				<Router history={browserHistory}>
+					<RoadmapCard />
+				</Router>
 			</StoreProvider>
 		);
 
@@ -36,8 +40,6 @@ describe('<RoadmapCard/>', () => {
 	});
 
 	it('Should mark card when todays date is past endsOn date', () => {
-		store.roadmapStore.selectedRoadmap = testRoadmap;
-
 		const { getByText } = render(
 			<StoreProvider store={store}>
 				<RoadmapCard testDate={new Date('2033-03-16T23:00')} />

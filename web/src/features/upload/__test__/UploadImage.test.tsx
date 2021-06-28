@@ -6,7 +6,7 @@ import { StoreProvider } from '../../../app/stores/store';
 import UploadImage from '../UploadImage';
 
 describe('<UploadImage />', () => {
-	it('Should render form with button with image preview', async () => {
+	it('Should render form with button', async () => {
 		const { getByRole } = render(
 			<StoreProvider>
 				<Router history={browserHistory}>
@@ -19,8 +19,6 @@ describe('<UploadImage />', () => {
 			expect(
 				getByRole('button', { name: defaultDict.forms.buttons.save.text })
 			).toBeInTheDocument();
-			// expect(getByLabelText(defaultDict.forms.inputs.upload.label));
-			expect(getByRole('img')).toBeInTheDocument();
 		});
 	});
 });

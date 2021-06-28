@@ -22,7 +22,7 @@ const EditImage = () => {
 		<div className={styles.wrapper}>
 			<div className={styles.buttons}>
 				{!isUploadImageVisible && (
-					<Button onClick={toggleUploadImageForm}>
+					<Button className={styles.editButton} onClick={toggleUploadImageForm}>
 						{roadmapHasImage
 							? defaultDict.forms.buttons.editImage.text
 							: defaultDict.forms.buttons.addImage.text}
@@ -30,6 +30,8 @@ const EditImage = () => {
 				)}
 				{roadmapHasImage && (
 					<Button
+						outlined
+						className={styles.deleteButton}
 						onClick={async () => await roadmapStore.deleteImage(selectedRoadmap!.id)}
 					>
 						{defaultDict.forms.buttons.deleteImage.text}
@@ -37,7 +39,9 @@ const EditImage = () => {
 				)}
 			</div>
 			{isUploadImageVisible && (
-				<UploadImage hideForm={() => setIsUploadImageFormVisible(false)} />
+				<div className={styles.uploadImageForm}>
+					<UploadImage hideForm={() => setIsUploadImageFormVisible(false)} />
+				</div>
 			)}
 		</div>
 	);
