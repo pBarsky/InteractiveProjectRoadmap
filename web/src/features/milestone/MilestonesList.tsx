@@ -1,7 +1,8 @@
 import { observer } from 'mobx-react-lite';
 import React from 'react';
-import ReactFlow, { Controls, FlowElement, useStoreState } from 'react-flow-renderer';
+import ReactFlow, { Controls, FlowElement, Node, useStoreState } from 'react-flow-renderer';
 import defaultDict from '../../app/dictionaries/defaultDict';
+import { Milestone } from '../../app/models/milestone';
 import { useStore } from '../../app/stores/store';
 import Loader from '../common/Loader';
 import MilestoneListItem from './MilestoneListItem';
@@ -16,19 +17,16 @@ const MilestonesList = () => {
 	if (milestoneStore.loading) {
 		return <Loader />;
 	}
-	const elements: FlowElement[] = milestones.map((x, idx) => ({
-		id: `${x.id}`,
-		data: { label: <MilestoneListItem milestone={x} /> },
-		position: { x: idx * 50, y: idx * 50 },
-		style: {
-			display: 'flex',
-			flexDirection: 'row',
-			border: '1px solid var(--gray)',
-			borderRadius: '5px',
-			padding: '2em',
-			margin: 'auto auto 2em',
-			boxShadow: 'var(--defaultBoxShadow)'
-		}
+
+	const customMilestoneNode = (data: FlowElement<Milestone>) => (
+		<MilestoneListItem milestone={data.data!} />
+	);
+
+	const elements: FlowElement[] = milestones.map((milestone) => ({
+		id: `${milestone.id}`,
+		data: milestone,
+		type: 'milestone',
+		position: { x: milestone.posX, y: milestone.posY }
 	}));
 
 	const style = {
@@ -37,13 +35,22 @@ const MilestonesList = () => {
 		'--data-scale': transformation[2]
 	} as React.CSSProperties;
 
-	const moveMilestone = (event: React.MouseEvent<Element, MouseEvent>, node: FlowElement) => {
-		milestoneStore.updatePosition(parseInt(node.id), event.pageX, event.pageY);
+	const moveMilestone = (event: React.MouseEvent<Element, MouseEvent>, node: Node) => {
+		milestoneStore.updatePosition(parseInt(node.id), node.position.x, node.position.y);
+	};
+
+	const nodeTypes = {
+		milestone: customMilestoneNode
 	};
 
 	return (
-		<div style={{ width: '1000px', height: '1000px' }}>
-			<ReactFlow elements={elements} style={style} onNodeDragStop={moveMilestone}>
+		<div style={{ width: '300px', height: '300px' }}>
+			<ReactFlow
+				elements={elements}
+				style={style}
+				onNodeDragStop={moveMilestone}
+				nodeTypes={nodeTypes}
+			>
 				<Controls />
 			</ReactFlow>
 		</div>

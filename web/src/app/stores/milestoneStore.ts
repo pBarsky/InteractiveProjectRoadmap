@@ -123,15 +123,14 @@ export class DefaultMilestoneStore implements MilestoneStore {
 	};
 
 	updatePosition = async (milestoneId: number, posX: number, posY: number): Promise<void> => {
-		const milestone = this.milestones.find(x => x.id === milestoneId);
+		const milestone = this.milestones.find((x) => x.id === milestoneId);
 		if (!milestone) {
 			throw new Error(defaultDict.errors.milestones.failedPositionUpdate);
 		}
-		milestone.posX = posX;
-		milestone.posY = posY;
+		milestone.posX = Math.round(posX);
+		milestone.posY = Math.round(posY);
 		this.setMilestone(milestone);
 		// zamiast error można pokazać toast'a -P
-		console.log(milestone);
 		try {
 			const { data } = await milestoneService.update(milestone);
 			if (!data) {
@@ -141,7 +140,7 @@ export class DefaultMilestoneStore implements MilestoneStore {
 			console.debug(error);
 			throw error;
 		}
-	}
+	};
 
 	setMilestone = (milestone: Milestone) => {
 		const index = this.milestones.findIndex((x) => x.id === milestone.id);

@@ -48,6 +48,8 @@ describe('<MilestoneListItem />', () => {
 			parentProjectId: defaultRoadmap.id,
 			status: 0,
 			id: 1,
+			posX: 0,
+			posY: 0,
 			description: firstDescription,
 			name: 'test name',
 			endsOn: new Date('2020-05-22')
