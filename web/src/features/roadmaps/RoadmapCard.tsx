@@ -24,6 +24,8 @@ const RoadmapCard = ({ onSubmit, roadmap, testDate }: RoadmapCardProps): JSX.Ele
 		setIsEditing((oldState) => !oldState);
 	};
 
+	const roadmapDict = defaultDict.pages.roadmap;
+
 	let isFailing: boolean = false;
 	if (roadmap.endsOn) {
 		isFailing = (testDate ?? new Date()).getTime() > roadmap.endsOn.getTime();
@@ -74,7 +76,7 @@ const RoadmapCard = ({ onSubmit, roadmap, testDate }: RoadmapCardProps): JSX.Ele
 			/>
 			{roadmap.imageUrl && (
 				<div className={styles.backgroundImage}>
-					<img src={roadmap.imageUrl} alt='roadmap background' />
+					<img src={roadmap.imageUrl} alt={roadmapDict.roadmapImageAltText} />
 				</div>
 			)}
 			<div>

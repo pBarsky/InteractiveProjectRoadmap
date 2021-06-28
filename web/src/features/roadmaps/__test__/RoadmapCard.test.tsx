@@ -36,4 +36,16 @@ describe('<RoadmapCard/>', () => {
 
 		expect(getByText(defaultDict.pages.roadmap.roadmapLate)).toBeInTheDocument();
 	});
+
+	it('Should render image when imageUrl is present in data', () => {
+		const testRoadmap: Roadmap = {
+			...defaultTestRoadmap,
+			imageUrl: 'https://via.placeholder.com/100'
+		};
+		const { getByAltText } = render(<RoadmapCard roadmap={testRoadmap} />);
+
+		const roadmapDict = defaultDict.pages.roadmap;
+
+		expect(getByAltText(roadmapDict.roadmapImageAltText)).toBeInTheDocument();
+	});
 });

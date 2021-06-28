@@ -6,7 +6,7 @@ export interface Roadmap {
 	name: string;
 	description: string | null;
 	startsOn: Date;
-	imageUrl: string | null;
+	imageUrl?: string | null;
 	endsOn: Date | null;
 }
 
