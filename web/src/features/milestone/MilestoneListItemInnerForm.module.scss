@@ -53,10 +53,6 @@
 			color: var(--black);
 		}
 	}
-	.editButtons {
-		padding: 0;
-		margin: 1em 0;
-	}
 }
 .buttons {
 	display: flex;
@@ -64,42 +60,6 @@
 	width: 100%;
 	margin-top: 1em;
 	overflow: visible;
-	button {
-		padding: 0.5em;
-		margin: 0 0.5em;
-		min-width: 4em;
-		border: none;
-		box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-		background-color: white;
-		transition: all 0.1s ease-in !important;
-	}
-	.editButton {
-		background-color: var(--blue);
-		color: white;
-		&:hover {
-			background-color: var(--darkBlue);
-		}
-	}
-	.deleteButton {
-		color: var(--errorRed);
-		&:hover {
-			color: red;
-		}
-	}
-	.saveButton {
-		color: var(--green);
-		&:hover {
-			background-color: var(--gray);
-			box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-		}
-	}
-	.cancelButton {
-		color: var(--errorRed);
-		&:hover {
-			background-color: var(--gray);
-			box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
-		}
-	}
 }
 
 .form.editing {

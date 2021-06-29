@@ -41,6 +41,20 @@ const RoadmapCardInnerForm = ({
 		toggleEdit();
 	};
 
+	const truncatedDescription = () => {
+		if (isEditing) {
+			return values.description ?? '';
+		}
+
+		if (!values.description) {
+			return '';
+		}
+
+		return values.description.length > 150
+			? `${values.description.slice(0, 150)}...`
+			: values.description;
+	};
+
 	const isLate: JSX.Element | null = isFailing ? <p>{roadmap.roadmapLate}</p> : null;
 	return (
 		<Form
@@ -63,11 +77,11 @@ const RoadmapCardInnerForm = ({
 					<div className={styles.description}>
 						<Field
 							label={inputs.description.labelText}
-							className={styles.description}
 							type='textarea'
 							name={inputs.description.name}
 							id={`${inputs.description.name}RoadmapCard`}
 							disabled={!isEditing}
+							value={truncatedDescription()}
 						/>
 					</div>
 				</div>
@@ -83,18 +97,16 @@ const RoadmapCardInnerForm = ({
 							required
 						/>
 					</div>
-					{(values.endsOn || isEditing) && (
-						<div className={styles.endDate}>
-							{!isEditing && <span>{roadmap.endsOn}</span>}
-							<Field
-								label={inputs.endsOn.labelText}
-								name={inputs.endsOn.name}
-								type='date'
-								id={`${inputs.endsOn.name}RoadmapCard`}
-								disabled={!isEditing}
-							/>
-						</div>
-					)}
+					<div className={styles.endDate}>
+						{!isEditing && <span>{roadmap.endsOn}</span>}
+						<Field
+							label={inputs.endsOn.labelText}
+							name={inputs.endsOn.name}
+							type='date'
+							id={`${inputs.endsOn.name}RoadmapCard`}
+							disabled={!isEditing}
+						/>
+					</div>
 				</div>
 
 				{!isEditing && (

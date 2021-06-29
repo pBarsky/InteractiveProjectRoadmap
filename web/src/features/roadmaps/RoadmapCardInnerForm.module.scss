@@ -39,6 +39,7 @@
 				textarea {
 					font-size: 1.1rem;
 					padding: 0;
+					min-height: 5.5rem;
 				}
 			}
 		}
@@ -79,5 +80,9 @@
 .form.editing {
 	label {
 		display: inline-block;
+	}
+	input,
+	textarea {
+		border-bottom: 1px solid gray;
 	}
 }

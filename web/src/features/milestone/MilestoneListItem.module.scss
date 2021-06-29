@@ -1,8 +1,6 @@
 .wrapper {
-	width: 80%;
-	border: 1px solid var(--gray);
+	width: 100%;
 	border-radius: 5px;
-	padding: 0.5em 2em 0;
-	margin: auto auto 2em;
-	background: white;
+	padding: 1rem;
+	background: var(--darkerWhite);
 }
