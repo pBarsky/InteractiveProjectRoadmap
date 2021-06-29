@@ -2,13 +2,13 @@ import format from 'date-fns/format';
 import { Formik, FormikHelpers } from 'formik';
 import { observer } from 'mobx-react-lite';
 import React, { useState } from 'react';
-import { ReactFlowProvider } from 'react-flow-renderer';
 import constants from '../../app/constants/constants';
 import defaultDict from '../../app/dictionaries/defaultDict';
 import { Roadmap, RoadmapFormValues } from '../../app/models/roadmap';
 import { useStore } from '../../app/stores/store';
 import { roadmapFormValuesSchema } from '../../app/validationSchemas/roadmapSchemas';
-import MilestonesList from '../milestone/MilestonesList';
+import AddMilestone from '../milestone/AddMilestone';
+import MilestonesMap from '../milestone/MilestonesMap';
 import EditImage from '../upload/EditImage';
 import styles from './RoadmapCard.module.scss';
 import RoadmapCardInnerForm from './RoadmapCardInnerForm';
@@ -80,12 +80,22 @@ const RoadmapCard = ({ onSubmit, testDate }: RoadmapCardProps): JSX.Element => {
 			<EditImage />
 			{roadmap.imageUrl && (
 				<div className={styles.backgroundImage}>
-					<img src={roadmap.imageUrl} alt={roadmapDict.roadmapImageAltText} />
+					<img
+						src={roadmap.imageUrl}
+						alt={roadmapDict.roadmapImageAltText}
+						onLoad={({ currentTarget: { naturalWidth, naturalHeight } }) =>
+							roadmapStore.setBackgroundImageSize([naturalWidth, naturalHeight])
+						}
+					/>
 				</div>
 			)}
-			<ReactFlowProvider>
-				<MilestonesList />
-			</ReactFlowProvider>
+			<div className={styles.milestones}>
+				<div className={styles.milestonesHeader}>
+					<span>{defaultDict.pages.roadmap.milestonesHeader}</span>
+					<AddMilestone roadmapId={roadmap.id} />
+				</div>
+				<MilestonesMap />
+			</div>
 		</div>
 	);
 };

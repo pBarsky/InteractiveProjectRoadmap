@@ -1,4 +1,4 @@
-import { cleanup, render, waitFor } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import { ReactFlowProvider } from 'react-flow-renderer';
 import { Router } from 'react-router';
 import { browserHistory } from '../../../App';
@@ -7,16 +7,6 @@ import { Milestone } from '../../../app/models/milestone';
 import { Roadmap } from '../../../app/models/roadmap';
 import { store } from '../../../app/stores/store';
 import MilestonesList from '../MilestonesList';
-
-afterEach(cleanup);
-
-beforeEach(() => {
-	window.ResizeObserver = jest.fn().mockImplementation(() => ({
-		disconnect: jest.fn(),
-		observe: jest.fn(),
-		unobserve: jest.fn()
-	}));
-});
 
 describe('<MilestoneListItem />', () => {
 	it('Should display message when no milestones where found', () => {

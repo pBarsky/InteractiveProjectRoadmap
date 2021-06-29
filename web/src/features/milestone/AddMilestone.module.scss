@@ -1,0 +1,24 @@
+.addMilestoneButton {
+	max-width: fit-content;
+	max-height: fit-content;
+}
+.addMilestoneFormEnter {
+	opacity: 0;
+	transform: scale(0.9);
+}
+.addMilestoneFormEnterActive {
+	opacity: 1;
+	transition: all 200ms;
+	transform: translateX(0);
+}
+.addMilestoneFormExit {
+	opacity: 1;
+}
+.addMilestoneFormExitActive {
+	opacity: 0;
+	transition: all 200ms;
+	transform: scale(0.9);
+}
+.addMilestoneForm {
+	width: 100%;
+}

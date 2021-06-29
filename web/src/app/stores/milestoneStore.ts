@@ -106,7 +106,6 @@ export class DefaultMilestoneStore implements MilestoneStore {
 	};
 
 	updateMilestone = async (values: Milestone): Promise<void> => {
-		this.loading = true;
 		try {
 			const { data } = await milestoneService.update(values);
 			if (!data) {
@@ -117,8 +116,6 @@ export class DefaultMilestoneStore implements MilestoneStore {
 		} catch (error) {
 			console.debug(error);
 			throw error;
-		} finally {
-			this.loading = false;
 		}
 	};
 
@@ -153,7 +150,6 @@ export class DefaultMilestoneStore implements MilestoneStore {
 	};
 
 	deleteMilestone = async (id: number): Promise<void> => {
-		this.loading = true;
 		try {
 			const { data } = await milestoneService.delete(id);
 			if (!data) {
@@ -164,8 +160,6 @@ export class DefaultMilestoneStore implements MilestoneStore {
 		} catch (error) {
 			console.debug(error);
 			throw error;
-		} finally {
-			this.loading = false;
 		}
 	};
 

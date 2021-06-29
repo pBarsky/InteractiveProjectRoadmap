@@ -1,0 +1,15 @@
+.map {
+	width: 100%;
+	height: 70vh;
+	border: 1px solid var(--lightGray);
+	&::after {
+		content: '';
+		position: absolute;
+		background: var(--background-url);
+		background-size: var(--x-size) var(--y-size);
+		transform: translateX(var(--data-x)) translateY(var(--data-y)) scale(var(--data-scale));
+		width: var(--x-size);
+		height: var(--y-size);
+		transform-origin: 0 0;
+	}
+}

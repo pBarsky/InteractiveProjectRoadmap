@@ -1,52 +1,48 @@
-import { Formik, FormikHelpers } from 'formik';
-import { observer } from 'mobx-react-lite';
-import React from 'react';
-import { DefaultMilestoneFormValues, MilestoneFormValues } from '../../app/models/milestone';
-import { useStore } from '../../app/stores/store';
-import customErrorMessages from '../../app/validationSchemas/customErrorMessages';
-import { milestoneFormValuesSchema } from '../../app/validationSchemas/milestoneSchemas';
-import AddMilestoneInnerForm from './AddMilestoneInnerForm';
+import React, { useState } from 'react';
+import { CSSTransition } from 'react-transition-group';
+import defaultDict from '../../app/dictionaries/defaultDict';
+import Button from '../common/buttons/Button';
+import styles from './AddMilestone.module.scss';
+import AddMilestoneForm from './AddMilestoneForm';
 
-const milestoneInitialValues: MilestoneFormValues = new DefaultMilestoneFormValues();
-
-interface MilestoneProps {
-	onSubmit?: (
-		values: MilestoneFormValues,
-		actions: FormikHelpers<MilestoneFormValues>
-	) => Promise<void>;
+interface AddMilestoneProps {
 	roadmapId: number;
-	afterSubmit?: () => void;
 }
 
-const AddMilestone = ({ onSubmit, afterSubmit, roadmapId }: MilestoneProps) => {
-	const { milestoneStore } = useStore();
+const AddMilestone = ({ roadmapId }: AddMilestoneProps) => {
+	const [isAddMilestoneVisible, setIsAddMilestoneVisible] = useState(false);
+	const [isAdding, setIsAdding] = useState(true);
 
-	const handleSubmit = async (
-		values: MilestoneFormValues,
-		{ setErrors, resetForm }: FormikHelpers<MilestoneFormValues>
-	) => {
-		try {
-			values.endsOn = new Date(values.endsOn).toISOString();
-			values.parentProjectId = roadmapId;
-			await milestoneStore.addMilestone(values);
-			resetForm();
-			afterSubmit && afterSubmit();
-		} catch {
-			setErrors({
-				commonFormError: customErrorMessages.common.failedAddMilestone
-			});
-		}
+	const toggleAddMilestoneForm = () => {
+		setIsAddMilestoneVisible((oldState) => !oldState);
+		setIsAdding((oldState) => !oldState);
 	};
 
 	return (
-		<Formik
-			initialValues={milestoneInitialValues}
-			onSubmit={onSubmit ?? handleSubmit}
-			validateOnMount
-			validationSchema={milestoneFormValuesSchema}
-			component={AddMilestoneInnerForm}
-		/>
+		<div className={styles.wrapper}>
+			{isAdding && (
+				<Button className={styles.addMilestoneButton} onClick={toggleAddMilestoneForm}>
+					{defaultDict.forms.buttons.addNewMilestone.text}
+				</Button>
+			)}
+
+			<CSSTransition
+				in={isAddMilestoneVisible}
+				timeout={200}
+				classNames={{
+					enter: styles.addMilestoneFormEnter,
+					enterActive: styles.addMilestoneFormEnterActive,
+					exit: styles.addMilestoneFormExit,
+					exitActive: styles.addMilestoneFormExitActive
+				}}
+				unmountOnExit
+			>
+				<div className={styles.addMilestoneForm}>
+					<AddMilestoneForm roadmapId={roadmapId} afterSubmit={toggleAddMilestoneForm} />
+				</div>
+			</CSSTransition>
+		</div>
 	);
 };
 
-export default observer(AddMilestone);
+export default AddMilestone;

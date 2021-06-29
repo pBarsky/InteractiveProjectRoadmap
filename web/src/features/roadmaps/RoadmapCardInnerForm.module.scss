@@ -1,105 +1,77 @@
 .form {
-	width: 100%;
 	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	border: none;
-	box-shadow: none;
+	flex-wrap: wrap;
+	width: 100%;
+	margin: 0;
 	padding: 0;
-
-	hr {
-		margin-top: 2em;
-		width: 100%;
-		border: none;
-		border-bottom: 1px solid var(--gray);
-	}
-	input {
-		border: none;
-		&:disabled {
-			color: var(--black);
-			padding: 5px 0 !important;
-		}
-	}
-	span {
-		cursor: default;
-	}
-	.name {
-		font-size: 2em;
-	}
-	.late {
-		font-size: 1rem;
-	}
-	.dates {
-		margin: 0.5em 0;
-		color: var(--secondaryText);
-		display: flex;
-		flex-direction: column;
-		font-size: 1.25em;
-		.date {
-			color: var(--black);
-		}
-	}
-	.description {
-		textarea {
-			line-height: 1.5em;
-		}
-	}
+	border: none;
+	input,
 	textarea {
-		padding: 0;
 		border: none;
-		padding-bottom: 0.25em;
-		&:focus {
-			border-bottom: 1px solid var(--gray);
-		}
-		&:disabled {
-			color: var(--black);
-			padding: 5px 0 !important;
-		}
 	}
-	.buttons {
-		width: 100%;
+
+	input:disabled,
+	textarea:disabled {
+		color: var(--black);
+	}
+
+	.roadmapData {
+		label {
+			margin-top: 0.5rem;
+			font-size: 1.2rem;
+		}
 		display: flex;
-		flex-direction: row-reverse;
-		margin: 0.5em 0;
-		padding: 0 1em;
-		button {
-			padding: 0.5em;
-			margin: 0 0.5em;
-			min-width: 4em;
-			border: none;
-			box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-			background-color: white;
-			transition: all 0.1s ease-in !important;
-		}
-		.editButton {
-			background-color: var(--blue);
-			color: white;
-			&:hover {
-				background-color: var(--darkBlue);
+		justify-content: space-between;
+		flex-wrap: wrap;
+		width: 100%;
+		.nameAndDescription {
+			min-width: 50%;
+			margin-right: 0.5rem;
+			.name {
+				input {
+					font-size: 3rem;
+					font-weight: 500;
+					padding: 0 !important;
+				}
+			}
+			.description {
+				margin-bottom: 1.5rem;
+				textarea {
+					font-size: 1.1rem;
+					padding: 0;
+					min-height: 5.5rem;
+				}
 			}
 		}
-		.deleteButton {
-			color: var(--errorRed);
-			&:hover {
-				color: red;
+		.dates {
+			display: flex;
+			margin-right: auto;
+			flex-grow: 1;
+			min-width: max-content;
+			input {
+				padding: 0 !important;
+			}
+			span {
+				font-weight: 600;
+			}
+			.startDate {
+				margin-right: 1rem;
+				max-width: 50%;
+			}
+			.endDate {
+				margin-left: 1rem;
+				max-width: 50%;
 			}
 		}
-	}
-	.editButtons {
-		padding-bottom: 3em;
-		.saveButton {
-			color: var(--green);
-			&:hover {
-				background-color: var(--gray);
-				color: var(--darkGreen);
-				box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+		.buttons {
+			display: flex;
+			justify-content: space-between;
+			height: 4rem;
+			button:first-child {
+				margin-right: 1rem;
 			}
-		}
-		.cancelButton {
-			color: var(--errorRed);
-			&:hover {
-				background-color: var(--gray);
-				box-shadow: 0 5px 10px rgba(0, 0, 0, 0.15);
+			button:last-child {
+				margin-left: 1rem;
 			}
 		}
 	}
@@ -109,8 +81,8 @@
 	label {
 		display: inline-block;
 	}
-	textarea,
-	input {
-		border-bottom: 1px solid var(--gray);
+	input,
+	textarea {
+		border-bottom: 1px solid gray;
 	}
 }

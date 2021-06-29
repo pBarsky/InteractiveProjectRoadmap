@@ -6,6 +6,7 @@ import defaultDict from '../../app/dictionaries/defaultDict';
 import { MilestoneFormValues } from '../../app/models/milestone';
 import Button from '../common/buttons/Button';
 import Field from '../common/inputs/Field';
+import Form from '../common/inputs/Form';
 import styles from './MilestoneListItemInnerForm.module.scss';
 
 interface MilestoneListItemProps {
@@ -48,15 +49,7 @@ const MilestoneListItemInnerForm = ({
 	};
 	return (
 		<>
-			<div className={styles.buttons}>
-				<Button outlined onClick={toggleEdit} className={styles.editButton}>
-					<FontAwesomeIcon icon={faEdit} />
-				</Button>
-				<Button outlined onClick={onDelete} className={styles.deleteButton}>
-					<FontAwesomeIcon icon={faTrash} />
-				</Button>
-			</div>
-			<form className={`${styles.form} ${isEditing ? styles.editing : ''}`}>
+			<Form className={`${styles.form} ${isEditing ? styles.editing : ''}`}>
 				{isEditing && (
 					<div className={styles.status}>
 						{inputs.status.labelText}: {defaultDict.common.status[values.status]}
@@ -93,21 +86,32 @@ const MilestoneListItemInnerForm = ({
 						value={displayedDescription()}
 					/>
 				)}
+				{!isEditing && (
+					<div className={styles.buttons}>
+						<Button outlined onClick={toggleEdit} className={styles.editButton}>
+							<FontAwesomeIcon icon={faEdit} />
+						</Button>
+						<Button outlined onClick={onDelete} className={styles.deleteButton}>
+							<FontAwesomeIcon icon={faTrash} />
+						</Button>
+					</div>
+				)}
 				{isEditing && (
 					<div className={`${styles.buttons} ${styles.editButtons}`}>
 						<Button
+							outlined
 							onClick={handleEdit}
 							disabled={!isValid}
 							className={styles.saveButton}
 						>
 							<FontAwesomeIcon icon={faCheck} />
 						</Button>
-						<Button onClick={handleCancel} className={styles.cancelButton}>
+						<Button outlined onClick={handleCancel} className={styles.cancelButton}>
 							<FontAwesomeIcon icon={faBan} />
 						</Button>
 					</div>
 				)}
-			</form>
+			</Form>
 		</>
 	);
 };

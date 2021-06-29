@@ -1,25 +1,20 @@
 import { observer } from 'mobx-react-lite';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'react-router';
-import { CSSTransition } from 'react-transition-group';
 import { browserHistory } from '../../App';
 import defaultDict from '../../app/dictionaries/defaultDict';
 import { useStore } from '../../app/stores/store';
 import BackButton from '../common/buttons/BackButton';
-import Button from '../common/buttons/Button';
 import Loader from '../common/Loader';
 import routes from '../common/routing/routes';
-import AddMilestone from '../milestone/AddMilestone';
 import RoadmapCard from './RoadmapCard';
 import styles from './RoadmapDetails.module.scss';
 
 const RoadmapDetails = () => {
 	const { roadmapStore, milestoneStore } = useStore();
-	const scrollRef = useRef<HTMLDivElement>(null);
 	const params = useParams<{ id: string }>();
 	const id = parseInt(params.id);
-	const [isAddMilestoneVisible, setIsAddMilestoneVisible] = useState(false);
-	const [isButtonVisible, setIsButtonVisible] = useState(true);
+
 	useEffect(() => {
 		if (id) {
 			roadmapStore
@@ -33,36 +28,9 @@ const RoadmapDetails = () => {
 		return <Loader content={defaultDict.pages.roadmap.loadingDetails} />;
 	}
 
-	const toggleAddMilestoneForm = () => {
-		setIsAddMilestoneVisible((oldState) => !oldState);
-		setIsButtonVisible((oldState) => !oldState);
-	};
-
 	return (
 		<div className={styles.container}>
 			<RoadmapCard />
-
-			{isButtonVisible && (
-				<Button className={styles.addMilestoneButton} onClick={toggleAddMilestoneForm}>
-					{defaultDict.forms.buttons.addNewMilestone.text}
-				</Button>
-			)}
-			<CSSTransition
-				in={isAddMilestoneVisible}
-				timeout={200}
-				classNames={{
-					enter: styles.addMilestoneFormEnter,
-					enterActive: styles.addMilestoneFormEnterActive,
-					exit: styles.addMilestoneFormExit,
-					exitActive: styles.addMilestoneFormExitActive
-				}}
-				onEntered={() => scrollRef?.current?.scrollIntoView()}
-				unmountOnExit
-			>
-				<div ref={scrollRef} className={styles.addMilestoneForm}>
-					<AddMilestone roadmapId={id} afterSubmit={toggleAddMilestoneForm} />
-				</div>
-			</CSSTransition>
 			<BackButton className={styles.backButton} backUrl={routes.user.dashboard} />
 		</div>
 	);

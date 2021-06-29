@@ -154,7 +154,8 @@ const pages = {
 		proposalOfCreation: 'Może chcesz zrobić nową? 😸',
 		roadmapLate: 'Jesteś spóźniony... 😥',
 		loadingDetails: "Wczytywanie roadmap'y...",
-		roadmapImageAltText: '(Tło roadmapy)'
+		roadmapImageAltText: '(Tło roadmapy)',
+		milestonesHeader: 'Milestony'
 	},
 	milestone: {
 		name: 'Nazwa: ',
