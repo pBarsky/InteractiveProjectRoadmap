@@ -8,8 +8,8 @@ interface RoadmapListItemProps {
 	testDate?: Date;
 }
 
-const RoadmapListItem = ({ onClick, roadmap, testDate }: RoadmapListItemProps) => {
-	let isFailing: boolean = false;
+const RoadmapListItem = ({ onClick, roadmap, testDate }: RoadmapListItemProps): JSX.Element => {
+	let isFailing = false;
 	if (roadmap.endsOn) {
 		isFailing = (testDate ?? new Date()).getTime() > roadmap.endsOn.getTime();
 	}

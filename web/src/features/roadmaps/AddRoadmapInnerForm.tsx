@@ -15,7 +15,7 @@ const AddRoadmapInnerForm = ({
 	errors,
 	isSubmitting,
 	handleSubmit
-}: FormikProps<RoadmapFormValues>) => {
+}: FormikProps<RoadmapFormValues>): JSX.Element => {
 	return (
 		<Form onSubmit={handleSubmit}>
 			<Field

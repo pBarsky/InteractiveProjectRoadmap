@@ -7,7 +7,7 @@ interface DropdownMenuItemProps extends React.ComponentPropsWithRef<'div'> {
 	icon?: IconProp;
 }
 
-const DropdownMenuItem = ({ children, icon, ...props }: DropdownMenuItemProps) => {
+const DropdownMenuItem = ({ children, icon, ...props }: DropdownMenuItemProps): JSX.Element => {
 	const itemIcon = icon ? <FontAwesomeIcon className={styles.icon} icon={icon} /> : null;
 
 	return (

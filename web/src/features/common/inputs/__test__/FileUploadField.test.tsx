@@ -10,7 +10,7 @@ import Form from '../Form';
 describe('<FileUploadField/>', () => {
 	it('Should render FileUploadField', async () => {
 		const onSubmit = jest.fn();
-		const setFieldValue = () => {};
+		const setFieldValue = jest.fn();
 		const exampleLabelText = 'testLabel';
 		const exampleNameText = 'testFieldName';
 		const { getByLabelText } = render(

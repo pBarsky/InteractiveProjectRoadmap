@@ -21,7 +21,7 @@ export interface MilestoneStore {
 export class DefaultMilestoneStore implements MilestoneStore {
 	private _milestones: Milestone[] = [];
 	private _selectedMilestone: Milestone | null = null;
-	private _loading: boolean = false;
+	private _loading = false;
 	constructor () {
 		makeAutoObservable(this);
 	}
@@ -50,7 +50,7 @@ export class DefaultMilestoneStore implements MilestoneStore {
 		this._selectedMilestone = value;
 	}
 
-	getAll = async (roadmap: Roadmap) => {
+	getAll = async (roadmap: Roadmap): Promise<void> => {
 		try {
 			this.loading = true;
 			const { data } = await milestoneService.getAll(roadmap.id);
@@ -63,7 +63,7 @@ export class DefaultMilestoneStore implements MilestoneStore {
 		}
 	};
 
-	get = async (id: number) => {
+	get = async (id: number): Promise<void> => {
 		const milestone: Milestone | undefined = this.milestones.find((x) => x.id === id);
 		if (milestone) {
 			this.selectedMilestone = milestone;
@@ -84,7 +84,7 @@ export class DefaultMilestoneStore implements MilestoneStore {
 		}
 	};
 
-	setMilestones = (milestones: Milestone[]) => {
+	setMilestones = (milestones: Milestone[]): void => {
 		this.milestones = milestones.map((milestone) => this.dtoToMilestone(milestone));
 	};
 
@@ -127,7 +127,6 @@ export class DefaultMilestoneStore implements MilestoneStore {
 		milestone.posX = Math.round(posX);
 		milestone.posY = Math.round(posY);
 		this.setMilestone(milestone);
-		// zamiast error można pokazać toast'a -P
 		try {
 			const { data } = await milestoneService.update(milestone);
 			if (!data) {
@@ -139,7 +138,7 @@ export class DefaultMilestoneStore implements MilestoneStore {
 		}
 	};
 
-	setMilestone = (milestone: Milestone) => {
+	setMilestone = (milestone: Milestone): void => {
 		const index = this.milestones.findIndex((x) => x.id === milestone.id);
 		if (index === -1) {
 			return;

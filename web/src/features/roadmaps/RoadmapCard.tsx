@@ -29,7 +29,7 @@ const RoadmapCard = ({ onSubmit, testDate }: RoadmapCardProps): JSX.Element => {
 	const roadmap = roadmapStore.selectedRoadmap!;
 	const roadmapDict = defaultDict.pages.roadmap;
 
-	let isFailing: boolean = false;
+	let isFailing = false;
 	if (roadmap.endsOn) {
 		isFailing = (testDate ?? new Date()).getTime() > roadmap.endsOn.getTime();
 	}

@@ -4,7 +4,12 @@ module.exports = {
 		es2021: true,
 		'jest/globals': true
 	},
-	extends: ['plugin:react/recommended', 'standard', 'plugin:jest/recommended'],
+	extends: [
+		'plugin:react/recommended',
+		'standard',
+		'plugin:jest/recommended',
+		'plugin:@typescript-eslint/recommended'
+	],
 	parser: '@typescript-eslint/parser',
 	parserOptions: {
 		ecmaFeatures: {
@@ -23,7 +28,10 @@ module.exports = {
 		'no-use-before-define': 'off',
 		'@typescript-eslint/no-use-before-define': ['error'],
 		'no-unused-vars': 'off',
-		'@typescript-eslint/no-unused-vars': 'error'
+		'@typescript-eslint/no-unused-vars': 'error',
+		'@typescript-eslint/no-non-null-assertion': 'off',
+		'@typescript-eslint/explicit-module-boundary-types': 'error',
+		'@typescript-eslint/no-explicit-any': 'off'
 	},
 	globals: {
 		React: true,

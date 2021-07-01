@@ -23,7 +23,7 @@ const MilestoneListItemInnerForm = ({
 	toggleEdit,
 	resetForm,
 	submitForm
-}: MilestoneListItemProps & FormikProps<MilestoneFormValues>) => {
+}: MilestoneListItemProps & FormikProps<MilestoneFormValues>): JSX.Element => {
 	const {
 		forms: { inputs }
 	} = defaultDict;

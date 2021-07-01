@@ -25,7 +25,7 @@ const RoadmapCardInnerForm = ({
 	onDelete,
 	handleReset,
 	toggleEdit
-}: RoadmapCardInnerFormProps & FormikProps<RoadmapFormValues>) => {
+}: RoadmapCardInnerFormProps & FormikProps<RoadmapFormValues>): JSX.Element => {
 	const {
 		forms: { inputs },
 		pages: { roadmap }

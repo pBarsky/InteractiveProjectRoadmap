@@ -24,7 +24,7 @@ export interface RoadmapStore {
 export class DefaultRoadmapStore implements RoadmapStore {
 	private _roadmaps: Roadmap[] = [];
 	private _selectedRoadmap: Roadmap | null = null;
-	private _loading: boolean = false;
+	private _loading = false;
 	private _backgroundImageSize: [number, number] = [1000, 1000];
 
 	constructor () {
@@ -68,7 +68,7 @@ export class DefaultRoadmapStore implements RoadmapStore {
 		this._backgroundImageSize = [...size];
 	}
 
-	loadRoadmaps = async () => {
+	loadRoadmaps = async (): Promise<void> => {
 		try {
 			this.loading = true;
 			const { data } = await roadmapService.getAll();
@@ -81,7 +81,7 @@ export class DefaultRoadmapStore implements RoadmapStore {
 		}
 	};
 
-	loadRoadmap = async (id: number) => {
+	loadRoadmap = async (id: number): Promise<void> => {
 		const roadmap: Roadmap | undefined = this.roadmaps.find((x) => x.id === id);
 		if (roadmap) {
 			this.selectedRoadmap = roadmap;
@@ -102,7 +102,7 @@ export class DefaultRoadmapStore implements RoadmapStore {
 		}
 	};
 
-	setRoadmaps = (roadmaps: Roadmap[]) => {
+	setRoadmaps = (roadmaps: Roadmap[]): void => {
 		this.roadmaps = roadmaps.map((roadmap) => this.dtoToRoadmap(roadmap));
 	};
 
@@ -142,7 +142,7 @@ export class DefaultRoadmapStore implements RoadmapStore {
 		}
 	};
 
-	setRoadmap = (roadmap: Roadmap) => {
+	setRoadmap = (roadmap: Roadmap): void => {
 		const index = this.roadmaps.findIndex((x) => x.id === roadmap.id);
 		if (index === -1) {
 			return;
@@ -170,14 +170,14 @@ export class DefaultRoadmapStore implements RoadmapStore {
 		}
 	};
 
-	updateImage = async (formData: FormData) => {
+	updateImage = async (formData: FormData): Promise<void> => {
 		const { data: backgroundUrl } = await imageService.update(formData);
 		runInAction(() => {
 			this.selectedRoadmap!.imageUrl = backgroundUrl;
 		});
 	};
 
-	deleteImage = async (id: number) => {
+	deleteImage = async (id: number): Promise<void> => {
 		const { data: result } = await imageService.delete(id);
 		if (!result) {
 			throw Error('Could not delete image');

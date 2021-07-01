@@ -7,7 +7,7 @@ interface DropdownMenuProps extends React.ComponentPropsWithRef<'div'> {
 	text?: string;
 }
 
-const DropdownMenu = ({ children, text }: DropdownMenuProps) => {
+const DropdownMenu = ({ children, text }: DropdownMenuProps): JSX.Element => {
 	const [isOpen, setIsOpen] = useState(false);
 
 	const menuClassNames = [styles.menu, isOpen ? styles.visible : ''].join(' ');

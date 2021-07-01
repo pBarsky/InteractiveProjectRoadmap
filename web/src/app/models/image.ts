@@ -6,6 +6,6 @@ export interface ImageFormValues {
 
 export class DefaultImageFormValues implements ImageFormValues {
 	file: File | null | '' = '';
-    roadmapId: number = 0;
+    roadmapId = 0;
     commonFormError?: string;
 }

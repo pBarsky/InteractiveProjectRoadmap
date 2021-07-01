@@ -17,7 +17,7 @@ interface MilestoneListItemProps {
 	) => Promise<void>;
 }
 
-const MilestoneListItem = ({ onSubmit, milestone }: MilestoneListItemProps) => {
+const MilestoneListItem = ({ onSubmit, milestone }: MilestoneListItemProps): JSX.Element => {
 	const [isEditing, setIsEditing] = useState(false);
 	const toggleEdit = () => {
 		setIsEditing((oldState) => !oldState);

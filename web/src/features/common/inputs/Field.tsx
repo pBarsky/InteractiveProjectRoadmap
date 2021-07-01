@@ -11,7 +11,7 @@ interface FieldProps {
 	errorMessageAbsolutePosition?: boolean;
 }
 
-const Field = ({ label, inputClassName, ...props }: FieldProps & FieldHookConfig<string>) => {
+const Field = ({ label, inputClassName, ...props }: FieldProps & FieldHookConfig<string>): JSX.Element => {
 	return (
 		<div className={`${styles.field} ${props.className || ''}`}>
 			<label htmlFor={props.id} className={props.required ? styles.required : ''}>

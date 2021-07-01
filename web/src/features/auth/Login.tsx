@@ -16,7 +16,7 @@ interface LoginProps {
 	onSubmit?: (values: UserFormValues, actions: FormikHelpers<UserFormValues>) => Promise<void>;
 }
 
-const Login = ({ onSubmit }: LoginProps) => {
+const Login = ({ onSubmit }: LoginProps): JSX.Element => {
 	const { authStore } = useStore();
 
 	if (authStore.isLoggedIn) {

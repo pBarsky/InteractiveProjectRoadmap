@@ -14,7 +14,7 @@ interface RegisterProps {
 	onSubmit?: (values: UserFormValues, actions: FormikHelpers<UserFormValues>) => Promise<void>;
 }
 
-const Register = ({ onSubmit }: RegisterProps) => {
+const Register = ({ onSubmit }: RegisterProps): JSX.Element => {
 	const { authStore } = useStore();
 
 	if (authStore.isLoggedIn) {

@@ -3,7 +3,7 @@ import { ReactFlowProvider } from 'react-flow-renderer';
 import MilestonesList from './MilestonesList';
 import styles from './MilestonesMap.module.scss';
 
-const MilestonesMap = () => {
+const MilestonesMap = (): JSX.Element => {
 	return (
 		<ReactFlowProvider>
 			<div className={styles.wrapper}>

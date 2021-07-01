@@ -8,7 +8,7 @@ import styles from './NotFound.module.scss';
 interface NotFoundProps {
 	message?: string;
 }
-const NotFound = ({ message }: NotFoundProps) => {
+const NotFound = ({ message }: NotFoundProps): JSX.Element => {
 	const {
 		authStore: { isLoggedIn }
 	} = useStore();

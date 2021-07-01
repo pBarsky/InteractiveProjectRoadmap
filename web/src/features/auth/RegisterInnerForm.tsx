@@ -14,7 +14,7 @@ const RegisterInnerForm = ({
 	handleSubmit,
 	handleReset,
 	isSubmitting
-}: FormikProps<UserFormValues>) => {
+}: FormikProps<UserFormValues>): JSX.Element => {
 	return (
 		<Form onReset={handleReset} onSubmit={handleSubmit}>
 			<Field

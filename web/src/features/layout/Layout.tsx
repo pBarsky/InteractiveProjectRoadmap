@@ -3,7 +3,7 @@ import Routes from '../routes/Routes';
 import styles from './Layout.module.scss';
 import Navbar from './navbar/Navbar';
 
-const Layout = () => {
+const Layout = (): JSX.Element => {
 	return (
 		<>
 			<Navbar />
