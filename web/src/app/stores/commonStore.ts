@@ -8,7 +8,7 @@ export interface CommonStore {
 export class DefaultCommonStore implements CommonStore {
 	private _appLoaded = false;
 
-	constructor () {
+	public constructor () {
 		makeAutoObservable(this);
 	}
 
@@ -20,7 +20,7 @@ export class DefaultCommonStore implements CommonStore {
 		this._appLoaded = value;
 	}
 
-	setAppLoaded = (val = true): void => {
+	public setAppLoaded = (val = true): void => {
 		this.appLoaded = val;
 	};
 }

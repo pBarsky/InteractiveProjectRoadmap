@@ -19,14 +19,14 @@ interface MilestoneListItemProps {
 
 const MilestoneListItem = ({ onSubmit, milestone }: MilestoneListItemProps): JSX.Element => {
 	const [isEditing, setIsEditing] = useState(false);
-	const toggleEdit = () => {
+	const toggleEdit = (): void => {
 		setIsEditing((oldState) => !oldState);
 	};
 
 	const handleSubmit = async (
 		values: MilestoneFormValues,
 		{ setErrors }: FormikHelpers<MilestoneFormValues>
-	) => {
+	): Promise<void> => {
 		try {
 			const updatedMilestone: Milestone = {
 				...milestone,
@@ -40,7 +40,7 @@ const MilestoneListItem = ({ onSubmit, milestone }: MilestoneListItemProps): JSX
 		}
 	};
 
-	const handleDelete = async () => {
+	const handleDelete = async (): Promise<void> => {
 		await milestoneStore.deleteMilestone(milestone.id);
 	};
 
@@ -54,7 +54,7 @@ const MilestoneListItem = ({ onSubmit, milestone }: MilestoneListItemProps): JSX
 					endsOn: milestone.endsOn ? format(milestone.endsOn, constants.dateFormat) : ''
 				}}
 				onSubmit={onSubmit || handleSubmit}
-				component={(props) => (
+				component={(props): JSX.Element => (
 					<MilestoneListItemInnerForm
 						{...props}
 						onDelete={handleDelete}

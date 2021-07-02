@@ -8,7 +8,7 @@ import routes from '../common/routing/routes';
 import styles from './RoadmapList.module.scss';
 import RoadmapListItem from './RoadmapListItem';
 
-const RoadmapList = () => {
+const RoadmapList = (): JSX.Element => {
 	const { roadmapStore } = useStore();
 	if (roadmapStore.roadmaps.length === 0) {
 		return (
@@ -25,7 +25,7 @@ const RoadmapList = () => {
 			{roadmapStore.roadmaps.map((roadmap) => (
 				<RoadmapListItem
 					key={roadmap.id}
-					onClick={() => {
+					onClick={(): void => {
 						browserHistory.push(`${routes.roadmap.list}/${roadmap.id}`);
 					}}
 					roadmap={roadmap}

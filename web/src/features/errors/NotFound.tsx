@@ -22,7 +22,7 @@ const NotFound = ({ message }: NotFoundProps): JSX.Element => {
 			<h1>{message ?? defaultDict.pages.notFound.message}</h1>
 			<Link
 				to={route}
-				component={() => <Button className={styles.backButton}>{text}</Button>}
+				component={(): JSX.Element => <Button className={styles.backButton}>{text}</Button>}
 			/>
 		</div>
 	);

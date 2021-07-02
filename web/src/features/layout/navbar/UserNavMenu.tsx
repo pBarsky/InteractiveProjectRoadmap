@@ -11,7 +11,7 @@ import DropdownMenu from './DropdownMenu';
 import DropdownMenuItem from './DropdownMenuItem';
 import styles from './UserNavMenu.module.scss';
 
-const UserNavMenu = () => {
+const UserNavMenu = (): JSX.Element => {
 	const {
 		authStore: { user, logout, isLoggedIn }
 	} = useStore();
@@ -24,7 +24,7 @@ const UserNavMenu = () => {
 			}
 		}
 	} = defaultDict;
-	const logoutUser = () => {
+	const logoutUser = (): void => {
 		logout();
 		browserHistory.push('/');
 	};

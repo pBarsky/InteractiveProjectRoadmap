@@ -22,7 +22,8 @@ export class DefaultMilestoneStore implements MilestoneStore {
 	private _milestones: Milestone[] = [];
 	private _selectedMilestone: Milestone | null = null;
 	private _loading = false;
-	constructor () {
+
+	public constructor () {
 		makeAutoObservable(this);
 	}
 
@@ -50,7 +51,7 @@ export class DefaultMilestoneStore implements MilestoneStore {
 		this._selectedMilestone = value;
 	}
 
-	getAll = async (roadmap: Roadmap): Promise<void> => {
+	public getAll = async (roadmap: Roadmap): Promise<void> => {
 		try {
 			this.loading = true;
 			const { data } = await milestoneService.getAll(roadmap.id);
@@ -63,7 +64,7 @@ export class DefaultMilestoneStore implements MilestoneStore {
 		}
 	};
 
-	get = async (id: number): Promise<void> => {
+	public get = async (id: number): Promise<void> => {
 		const milestone: Milestone | undefined = this.milestones.find((x) => x.id === id);
 		if (milestone) {
 			this.selectedMilestone = milestone;
@@ -84,11 +85,11 @@ export class DefaultMilestoneStore implements MilestoneStore {
 		}
 	};
 
-	setMilestones = (milestones: Milestone[]): void => {
+	public setMilestones = (milestones: Milestone[]): void => {
 		this.milestones = milestones.map((milestone) => this.dtoToMilestone(milestone));
 	};
 
-	addMilestone = async (values: MilestoneFormValues): Promise<void> => {
+	public addMilestone = async (values: MilestoneFormValues): Promise<void> => {
 		try {
 			const { data: id } = await milestoneService.add(values);
 			const milestone: Milestone = {
@@ -105,7 +106,7 @@ export class DefaultMilestoneStore implements MilestoneStore {
 		}
 	};
 
-	updateMilestone = async (values: Milestone): Promise<void> => {
+	public updateMilestone = async (values: Milestone): Promise<void> => {
 		try {
 			const { data } = await milestoneService.update(values);
 			if (!data) {
@@ -119,7 +120,11 @@ export class DefaultMilestoneStore implements MilestoneStore {
 		}
 	};
 
-	updatePosition = async (milestoneId: number, posX: number, posY: number): Promise<void> => {
+	public updatePosition = async (
+		milestoneId: number,
+		posX: number,
+		posY: number
+	): Promise<void> => {
 		const milestone = this.milestones.find((x) => x.id === milestoneId);
 		if (!milestone) {
 			throw new Error(defaultDict.errors.milestones.failedPositionUpdate);
@@ -138,7 +143,7 @@ export class DefaultMilestoneStore implements MilestoneStore {
 		}
 	};
 
-	setMilestone = (milestone: Milestone): void => {
+	public setMilestone = (milestone: Milestone): void => {
 		const index = this.milestones.findIndex((x) => x.id === milestone.id);
 		if (index === -1) {
 			return;
@@ -148,11 +153,15 @@ export class DefaultMilestoneStore implements MilestoneStore {
 		this.setMilestones(newMilestones);
 	};
 
-	deleteMilestone = async (id: number): Promise<void> => {
+	public deleteMilestone = async (id: number): Promise<void> => {
 		try {
 			const { data } = await milestoneService.delete(id);
 			if (!data) {
 				throw new Error(defaultDict.errors.milestones.failedDelete);
+			}
+			const connectedMilestone = this.milestones.find((x) => x.connectedToId === id);
+			if (connectedMilestone) {
+				this.setMilestone({ ...connectedMilestone, connectedToId: null });
 			}
 			this.selectedMilestone = null;
 			this.setMilestones(this.milestones.filter((x) => x.id !== id));
@@ -169,7 +178,7 @@ export class DefaultMilestoneStore implements MilestoneStore {
 		};
 	};
 
-	private adjustTimezone = (date: Date | null) => {
+	private adjustTimezone = (date: Date | null): Date | null => {
 		if (date == null) {
 			return date;
 		}

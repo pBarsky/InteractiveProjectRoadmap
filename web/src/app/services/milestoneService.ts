@@ -12,25 +12,25 @@ export interface MilestoneService {
 }
 
 export class DefaultMilestoneService implements MilestoneService {
-	constructor (private api: ApiClient) {}
+	public constructor (private api: ApiClient) {}
 
-	get (id: number): AxiosPromise<Milestone> {
+	public get (id: number): AxiosPromise<Milestone> {
 		return this.api.get<Milestone>(routes.api.milestone.get(id));
 	}
 
-	getAll (roadmapId: number): AxiosPromise<Milestone[]> {
+	public getAll (roadmapId: number): AxiosPromise<Milestone[]> {
 		return this.api.get<Milestone[]>(routes.api.milestone.getAll(roadmapId));
 	}
 
-	add (milestone: MilestoneFormValues): AxiosPromise<number> {
+	public add (milestone: MilestoneFormValues): AxiosPromise<number> {
 		return this.api.post<number>(routes.api.milestone.add, milestone);
 	}
 
-	update (milestone: Milestone): AxiosPromise<boolean> {
+	public update (milestone: Milestone): AxiosPromise<boolean> {
 		return this.api.put<boolean>(routes.api.milestone.update, milestone);
 	}
 
-	delete (id: number): AxiosPromise<boolean> {
+	public delete (id: number): AxiosPromise<boolean> {
 		return this.api.delete<boolean>(routes.api.milestone.delete(id));
 	}
 }

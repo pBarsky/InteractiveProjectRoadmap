@@ -18,13 +18,13 @@ interface MilestoneProps {
 	afterSubmit?: () => void;
 }
 
-const AddMilestoneForm = ({ onSubmit, afterSubmit, roadmapId }: MilestoneProps) => {
+const AddMilestoneForm = ({ onSubmit, afterSubmit, roadmapId }: MilestoneProps): JSX.Element => {
 	const { milestoneStore } = useStore();
 
 	const handleSubmit = async (
 		values: MilestoneFormValues,
 		{ setErrors, resetForm }: FormikHelpers<MilestoneFormValues>
-	) => {
+	): Promise<void> => {
 		try {
 			values.endsOn = new Date(values.endsOn).toISOString();
 			values.parentProjectId = roadmapId;

@@ -9,7 +9,7 @@ import routes from '../common/routing/routes';
 import RoadmapList from '../roadmaps/RoadmapList';
 import styles from './Dashboard.module.scss';
 
-const Dashboard = () => {
+const Dashboard = (): JSX.Element => {
 	const { authStore, roadmapStore } = useStore();
 	const { user } = authStore;
 

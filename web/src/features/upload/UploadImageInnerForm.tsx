@@ -13,11 +13,11 @@ const UploadImageInnerForm = ({
 	handleReset
 }: FormikProps<ImageFormValues>): JSX.Element => {
 	const [file, setFile] = useState<File | null>(null);
-	const fileHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+	const fileHandler = (event: React.ChangeEvent<HTMLInputElement>): void => {
 		setFile(event?.currentTarget?.files![0]);
 	};
 
-	const onReset = () => {
+	const onReset = (): void => {
 		setFile(null);
 		handleReset();
 	};

@@ -11,17 +11,17 @@ export interface AuthService {
 }
 
 export class DefaultAuthService implements AuthService {
-	constructor (private api: ApiClient) {}
+	public constructor (private api: ApiClient) {}
 
-	login (user: UserFormValues): AxiosPromise<User> {
+	public login (user: UserFormValues): AxiosPromise<User> {
 		return this.api.post<User>(routes.api.account.login, user);
 	}
 
-	register (user: UserFormValues): AxiosPromise<User> {
+	public register (user: UserFormValues): AxiosPromise<User> {
 		return this.api.post<User>(routes.api.account.register, user);
 	}
 
-	refreshToken (): AxiosPromise<User> {
+	public refreshToken (): AxiosPromise<User> {
 		return this.api.post<User>(routes.api.account.refreshToken);
 	}
 

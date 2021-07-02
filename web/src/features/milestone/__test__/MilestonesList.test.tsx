@@ -39,6 +39,7 @@ describe('<MilestoneListItem />', () => {
 			status: 0,
 			id: 1,
 			posX: 0,
+			connectedToId: null,
 			posY: 0,
 			description: firstDescription,
 			name: 'test name',

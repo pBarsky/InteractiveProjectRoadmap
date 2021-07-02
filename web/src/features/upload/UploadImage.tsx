@@ -14,17 +14,17 @@ interface UploadImageProps {
 	onSubmit?: (values: ImageFormValues, actions: FormikHelpers<ImageFormValues>) => Promise<void>;
 }
 
-const UploadImage = ({ onSubmit, hideForm }: UploadImageProps) => {
+const UploadImage = ({ onSubmit, hideForm }: UploadImageProps): JSX.Element => {
 	const { roadmapStore } = useStore();
 
-	const handleReset = () => {
+	const handleReset = (): void => {
 		hideForm();
 	};
 
 	const handleSubmit = async (
 		values: ImageFormValues,
 		{ setErrors }: FormikHelpers<ImageFormValues>
-	) => {
+	): Promise<void> => {
 		try {
 			const formData = new FormData();
 			const selectedRoadmap = roadmapStore.selectedRoadmap!;

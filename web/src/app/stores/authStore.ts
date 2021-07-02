@@ -19,7 +19,7 @@ export class DefaultAuthStore implements AuthStore {
 	private _refreshTokenTimeout: ReturnType<typeof setTimeout> | null = null;
 	private _token: string | null = window.localStorage.getItem('jwt');
 
-	constructor () {
+	public constructor () {
 		makeAutoObservable(this);
 	}
 
@@ -118,14 +118,14 @@ export class DefaultAuthStore implements AuthStore {
 		}
 	};
 
-	private startRefreshTokenTimer = (user: User) => {
+	private startRefreshTokenTimer = (user: User): void => {
 		const jwtToken = JSON.parse(atob(user.token.split('.')[1]));
 		const expires = new Date(jwtToken.exp * 1000);
 		const timeout = expires.getTime() - Date.now() - 60 * 1000;
 		this.refreshTokenTimeout = setTimeout(this.refreshToken, timeout);
 	};
 
-	private stopRefreshTokenTimer = () => {
+	private stopRefreshTokenTimer = (): void => {
 		if (this.refreshTokenTimeout) {
 			clearTimeout(this.refreshTokenTimeout);
 		}

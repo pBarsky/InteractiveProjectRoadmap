@@ -6,7 +6,7 @@ export interface Roadmap {
 	name: string;
 	description: string | null;
 	startsOn: Date;
-	imageUrl?: string | null;
+	imageUrl?: string;
 	endsOn: Date | null;
 }
 
@@ -19,9 +19,9 @@ export interface RoadmapFormValues {
 }
 
 export class DefaultRoadmapFormValues implements RoadmapFormValues {
-	name = '';
-	description: string | null = '';
-	startsOn: string = format(new Date(), constants.dateFormat);
-	endsOn: string | null = '';
-	commonFormError?: string;
+	public name = '';
+	public description: string | null = '';
+	public startsOn: string = format(new Date(), constants.dateFormat);
+	public endsOn: string | null = '';
+	public commonFormError?: string;
 }

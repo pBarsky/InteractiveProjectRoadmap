@@ -15,7 +15,7 @@ const DropdownMenu = ({ children, text }: DropdownMenuProps): JSX.Element => {
 	const caret = isOpen ? faCaretUp : faCaretDown;
 
 	return (
-		<div className={styles.dropdown} onClick={() => setIsOpen((state) => !state)}>
+		<div className={styles.dropdown} onClick={(): void => setIsOpen((state) => !state)}>
 			<div className={styles.text}>
 				{text} <FontAwesomeIcon className={styles.icon} icon={caret} />
 			</div>

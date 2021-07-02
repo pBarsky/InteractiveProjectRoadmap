@@ -19,7 +19,7 @@ const UploadField = ({
 }: UploadFieldProps & FieldHookConfig<string>): JSX.Element => {
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const [_, meta] = useField(props);
-	const loggingOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+	const loggingOnChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
 		if (afterOnChange) {
 			afterOnChange(event);
 		}

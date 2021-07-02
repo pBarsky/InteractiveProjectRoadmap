@@ -15,7 +15,7 @@ export interface Milestone {
 	endsOn: Date | null;
 	posX: number;
 	posY: number;
-	connectedToId?: number;
+	connectedToId: number | null;
 	status: Status;
 }
 
@@ -26,19 +26,23 @@ export interface MilestoneFormValues {
 	parentProjectId: number;
 	posX: number;
 	posY: number;
-	connectedToId?: number;
+	connectedToId: number | null;
 	status: Status;
 	commonFormError?: string;
 }
 
 export class DefaultMilestoneFormValues implements MilestoneFormValues {
-	name = '';
-	description: string | null = '';
-	parentProjectId = 0;
-	posX = 0;
-	connectedToId?: number;
-	posY = 0;
-	endsOn: string = format(new Date().setDate(new Date().getDate() + 1), constants.dateFormat);
-	status: Status = Status.New;
-	commonFormError?: string;
+	public name = '';
+	public description: string | null = '';
+	public parentProjectId = 0;
+	public posX = 0;
+	public connectedToId: number | null = null;
+	public posY = 0;
+	public endsOn: string = format(
+		new Date().setDate(new Date().getDate() + 1),
+		constants.dateFormat
+	);
+
+	public status: Status = Status.New;
+	public commonFormError?: string;
 }

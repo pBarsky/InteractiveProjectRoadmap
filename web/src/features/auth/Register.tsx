@@ -23,7 +23,7 @@ const Register = ({ onSubmit }: RegisterProps): JSX.Element => {
 	const handleSubmit = async (
 		values: UserFormValues,
 		{ setErrors }: FormikHelpers<UserFormValues>
-	) => {
+	): Promise<void> => {
 		try {
 			values.displayName =
 				values.username!.charAt(0).toUpperCase() + values.username!.slice(1);
