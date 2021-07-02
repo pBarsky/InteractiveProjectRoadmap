@@ -16,7 +16,7 @@ describe('<Field/>', () => {
 				<Formik
 					initialValues={{ [nameText]: nameText }}
 					onSubmit={onSubmit}
-					component={() => (
+					component={(): JSX.Element => (
 						<Form>
 							<Field id={testId} label={labelText} name={nameText} />
 						</Form>

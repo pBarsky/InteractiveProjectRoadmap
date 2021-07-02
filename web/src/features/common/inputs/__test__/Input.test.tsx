@@ -1,8 +1,9 @@
 import { render, waitFor } from '@testing-library/react';
-import { Form, Formik } from 'formik';
+import { Formik } from 'formik';
 import React from 'react';
 import { Router } from 'react-router-dom';
 import { browserHistory } from '../../../../App';
+import Form from '../Form';
 import Input from '../Input';
 
 describe('<Input/>', () => {
@@ -14,7 +15,7 @@ describe('<Input/>', () => {
 				<Formik
 					initialValues={{ [nameText]: nameText }}
 					onSubmit={onSubmit}
-					component={() => (
+					component={(): JSX.Element => (
 						<Form>
 							<Input name={nameText} />
 						</Form>

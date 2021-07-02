@@ -18,7 +18,7 @@ describe('<FileUploadField/>', () => {
 				<Formik
 					initialValues={{ [exampleNameText]: exampleNameText }}
 					onSubmit={onSubmit}
-					component={() => (
+					component={(): JSX.Element => (
 						<Form>
 							<FileUploadField
 								name={exampleNameText}

@@ -1,28 +1,33 @@
-import { render, waitFor } from '@testing-library/react';
+import { render } from '@testing-library/react';
+import React from 'react';
 import { ReactFlowProvider } from 'react-flow-renderer';
 import { Router } from 'react-router';
 import { browserHistory } from '../../../App';
 import defaultDict from '../../../app/dictionaries/defaultDict';
 import { Milestone } from '../../../app/models/milestone';
 import { Roadmap } from '../../../app/models/roadmap';
-import { store } from '../../../app/stores/store';
+import { store, StoreProvider } from '../../../app/stores/store';
 import MilestonesList from '../MilestonesList';
 
 describe('<MilestoneListItem />', () => {
 	it('Should display message when no milestones where found', () => {
 		store.milestoneStore.milestones = [];
 		const { getByText } = render(
-			<ReactFlowProvider>
-				<Router history={browserHistory}>
-					<MilestonesList />
-				</Router>
-			</ReactFlowProvider>
+			<StoreProvider store={store}>
+				<ReactFlowProvider>
+					<Router history={browserHistory}>
+						<div style={{ width: '1000px', height: '1000px' }}>
+							<MilestonesList />
+						</div>
+					</Router>
+				</ReactFlowProvider>
+			</StoreProvider>
 		);
 
 		expect(getByText(defaultDict.pages.milestone.noMilestones)).toBeInTheDocument();
 	});
 
-	it('Should display cards with roadmaps, that have links to details on the onClick', () => {
+	it('Should display map with milestones', () => {
 		const firstDescription = 'test description';
 		const secondDescription = 'test description2';
 
@@ -51,16 +56,18 @@ describe('<MilestoneListItem />', () => {
 		];
 
 		const { getByText } = render(
-			<ReactFlowProvider>
-				<Router history={browserHistory}>
-					<MilestonesList />
-				</Router>
-			</ReactFlowProvider>
+			<StoreProvider store={store}>
+				<ReactFlowProvider>
+					<Router history={browserHistory}>
+						<div style={{ width: '1000px', height: '1000px' }}>
+							<MilestonesList />
+						</div>
+					</Router>
+				</ReactFlowProvider>
+			</StoreProvider>
 		);
 
-		waitFor(() => {
-			expect(getByText(firstDescription)).toBeInTheDocument();
-			expect(getByText(secondDescription)).toBeInTheDocument();
-		});
+		expect(getByText(firstDescription)).toBeInTheDocument();
+		expect(getByText(secondDescription)).toBeInTheDocument();
 	});
 });
