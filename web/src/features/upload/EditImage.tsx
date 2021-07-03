@@ -6,12 +6,12 @@ import Button from '../common/buttons/Button';
 import styles from './EditImage.module.scss';
 import UploadImage from './UploadImage';
 
-const EditImage = () => {
+const EditImage = (): JSX.Element => {
 	const { roadmapStore } = useStore();
 
 	const [isUploadImageVisible, setIsUploadImageFormVisible] = useState(false);
 
-	const toggleUploadImageForm = () => {
+	const toggleUploadImageForm = (): void => {
 		setIsUploadImageFormVisible((oldState) => !oldState);
 	};
 
@@ -32,7 +32,9 @@ const EditImage = () => {
 					<Button
 						outlined
 						className={styles.deleteButton}
-						onClick={async () => await roadmapStore.deleteImage(selectedRoadmap!.id)}
+						onClick={async (): Promise<void> =>
+							await roadmapStore.deleteImage(selectedRoadmap!.id)
+						}
 					>
 						{defaultDict.forms.buttons.deleteImage.text}
 					</Button>
@@ -40,7 +42,7 @@ const EditImage = () => {
 			</div>
 			{isUploadImageVisible && (
 				<div className={styles.uploadImageForm}>
-					<UploadImage hideForm={() => setIsUploadImageFormVisible(false)} />
+					<UploadImage hideForm={(): void => setIsUploadImageFormVisible(false)} />
 				</div>
 			)}
 		</div>

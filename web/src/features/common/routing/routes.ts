@@ -7,23 +7,23 @@ export default {
 			current: '/api/account'
 		},
 		roadmap: {
-			get: (id: number) => `/api/roadmap/${id}`,
+			get: (id: number): string => `/api/roadmap/${id}`,
 			getAll: '/api/roadmap',
 			add: '/api/roadmap',
 			update: '/api/roadmap',
-			delete: (id: number) => `/api/roadmap/${id}`
+			delete: (id: number): string => `/api/roadmap/${id}`
 		},
 		milestone: {
-			get: (id: number) => `/api/milestones/${id}`,
-			getAll: (idRoadmap: number) => `/api/milestones/of-project/${idRoadmap}`,
+			get: (id: number): string => `/api/milestones/${id}`,
+			getAll: (idRoadmap: number): string => `/api/milestones/of-project/${idRoadmap}`,
 			add: '/api/milestones',
 			update: '/api/milestones',
-			delete: (id: number) => `/api/milestones/${id}`
+			delete: (id: number): string => `/api/milestones/${id}`
 		},
 		image: {
 			add: '/api/roadmap/add-image',
 			update: '/api/roadmap/update-image',
-			delete: (roadmapId: number) => `/api/roadmap/delete-image/${roadmapId}`
+			delete: (roadmapId: number): string => `/api/roadmap/delete-image/${roadmapId}`
 		}
 	},
 	common: {

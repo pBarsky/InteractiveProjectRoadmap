@@ -8,7 +8,7 @@ import Layout from './features/layout/Layout';
 
 export const browserHistory = createBrowserHistory();
 
-function App () {
+function App (): JSX.Element {
 	const { commonStore, authStore } = useStore();
 
 	useEffect(() => {

@@ -16,7 +16,7 @@ const LoginInnerForm = ({
 	isSubmitting,
 	handleSubmit,
 	handleReset
-}: FormikProps<UserFormValues>) => {
+}: FormikProps<UserFormValues>): JSX.Element => {
 	return (
 		<Form onReset={handleReset} onSubmit={handleSubmit}>
 			<Field

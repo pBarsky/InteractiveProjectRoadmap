@@ -7,7 +7,7 @@ import Button from '../common/buttons/Button';
 import routes from '../common/routing/routes';
 import styles from './Homepage.module.scss';
 
-const Homepage = () => {
+const Homepage = (): JSX.Element => {
 	const {
 		authStore: { isLoggedIn }
 	} = useStore();

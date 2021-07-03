@@ -9,7 +9,7 @@ import styles from './AddMilestoneInnerForm.module.scss';
 const AddMilestoneInnerForm = ({
 	isSubmitting,
 	handleSubmit
-}: FormikProps<MilestoneFormValues>) => {
+}: FormikProps<MilestoneFormValues>): JSX.Element => {
 	return (
 		<div className={styles.wrapper}>
 			<form onSubmit={handleSubmit}>

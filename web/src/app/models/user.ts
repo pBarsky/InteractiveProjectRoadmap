@@ -14,9 +14,9 @@ export interface UserFormValues {
 }
 
 export class DefaultUserFormValues implements UserFormValues {
-	email: string = '';
-	password: string = '';
-	displayName?: string | undefined = '';
-	username?: string | undefined = '';
-	commonFormError?: string | undefined = '';
+	public email = '';
+	public password = '';
+	public displayName?: string | undefined = '';
+	public username?: string | undefined = '';
+	public commonFormError?: string | undefined = '';
 }

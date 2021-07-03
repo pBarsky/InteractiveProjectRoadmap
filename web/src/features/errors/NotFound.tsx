@@ -8,7 +8,7 @@ import styles from './NotFound.module.scss';
 interface NotFoundProps {
 	message?: string;
 }
-const NotFound = ({ message }: NotFoundProps) => {
+const NotFound = ({ message }: NotFoundProps): JSX.Element => {
 	const {
 		authStore: { isLoggedIn }
 	} = useStore();
@@ -22,7 +22,7 @@ const NotFound = ({ message }: NotFoundProps) => {
 			<h1>{message ?? defaultDict.pages.notFound.message}</h1>
 			<Link
 				to={route}
-				component={() => <Button className={styles.backButton}>{text}</Button>}
+				component={(): JSX.Element => <Button className={styles.backButton}>{text}</Button>}
 			/>
 		</div>
 	);

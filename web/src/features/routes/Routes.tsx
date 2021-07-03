@@ -10,7 +10,7 @@ import AddRoadmap from '../roadmaps/AddRoadmap';
 import RoadmapDetails from '../roadmaps/RoadmapDetails';
 import Dashboard from '../users/Dashboard';
 
-const Routes = () => {
+const Routes = (): JSX.Element => {
 	return (
 		<Switch>
 			<Route path={routes.auth.login} component={Login} />

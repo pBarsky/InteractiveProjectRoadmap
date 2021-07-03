@@ -1,11 +1,11 @@
 export interface ImageFormValues {
-    file: File | null | '';
-    roadmapId: number;
-    commonFormError?: string;
+	file: File | null | '';
+	roadmapId: number;
+	commonFormError?: string;
 }
 
 export class DefaultImageFormValues implements ImageFormValues {
-	file: File | null | '' = '';
-    roadmapId: number = 0;
-    commonFormError?: string;
+	public file: File | null | '' = '';
+	public roadmapId = 0;
+	public commonFormError?: string;
 }

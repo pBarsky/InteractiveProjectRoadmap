@@ -19,7 +19,7 @@ export class DefaultAuthStore implements AuthStore {
 	private _refreshTokenTimeout: ReturnType<typeof setTimeout> | null = null;
 	private _token: string | null = window.localStorage.getItem('jwt');
 
-	constructor () {
+	public constructor () {
 		makeAutoObservable(this);
 	}
 
@@ -39,7 +39,7 @@ export class DefaultAuthStore implements AuthStore {
 		this._user = value;
 	}
 
-	get isLoggedIn () {
+	public get isLoggedIn (): boolean {
 		return !!this.user;
 	}
 
@@ -51,7 +51,7 @@ export class DefaultAuthStore implements AuthStore {
 		this._token = value;
 	}
 
-	setToken = (token: string | null) => {
+	public setToken = (token: string | null): void => {
 		this.token = token;
 		if (token) {
 			window.localStorage.setItem('jwt', token);
@@ -60,7 +60,7 @@ export class DefaultAuthStore implements AuthStore {
 		}
 	};
 
-	public login = async (creds: UserFormValues) => {
+	public login = async (creds: UserFormValues): Promise<void> => {
 		try {
 			const { data: user } = await authService.login(creds);
 			this.setToken(user.token);
@@ -72,7 +72,7 @@ export class DefaultAuthStore implements AuthStore {
 		}
 	};
 
-	public register = async (creds: UserFormValues) => {
+	public register = async (creds: UserFormValues): Promise<void> => {
 		try {
 			const { data: user } = await authService.register(creds);
 			this.setToken(user.token);
@@ -84,18 +84,18 @@ export class DefaultAuthStore implements AuthStore {
 		}
 	};
 
-	public logout = () => {
+	public logout = (): void => {
 		this.stopRefreshTokenTimer();
 		this.setToken(null);
 		window.localStorage.removeItem('jwt');
 		this.setUser(null);
 	};
 
-	public setUser = (user: User | null) => {
+	public setUser = (user: User | null): void => {
 		this.user = user;
 	};
 
-	public fetchUser = async () => {
+	public fetchUser = async (): Promise<void> => {
 		try {
 			const { data: user } = await authService.currentUser();
 			this.setUser(user);
@@ -106,7 +106,7 @@ export class DefaultAuthStore implements AuthStore {
 		}
 	};
 
-	public refreshToken = async () => {
+	public refreshToken = async (): Promise<void> => {
 		this.stopRefreshTokenTimer();
 		try {
 			const { data: user } = await authService.refreshToken();
@@ -118,14 +118,14 @@ export class DefaultAuthStore implements AuthStore {
 		}
 	};
 
-	private startRefreshTokenTimer = (user: User) => {
+	private startRefreshTokenTimer = (user: User): void => {
 		const jwtToken = JSON.parse(atob(user.token.split('.')[1]));
 		const expires = new Date(jwtToken.exp * 1000);
 		const timeout = expires.getTime() - Date.now() - 60 * 1000;
 		this.refreshTokenTimeout = setTimeout(this.refreshToken, timeout);
 	};
 
-	private stopRefreshTokenTimer = () => {
+	private stopRefreshTokenTimer = (): void => {
 		if (this.refreshTokenTimeout) {
 			clearTimeout(this.refreshTokenTimeout);
 		}

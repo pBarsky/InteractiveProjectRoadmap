@@ -6,7 +6,7 @@ interface LoaderProps {
 	page?: boolean;
 }
 
-const Loader = ({ content = defaultDict.common.loading, page = false }: LoaderProps) => {
+const Loader = ({ content = defaultDict.common.loading, page = false }: LoaderProps): JSX.Element => {
 	return (
 		<div className={styles.dimmer} style={{ minHeight: page ? '100vh' : '20vh' }}>
 			<div className={styles.wrapper}>

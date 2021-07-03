@@ -14,7 +14,7 @@ interface RegisterProps {
 	onSubmit?: (values: UserFormValues, actions: FormikHelpers<UserFormValues>) => Promise<void>;
 }
 
-const Register = ({ onSubmit }: RegisterProps) => {
+const Register = ({ onSubmit }: RegisterProps): JSX.Element => {
 	const { authStore } = useStore();
 
 	if (authStore.isLoggedIn) {
@@ -23,7 +23,7 @@ const Register = ({ onSubmit }: RegisterProps) => {
 	const handleSubmit = async (
 		values: UserFormValues,
 		{ setErrors }: FormikHelpers<UserFormValues>
-	) => {
+	): Promise<void> => {
 		try {
 			values.displayName =
 				values.username!.charAt(0).toUpperCase() + values.username!.slice(1);

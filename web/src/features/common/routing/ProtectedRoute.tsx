@@ -3,7 +3,7 @@ import { Redirect, Route, RouteProps } from 'react-router-dom';
 import { useStore } from '../../../app/stores/store';
 import routes from './routes';
 
-const ProtectedRoute = (props: RouteProps) => {
+const ProtectedRoute = (props: RouteProps): JSX.Element => {
 	const {
 		authStore: { isLoggedIn }
 	} = useStore();

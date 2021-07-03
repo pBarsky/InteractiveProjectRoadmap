@@ -9,11 +9,11 @@ interface AddMilestoneProps {
 	roadmapId: number;
 }
 
-const AddMilestone = ({ roadmapId }: AddMilestoneProps) => {
+const AddMilestone = ({ roadmapId }: AddMilestoneProps): JSX.Element => {
 	const [isAddMilestoneVisible, setIsAddMilestoneVisible] = useState(false);
 	const [isAdding, setIsAdding] = useState(true);
 
-	const toggleAddMilestoneForm = () => {
+	const toggleAddMilestoneForm = (): void => {
 		setIsAddMilestoneVisible((oldState) => !oldState);
 		setIsAdding((oldState) => !oldState);
 	};

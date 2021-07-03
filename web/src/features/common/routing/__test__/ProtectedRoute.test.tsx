@@ -10,7 +10,10 @@ describe('<ProtectedRoute />', () => {
 	it('Should redirect to login page when user is not authorized', () => {
 		render(
 			<Router history={browserHistory}>
-				<ProtectedRoute path='/' render={() => <div data-testid='protectedDiv'></div>} />
+				<ProtectedRoute
+					path='/'
+					render={(): JSX.Element => <div data-testid='protectedDiv'></div>}
+				/>
 			</Router>
 		);
 
@@ -24,7 +27,7 @@ describe('<ProtectedRoute />', () => {
 				<Router history={browserHistory}>
 					<ProtectedRoute
 						path='/'
-						render={() => <div data-testid='protectedDiv'>test</div>}
+						render={(): JSX.Element => <div data-testid='protectedDiv'>test</div>}
 					/>
 				</Router>
 			</StoreProvider>

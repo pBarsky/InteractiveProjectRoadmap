@@ -9,8 +9,8 @@ interface BackButtonProps {
 	backUrl?: string;
 }
 
-const BackButton = ({ content, backUrl, className }: BackButtonProps) => {
-	const onClick = () => {
+const BackButton = ({ content, backUrl, className }: BackButtonProps): JSX.Element => {
+	const onClick = (): void => {
 		if (backUrl) {
 			browserHistory.push(backUrl);
 			return;

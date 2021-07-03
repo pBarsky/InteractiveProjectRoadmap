@@ -23,12 +23,15 @@ const MilestoneListItemInnerForm = ({
 	toggleEdit,
 	resetForm,
 	submitForm
-}: MilestoneListItemProps & FormikProps<MilestoneFormValues>) => {
+}: MilestoneListItemProps & FormikProps<MilestoneFormValues>): JSX.Element => {
 	const {
 		forms: { inputs }
 	} = defaultDict;
 
 	const shortenDescription = (description: string): string => {
+		if (description.length < 50) {
+			return description;
+		}
 		return `${description.slice(0, 50)}...`;
 	};
 
@@ -39,11 +42,11 @@ const MilestoneListItemInnerForm = ({
 		return shortenDescription(values.description!);
 	};
 
-	const handleCancel = () => {
+	const handleCancel = (): void => {
 		resetForm();
 		toggleEdit();
 	};
-	const handleEdit = async () => {
+	const handleEdit = async (): Promise<void> => {
 		await submitForm();
 		toggleEdit();
 	};

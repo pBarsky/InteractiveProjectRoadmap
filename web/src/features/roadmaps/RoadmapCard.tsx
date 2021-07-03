@@ -23,13 +23,13 @@ interface RoadmapCardProps {
 const RoadmapCard = ({ onSubmit, testDate }: RoadmapCardProps): JSX.Element => {
 	const { roadmapStore } = useStore();
 	const [isEditing, setIsEditing] = useState(false);
-	const toggleEdit = () => {
+	const toggleEdit = (): void => {
 		setIsEditing((oldState) => !oldState);
 	};
 	const roadmap = roadmapStore.selectedRoadmap!;
 	const roadmapDict = defaultDict.pages.roadmap;
 
-	let isFailing: boolean = false;
+	let isFailing = false;
 	if (roadmap.endsOn) {
 		isFailing = (testDate ?? new Date()).getTime() > roadmap.endsOn.getTime();
 	}
@@ -37,7 +37,7 @@ const RoadmapCard = ({ onSubmit, testDate }: RoadmapCardProps): JSX.Element => {
 	const handleSubmit = async (
 		values: RoadmapFormValues,
 		{ setErrors }: FormikHelpers<RoadmapFormValues>
-	) => {
+	): Promise<void> => {
 		try {
 			const updatedRoadmap: Roadmap = {
 				...roadmap,
@@ -52,7 +52,7 @@ const RoadmapCard = ({ onSubmit, testDate }: RoadmapCardProps): JSX.Element => {
 		}
 	};
 
-	const handleDelete = async () => {
+	const handleDelete = async (): Promise<void> => {
 		await roadmapStore.deleteRoadmap(roadmap.id);
 	};
 
@@ -67,7 +67,7 @@ const RoadmapCard = ({ onSubmit, testDate }: RoadmapCardProps): JSX.Element => {
 					endsOn: roadmap.endsOn ? format(roadmap.endsOn, constants.dateFormat) : ''
 				}}
 				onSubmit={onSubmit || handleSubmit}
-				component={(props) => (
+				component={(props): JSX.Element => (
 					<RoadmapCardInnerForm
 						{...props}
 						onDelete={handleDelete}
@@ -83,7 +83,7 @@ const RoadmapCard = ({ onSubmit, testDate }: RoadmapCardProps): JSX.Element => {
 					<img
 						src={roadmap.imageUrl}
 						alt={roadmapDict.roadmapImageAltText}
-						onLoad={({ currentTarget: { naturalWidth, naturalHeight } }) =>
+						onLoad={({ currentTarget: { naturalWidth, naturalHeight } }): void =>
 							roadmapStore.setBackgroundImageSize([naturalWidth, naturalHeight])
 						}
 					/>

@@ -7,7 +7,7 @@ interface DropdownMenuProps extends React.ComponentPropsWithRef<'div'> {
 	text?: string;
 }
 
-const DropdownMenu = ({ children, text }: DropdownMenuProps) => {
+const DropdownMenu = ({ children, text }: DropdownMenuProps): JSX.Element => {
 	const [isOpen, setIsOpen] = useState(false);
 
 	const menuClassNames = [styles.menu, isOpen ? styles.visible : ''].join(' ');
@@ -15,7 +15,7 @@ const DropdownMenu = ({ children, text }: DropdownMenuProps) => {
 	const caret = isOpen ? faCaretUp : faCaretDown;
 
 	return (
-		<div className={styles.dropdown} onClick={() => setIsOpen((state) => !state)}>
+		<div className={styles.dropdown} onClick={(): void => setIsOpen((state) => !state)}>
 			<div className={styles.text}>
 				{text} <FontAwesomeIcon className={styles.icon} icon={caret} />
 			</div>

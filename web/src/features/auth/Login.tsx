@@ -16,7 +16,7 @@ interface LoginProps {
 	onSubmit?: (values: UserFormValues, actions: FormikHelpers<UserFormValues>) => Promise<void>;
 }
 
-const Login = ({ onSubmit }: LoginProps) => {
+const Login = ({ onSubmit }: LoginProps): JSX.Element => {
 	const { authStore } = useStore();
 
 	if (authStore.isLoggedIn) {
@@ -26,7 +26,7 @@ const Login = ({ onSubmit }: LoginProps) => {
 	const handleSubmit = async (
 		values: UserFormValues,
 		{ setErrors }: FormikHelpers<UserFormValues>
-	) => {
+	): Promise<void> => {
 		try {
 			await authStore.login(values);
 			browserHistory.push(routes.user.dashboard);

@@ -16,13 +16,13 @@ interface RoadmapProps {
 	) => Promise<void>;
 }
 
-const AddRoadmap = ({ onSubmit }: RoadmapProps) => {
+const AddRoadmap = ({ onSubmit }: RoadmapProps): JSX.Element => {
 	const { roadmapStore } = useStore();
 
 	const handleSubmit = async (
 		values: RoadmapFormValues,
 		{ setErrors }: FormikHelpers<RoadmapFormValues>
-	) => {
+	): Promise<void> => {
 		try {
 			values.startsOn = new Date(values.startsOn).toISOString();
 			values.endsOn = values.endsOn ? new Date(values.endsOn).toISOString() : null;

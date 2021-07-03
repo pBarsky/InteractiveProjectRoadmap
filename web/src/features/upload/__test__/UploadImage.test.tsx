@@ -10,7 +10,7 @@ describe('<UploadImage />', () => {
 		const { getByRole } = render(
 			<StoreProvider>
 				<Router history={browserHistory}>
-					<UploadImage hideForm={() => false} />
+					<UploadImage hideForm={(): boolean => false} />
 				</Router>
 			</StoreProvider>
 		);

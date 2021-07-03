@@ -25,23 +25,23 @@ const RoadmapCardInnerForm = ({
 	onDelete,
 	handleReset,
 	toggleEdit
-}: RoadmapCardInnerFormProps & FormikProps<RoadmapFormValues>) => {
+}: RoadmapCardInnerFormProps & FormikProps<RoadmapFormValues>): JSX.Element => {
 	const {
 		forms: { inputs },
 		pages: { roadmap }
 	} = defaultDict;
 
-	const toggleEditAndResetForm = () => {
+	const toggleEditAndResetForm = (): void => {
 		handleReset();
 		toggleEdit();
 	};
 
-	const onSubmit = async () => {
+	const onSubmit = async (): Promise<void> => {
 		handleSubmit();
 		toggleEdit();
 	};
 
-	const truncatedDescription = () => {
+	const truncatedDescription = (): string => {
 		if (isEditing) {
 			return values.description ?? '';
 		}

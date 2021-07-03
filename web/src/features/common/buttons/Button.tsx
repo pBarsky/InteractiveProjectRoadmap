@@ -18,7 +18,7 @@ const Button = ({
 	disabled = false,
 	size = 'medium',
 	...props
-}: ButtonProps) => {
+}: ButtonProps): JSX.Element => {
 	const getSizeClass = (size: string): string => {
 		switch (size) {
 		case 'huge':

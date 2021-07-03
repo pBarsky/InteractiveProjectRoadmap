@@ -10,7 +10,7 @@ import routes from '../common/routing/routes';
 import RoadmapCard from './RoadmapCard';
 import styles from './RoadmapDetails.module.scss';
 
-const RoadmapDetails = () => {
+const RoadmapDetails = (): JSX.Element => {
 	const { roadmapStore, milestoneStore } = useStore();
 	const params = useParams<{ id: string }>();
 	const id = parseInt(params.id);

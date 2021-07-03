@@ -1,48 +1,129 @@
 import { observer } from 'mobx-react-lite';
 import React from 'react';
-import ReactFlow, { Controls, FlowElement, Node, useStoreState } from 'react-flow-renderer';
+import ReactFlow, {
+	Connection,
+	Controls,
+	Edge,
+	FlowElement,
+	Handle,
+	Node,
+	OnConnectStartParams,
+	Position,
+	Transform,
+	useStoreState
+} from 'react-flow-renderer';
 import defaultDict from '../../app/dictionaries/defaultDict';
 import { Milestone } from '../../app/models/milestone';
+import { BackgroundSize } from '../../app/stores/roadmapStore';
 import { useStore } from '../../app/stores/store';
 import Loader from '../common/Loader';
 import MilestoneListItem from './MilestoneListItem';
 import styles from './MilestonesList.module.scss';
 
-const MilestonesList = () => {
-	const { milestoneStore, roadmapStore } = useStore();
-	const { milestones } = milestoneStore;
+const generateStyles = (
+	transformation: Transform,
+	backgroundImageSize: BackgroundSize,
+	imageUrl?: string
+): React.CSSProperties => {
+	return {
+		'--data-x': `${transformation[0]}px`,
+		'--data-y': `${transformation[1]}px`,
+		'--data-scale': transformation[2],
+		'--x-size': `${backgroundImageSize[0]}px`,
+		'--y-size': `${backgroundImageSize[1]}px`,
+		'--background-url': `url(${imageUrl || ''})`
+	} as React.CSSProperties;
+};
+
+const MilestonesList = (): JSX.Element => {
+	const { flowStore, milestoneStore, roadmapStore } = useStore();
+	const { flowElements, addConnection: addEdge } = flowStore;
+	const { backgroundImageSize, selectedRoadmap } = roadmapStore;
 	const transformation = useStoreState((state) => state.transform);
 
 	if (milestoneStore.loading) {
 		return <Loader />;
 	}
 
-	const customMilestoneNode = (data: FlowElement<Milestone>) => (
-		<MilestoneListItem milestone={data.data!} />
-	);
+	const customMilestoneNode = (data: FlowElement<Milestone>): JSX.Element => {
+		return (
+			<>
+				<Handle type='target' position={Position.Left} className={styles.handle} />
+				<MilestoneListItem milestone={data.data!} />
+				<Handle type='source' position={Position.Right} className={styles.handle} />
+			</>
+		);
+	};
 
-	const elements: FlowElement[] = milestones.map((milestone) => ({
-		id: `${milestone.id}`,
-		data: milestone,
-		type: 'milestone',
-		position: { x: milestone.posX, y: milestone.posY }
-	}));
+	const onConnect = ({ source, target }: Edge<Milestone> | Connection): void => {
+		if (!target || !source) {
+			return;
+		}
+		const sourceId = parseInt(source);
+		const targetId = parseInt(target);
+		addEdge(sourceId, targetId);
+	};
 
-	const style = {
-		'--data-x': `${transformation[0]}px`,
-		'--data-y': `${transformation[1]}px`,
-		'--data-scale': transformation[2],
-		'--x-size': `${roadmapStore.backgroundImageSize[0]}px`,
-		'--y-size': `${roadmapStore.backgroundImageSize[1]}px`,
-		'--background-url': `url(${roadmapStore.selectedRoadmap?.imageUrl || ''})`
-	} as React.CSSProperties;
+	const onEdgeUpdate = (
+		_oldEdge: Edge<Milestone> | Connection,
+		{ source, target }: Edge<Milestone> | Connection
+	): void => {
+		if (!target || !source) {
+			return;
+		}
+		const sourceId = parseInt(source);
+		const targetId = parseInt(target);
 
-	const moveMilestone = (event: React.MouseEvent<Element, MouseEvent>, node: Node) => {
+		flowStore.updateConnection(sourceId, targetId);
+	};
+
+	const removeEdge = ({ source }: Edge<Milestone> | Connection): void => {
+		if (!source) {
+			return;
+		}
+		const connectionId = parseInt(source);
+		flowStore.removeConnection(connectionId);
+	};
+
+	const moveMilestone = (_: React.MouseEvent<Element, MouseEvent>, node: Node): void => {
 		milestoneStore.updatePosition(parseInt(node.id), node.position.x, node.position.y);
 	};
 
 	const nodeTypes = {
 		milestone: customMilestoneNode
+	};
+
+	const onEdgeUpdateEnd = ({ target }: MouseEvent, edge: Edge<Milestone>): void => {
+		const { className } = target as HTMLElement;
+		if (!className.match(/(react-flow__pane)/)) {
+			return;
+		}
+		removeEdge(edge);
+	};
+
+	const onConnectStart = (
+		_: React.MouseEvent<Element, MouseEvent>,
+		{ nodeId }: OnConnectStartParams
+	): void => {
+		if (!nodeId) {
+			return;
+		}
+
+		const id = parseInt(nodeId);
+		flowStore.selectedElementId = id;
+	};
+
+	const onConnectStop = ({ target }: MouseEvent): void => {
+		const { className } = target as HTMLElement;
+		if (!className.match(/(react-flow__pane)/)) {
+			return;
+		}
+
+		if (!flowStore.selectedElementId) {
+			return;
+		}
+
+		flowStore.removeConnection(flowStore.selectedElementId);
 	};
 
 	return (
@@ -51,11 +132,25 @@ const MilestonesList = () => {
 				<h2>{defaultDict.pages.milestone.noMilestones}</h2>
 			)}
 			<ReactFlow
-				elements={elements}
-				style={style}
+				elements={flowElements}
+				style={generateStyles(
+					transformation,
+					backgroundImageSize,
+					selectedRoadmap?.imageUrl
+				)}
 				onNodeDragStop={moveMilestone}
 				nodeTypes={nodeTypes}
 				className={styles.map}
+				onConnect={onConnect}
+				onEdgeUpdate={onEdgeUpdate}
+				onEdgeDoubleClick={(_, edge): void => removeEdge(edge)}
+				panOnScroll
+				onConnectStart={onConnectStart}
+				onConnectStop={onConnectStop}
+				zoomOnDoubleClick={false}
+				onEdgeUpdateEnd={onEdgeUpdateEnd}
+				edgeUpdaterRadius={10}
+				elementsSelectable={false}
 			>
 				<Controls />
 			</ReactFlow>
