@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Roadmap.Domain.Migrations;
 using Roadmap.Domain.Models;
 using Roadmap.Domain.Repositories.Interfaces;
 using Roadmap.Services.Mapper;
@@ -34,6 +36,16 @@ namespace Roadmap.Services.Milestones
                 return 0;
             }
 
+            if (milestone.ConnectedToId == null)
+            {
+                return await _milestoneRepository.AddAsync(milestone);
+            }
+
+            var connectedMilestone = await GetConnectedMilestone(milestone);
+            if (connectedMilestone == null)
+            {
+                return 0;
+            }
             return await _milestoneRepository.AddAsync(milestone);
         }
 
@@ -74,6 +86,19 @@ namespace Roadmap.Services.Milestones
                 return false;
             }
 
+            var connectedMilestone = await GetSourceConnectedToMilestone(milestone);
+            if (connectedMilestone == null)
+            {
+                return await _milestoneRepository.DeleteAsync(id);
+            }
+
+            connectedMilestone.ConnectedToId = null;
+            var updatedConnectedMilestone = await _milestoneRepository.UpdateAsync(connectedMilestone);
+            if (!updatedConnectedMilestone)
+            {
+                return false;
+            }
+
             return await _milestoneRepository.DeleteAsync(id);
         }
 
@@ -88,7 +113,29 @@ namespace Roadmap.Services.Milestones
 
             _mapper.Map(srcMilestone, destMilestone);
 
+
+            if (destMilestone.ConnectedToId == null)
+            {
+                return await _milestoneRepository.UpdateAsync(destMilestone);
+            }
+
+            var connectedMilestone = await GetConnectedMilestone(destMilestone);
+            if (connectedMilestone == null)
+            {
+                return false;
+            }
+
             return await _milestoneRepository.UpdateAsync(destMilestone);
+        }
+
+        private async Task<Milestone> GetSourceConnectedToMilestone(Milestone milestone)
+        {
+            return (await _milestoneRepository.FindAsync(x => x.ConnectedToId == milestone.Id && x.ParentProjectId == milestone.ParentProjectId)).FirstOrDefault();
+        }
+
+        private async Task<Milestone> GetConnectedMilestone(Milestone milestone)
+        {
+            return (await _milestoneRepository.FindAsync(x => x.Id == milestone.ConnectedToId && x.ParentProjectId == milestone.ParentProjectId)).FirstOrDefault();
         }
     }
 }

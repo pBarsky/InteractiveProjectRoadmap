@@ -18,5 +18,6 @@ namespace Roadmap.API.DTOs
         public Status Status { get; set; }
         public int PosX { get; set; }
         public int PosY { get; set; }
+        public int? ConnectedToId { get; set; }
     }
 }
