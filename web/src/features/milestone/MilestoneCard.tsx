@@ -1,15 +1,16 @@
 import format from 'date-fns/format';
 import { Formik, FormikHelpers } from 'formik';
-import { useState } from 'react';
+import { observer } from 'mobx-react-lite';
+import React, { useState } from 'react';
 import constants from '../../app/constants/constants';
 import defaultDict from '../../app/dictionaries/defaultDict';
 import { Milestone, MilestoneFormValues } from '../../app/models/milestone';
-import milestoneStore from '../../app/stores/milestoneStore';
+import { useStore } from '../../app/stores/store';
 import { milestoneFormValuesSchema } from '../../app/validationSchemas/milestoneSchemas';
-import styles from './MilestoneListItem.module.scss';
-import MilestoneListItemInnerForm from './MilestoneListItemInnerForm';
+import styles from './MilestoneCard.module.scss';
+import MilestoneCardInnerForm from './MilestoneCardInnerForm';
 
-interface MilestoneListItemProps {
+interface MilestoneCardProps {
 	milestone: Milestone;
 	onSubmit?: (
 		values: MilestoneFormValues,
@@ -17,10 +18,13 @@ interface MilestoneListItemProps {
 	) => Promise<void>;
 }
 
-const MilestoneListItem = ({ onSubmit, milestone }: MilestoneListItemProps): JSX.Element => {
-	const [isEditing, setIsEditing] = useState(false);
+const MilestoneCard = ({ onSubmit, milestone }: MilestoneCardProps): JSX.Element => {
+	const { milestoneStore } = useStore();
+	const { isEditing, setIsEditing } = milestoneStore;
+	const [isFormEditable, setIsFormEditable] = useState(false);
 	const toggleEdit = (): void => {
-		setIsEditing((oldState) => !oldState);
+		setIsFormEditable((oldState) => !oldState);
+		setIsEditing(!isEditing);
 	};
 
 	const handleSubmit = async (
@@ -30,8 +34,8 @@ const MilestoneListItem = ({ onSubmit, milestone }: MilestoneListItemProps): JSX
 		try {
 			const updatedMilestone: Milestone = {
 				...milestone,
-				name: values.name,
-				description: values.description,
+				...values,
+				status: Number(values.status),
 				endsOn: values.endsOn ? new Date(values.endsOn) : null
 			};
 			await milestoneStore.updateMilestone(updatedMilestone);
@@ -55,10 +59,10 @@ const MilestoneListItem = ({ onSubmit, milestone }: MilestoneListItemProps): JSX
 				}}
 				onSubmit={onSubmit || handleSubmit}
 				component={(props): JSX.Element => (
-					<MilestoneListItemInnerForm
+					<MilestoneCardInnerForm
 						{...props}
 						onDelete={handleDelete}
-						isEditing={isEditing}
+						isEditing={isFormEditable}
 						toggleEdit={toggleEdit}
 					/>
 				)}
@@ -67,4 +71,4 @@ const MilestoneListItem = ({ onSubmit, milestone }: MilestoneListItemProps): JSX
 	);
 };
 
-export default MilestoneListItem;
+export default observer(MilestoneCard);

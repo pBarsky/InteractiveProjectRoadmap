@@ -1,18 +1,16 @@
 import { render, waitFor } from '@testing-library/react';
-import { Router } from 'react-router-dom';
-import { browserHistory } from '../../../App';
+import React from 'react';
 import defaultDict from '../../../app/dictionaries/defaultDict';
-import { StoreProvider } from '../../../app/stores/store';
+import { store } from '../../../app/stores/store';
+import { WithStoresAndRouter } from '../../../setupTests';
 import UploadImage from '../UploadImage';
 
 describe('<UploadImage />', () => {
 	it('Should render form with button', async () => {
 		const { getByRole } = render(
-			<StoreProvider>
-				<Router history={browserHistory}>
-					<UploadImage hideForm={(): boolean => false} />
-				</Router>
-			</StoreProvider>
+			<WithStoresAndRouter store={store}>
+				<UploadImage hideForm={(): boolean => false} />
+			</WithStoresAndRouter>
 		);
 
 		await waitFor(() => {

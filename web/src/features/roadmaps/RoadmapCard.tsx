@@ -8,7 +8,7 @@ import { Roadmap, RoadmapFormValues } from '../../app/models/roadmap';
 import { useStore } from '../../app/stores/store';
 import { roadmapFormValuesSchema } from '../../app/validationSchemas/roadmapSchemas';
 import AddMilestone from '../milestone/AddMilestone';
-import MilestonesMap from '../milestone/MilestonesMap';
+import MilestonesFlowMap from '../milestone/MilestonesFlowMap';
 import EditImage from '../upload/EditImage';
 import styles from './RoadmapCard.module.scss';
 import RoadmapCardInnerForm from './RoadmapCardInnerForm';
@@ -94,7 +94,7 @@ const RoadmapCard = ({ onSubmit, testDate }: RoadmapCardProps): JSX.Element => {
 					<span>{defaultDict.pages.roadmap.milestonesHeader}</span>
 					<AddMilestone roadmapId={roadmap.id} />
 				</div>
-				<MilestonesMap />
+				<MilestonesFlowMap />
 			</div>
 		</div>
 	);

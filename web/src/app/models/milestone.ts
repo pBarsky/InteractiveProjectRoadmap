@@ -7,6 +7,11 @@ export enum Status {
 	Done,
 }
 
+export interface StatusSelectOption {
+	value: Status;
+	label: string;
+}
+
 export interface Milestone {
 	id: number;
 	parentProjectId: number;

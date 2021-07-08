@@ -23,6 +23,11 @@ const Input = ({
 		return classes.length > 0 ? classes : undefined;
 	};
 
+	const rowsNumber = (): number => {
+		const value = (props.value ?? field.value) as string;
+		return Math.floor(value.length / 40);
+	};
+
 	return (
 		<div className={styles.input}>
 			{props.type === 'textarea'
@@ -33,6 +38,7 @@ const Input = ({
 							value={props.value ?? field.value}
 							disabled={props.disabled}
 							id={props.id}
+							rows={rowsNumber()}
 						/>
 						{icon && (
 							<div className={styles.iconWrapper}>

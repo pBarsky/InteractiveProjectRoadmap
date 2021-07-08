@@ -1,20 +1,20 @@
 import { render } from '@testing-library/react';
 import React from 'react';
-import { Router } from 'react-router';
 import { browserHistory } from '../../../../App';
-import { store, StoreProvider } from '../../../../app/stores/store';
+import { store } from '../../../../app/stores/store';
+import { WithStoresAndRouter } from '../../../../setupTests';
 import ProtectedRoute from '../ProtectedRoute';
 import routes from '../routes';
 
 describe('<ProtectedRoute />', () => {
 	it('Should redirect to login page when user is not authorized', () => {
 		render(
-			<Router history={browserHistory}>
+			<WithStoresAndRouter>
 				<ProtectedRoute
 					path='/'
 					render={(): JSX.Element => <div data-testid='protectedDiv'></div>}
 				/>
-			</Router>
+			</WithStoresAndRouter>
 		);
 
 		expect(browserHistory.location.pathname).toBe(routes.auth.login);
@@ -23,14 +23,12 @@ describe('<ProtectedRoute />', () => {
 		store.authStore.user = { displayName: 'test', token: '', username: 'test' };
 
 		const { getByTestId } = render(
-			<StoreProvider store={store}>
-				<Router history={browserHistory}>
-					<ProtectedRoute
-						path='/'
-						render={(): JSX.Element => <div data-testid='protectedDiv'>test</div>}
-					/>
-				</Router>
-			</StoreProvider>
+			<WithStoresAndRouter>
+				<ProtectedRoute
+					path='/'
+					render={(): JSX.Element => <div data-testid='protectedDiv'>test</div>}
+				/>
+			</WithStoresAndRouter>
 		);
 
 		expect(getByTestId('protectedDiv')).toBeInTheDocument();

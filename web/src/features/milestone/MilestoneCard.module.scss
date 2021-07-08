@@ -1,0 +1,9 @@
+.wrapper {
+	width: 300px;
+	background: var(--darkerWhite);
+	border-radius: 5px;
+	border: 3px solid var(--black);
+	& * {
+		pointer-events: all;
+	}
+}

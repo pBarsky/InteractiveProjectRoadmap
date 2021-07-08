@@ -1,21 +1,18 @@
 import { render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
-import { Router } from 'react-router';
-import { browserHistory } from '../../../../App';
 import defaultDict from '../../../../app/dictionaries/defaultDict';
-import { store, StoreProvider } from '../../../../app/stores/store';
+import { store } from '../../../../app/stores/store';
+import { WithStoresAndRouter } from '../../../../setupTests';
 import routes from '../../../common/routing/routes';
 import Navbar from '../Navbar';
 
 describe('<UserNavMenu />', () => {
 	it('Should contain login button when user is not authenticated', () => {
 		const { getByText } = render(
-			<StoreProvider>
-				<Router history={browserHistory}>
-					<Navbar />
-				</Router>
-			</StoreProvider>
+			<WithStoresAndRouter>
+				<Navbar />
+			</WithStoresAndRouter>
 		);
 
 		const loginButton = getByText(defaultDict.forms.buttons.login.text);
@@ -31,11 +28,9 @@ describe('<UserNavMenu />', () => {
 			username: 'test'
 		};
 		const { getByText } = render(
-			<StoreProvider store={store}>
-				<Router history={browserHistory}>
-					<Navbar />
-				</Router>
-			</StoreProvider>
+			<WithStoresAndRouter store={store}>
+				<Navbar />
+			</WithStoresAndRouter>
 		);
 		expect(getByText('TestDisplayName')).toBeInTheDocument();
 	});
@@ -48,11 +43,9 @@ describe('<UserNavMenu />', () => {
 		};
 		store.authStore.user = { ...user };
 		const { getByText } = render(
-			<StoreProvider store={store}>
-				<Router history={browserHistory}>
-					<Navbar />
-				</Router>
-			</StoreProvider>
+			<WithStoresAndRouter store={store}>
+				<Navbar />
+			</WithStoresAndRouter>
 		);
 
 		userEvent.click(getByText(user.displayName));

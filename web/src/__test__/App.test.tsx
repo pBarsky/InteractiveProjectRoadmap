@@ -1,19 +1,16 @@
 import { render } from '@testing-library/react';
 import React from 'react';
-import { Router } from 'react-router-dom';
 import App, { browserHistory } from '../App';
 import defaultDict from '../app/dictionaries/defaultDict';
-import { StoreProvider } from '../app/stores/store';
 import routes from '../features/common/routing/routes';
+import { WithStoresAndRouter } from '../setupTests';
 
 describe('<App />', () => {
 	it('Should render homepage when location is "/"', () => {
 		const { getByText } = render(
-			<StoreProvider>
-				<Router history={browserHistory}>
-					<App />
-				</Router>
-			</StoreProvider>
+			<WithStoresAndRouter>
+				<App />
+			</WithStoresAndRouter>
 		);
 
 		browserHistory.push(routes.common.home);
@@ -23,11 +20,9 @@ describe('<App />', () => {
 
 	it('Should render not found when passed trash url', () => {
 		const { getByText } = render(
-			<StoreProvider>
-				<Router history={browserHistory}>
-					<App />
-				</Router>
-			</StoreProvider>
+			<WithStoresAndRouter>
+				<App />
+			</WithStoresAndRouter>
 		);
 		browserHistory.push('/testestestestewstest');
 

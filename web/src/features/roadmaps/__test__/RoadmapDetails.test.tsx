@@ -1,9 +1,9 @@
 import { render, waitFor } from '@testing-library/react';
-import { ReactFlowProvider } from 'react-flow-renderer';
-import { Router } from 'react-router';
+import React from 'react';
 import { browserHistory } from '../../../App';
 import defaultDict from '../../../app/dictionaries/defaultDict';
-import { store, StoreProvider } from '../../../app/stores/store';
+import { store } from '../../../app/stores/store';
+import { WithStoresAndRouter } from '../../../setupTests';
 import routes from '../../common/routing/routes';
 import RoadmapDetails from '../RoadmapDetails';
 
@@ -12,11 +12,9 @@ describe('<RoadmapDetails />', () => {
 		const route = `${routes.roadmap.list}/1`;
 		browserHistory.push(route);
 		const { getByText } = render(
-			<StoreProvider>
-				<Router history={browserHistory}>
-					<RoadmapDetails />
-				</Router>
-			</StoreProvider>
+			<WithStoresAndRouter>
+				<RoadmapDetails />
+			</WithStoresAndRouter>
 		);
 
 		expect(getByText(defaultDict.pages.roadmap.loadingDetails)).toBeInTheDocument();
@@ -35,13 +33,9 @@ describe('<RoadmapDetails />', () => {
 		store.roadmapStore.roadmaps = [testRoadmap];
 		store.roadmapStore.selectedRoadmap = testRoadmap;
 		const { getByDisplayValue } = render(
-			<StoreProvider>
-				<ReactFlowProvider>
-					<Router history={browserHistory}>
-						<RoadmapDetails />
-					</Router>
-				</ReactFlowProvider>
-			</StoreProvider>
+			<WithStoresAndRouter>
+				<RoadmapDetails />
+			</WithStoresAndRouter>
 		);
 		await waitFor(() => {
 			expect(getByDisplayValue(testRoadmap.description)).toBeInTheDocument();

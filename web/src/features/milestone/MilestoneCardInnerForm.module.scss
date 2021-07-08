@@ -1,0 +1,77 @@
+.form {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	padding: 10px 20px;
+	input {
+		border: none;
+		&:disabled {
+			color: var(--black);
+		}
+	}
+	textarea {
+		padding: 0;
+		border: none;
+		padding-bottom: 0.25em;
+		&:focus {
+			border-bottom: 1px solid var(--gray);
+		}
+		&:disabled {
+			color: var(--black);
+		}
+	}
+}
+
+.field {
+	margin: 0;
+}
+
+.dateWrapper {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	font-weight: bold;
+	font-size: 1.2em;
+	.date {
+		input {
+			padding: 0 !important;
+			margin-left: 5px;
+			font-weight: bold;
+		}
+		label {
+			display: none !important;
+		}
+	}
+}
+
+.name {
+	font-size: 2em;
+	input {
+		font-weight: bold;
+		padding: 5px 0 !important;
+	}
+}
+
+.description {
+	margin-top: 1rem;
+	textarea {
+		padding: 0 !important;
+	}
+}
+
+.form.editing {
+	label {
+		display: inline-block;
+	}
+	input,
+	textarea {
+		border-bottom: 1px solid var(--gray);
+	}
+	.field:not(.date) {
+		margin-bottom: 10px;
+	}
+}
+
+.status {
+	font-weight: bold;
+}

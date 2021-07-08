@@ -68,7 +68,6 @@ export class DefaultFlowStore implements FlowStore {
 			console.error('Bad operation. Cannot remove connection of a non existing milestone');
 			return;
 		}
-		console.log(milestone);
 		if (!milestone.connectedToId) {
 			return;
 		}

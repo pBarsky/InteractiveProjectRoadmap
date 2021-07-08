@@ -1,9 +1,9 @@
 import { render, waitFor } from '@testing-library/react';
-import { Router } from 'react-router-dom';
-import { browserHistory } from '../../../App';
+import React from 'react';
 import defaultDict from '../../../app/dictionaries/defaultDict';
 import { Roadmap } from '../../../app/models/roadmap';
-import { store, StoreProvider } from '../../../app/stores/store';
+import { store } from '../../../app/stores/store';
+import { WithStoresAndRouter } from '../../../setupTests';
 import EditImage from '../EditImage';
 
 describe('<EditImage/>', () => {
@@ -19,11 +19,9 @@ describe('<EditImage/>', () => {
 		store.roadmapStore.selectedRoadmap = testRoadmap;
 
 		const { getByText } = render(
-			<StoreProvider>
-				<Router history={browserHistory}>
-					<EditImage />
-				</Router>
-			</StoreProvider>
+			<WithStoresAndRouter store={store}>
+				<EditImage />
+			</WithStoresAndRouter>
 		);
 
 		await waitFor(() => {
@@ -44,11 +42,9 @@ describe('<EditImage/>', () => {
 		store.roadmapStore.selectedRoadmap = testRoadmap;
 
 		const { getByText } = render(
-			<StoreProvider>
-				<Router history={browserHistory}>
-					<EditImage />
-				</Router>
-			</StoreProvider>
+			<WithStoresAndRouter store={store}>
+				<EditImage />
+			</WithStoresAndRouter>
 		);
 
 		await waitFor(() => {

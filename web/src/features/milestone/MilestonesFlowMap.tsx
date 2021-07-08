@@ -1,16 +1,16 @@
 import React from 'react';
 import { ReactFlowProvider } from 'react-flow-renderer';
-import MilestonesList from './MilestonesList';
-import styles from './MilestonesMap.module.scss';
+import Milestones from './Milestones';
+import styles from './MilestonesFlowMap.module.scss';
 
-const MilestonesMap = (): JSX.Element => {
+const MilestonesFlowMap = (): JSX.Element => {
 	return (
 		<ReactFlowProvider>
 			<div className={styles.wrapper}>
-				<MilestonesList />
+				<Milestones />
 			</div>
 		</ReactFlowProvider>
 	);
 };
 
-export default MilestonesMap;
+export default MilestonesFlowMap;

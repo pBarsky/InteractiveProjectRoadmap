@@ -1,5 +1,4 @@
 @import-normalize;
-
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
 html,
 body,
@@ -10,10 +9,11 @@ body,
 	line-height: 1.15;
 	font-size: 14px;
 }
+
 *,
 *::after,
 *::before {
-	box-sizing: inherit;
+	box-sizing: border-box;
 }
 
 body {
@@ -21,6 +21,7 @@ body {
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
+
 body * {
 	font-family: 'Roboto', 'Segoe UI', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
 		'Helvetica Neue', sans-serif !important;
@@ -31,9 +32,9 @@ code {
 }
 
 :root {
-	--black: rgba(0, 0, 0, 0.9);
+	--black: rgb(26, 26, 26);
 	--darkerWhite: hsl(210, 100%, 100%);
-	--lighterBlack: rgba(0, 0, 0, 0.8);
+	--lighterBlack: rgb(51, 51, 51);
 	--highlightBlack: rgb(73, 73, 73);
 	--gray: rgba(0, 0, 0, 0.1);
 	--secondaryText: rgba(0, 0, 0, 0.5);

@@ -1,8 +1,7 @@
 import { render } from '@testing-library/react';
 import React from 'react';
-import { Router } from 'react-router';
-import { browserHistory } from '../../../App';
-import { store, StoreProvider } from '../../../app/stores/store';
+import { store } from '../../../app/stores/store';
+import { WithStoresAndRouter } from '../../../setupTests';
 import Dashboard from '../Dashboard';
 
 describe('<Dashboard />', () => {
@@ -16,11 +15,9 @@ describe('<Dashboard />', () => {
 			username: 'test'
 		};
 		const { getByText } = render(
-			<StoreProvider store={store}>
-				<Router history={browserHistory}>
-					<Dashboard />
-				</Router>
-			</StoreProvider>
+			<WithStoresAndRouter store={store}>
+				<Dashboard />
+			</WithStoresAndRouter>
 		);
 
 		expect(getByText(userDisplayName)).toBeInTheDocument();
