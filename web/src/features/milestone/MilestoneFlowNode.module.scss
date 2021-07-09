@@ -1,17 +1,17 @@
 .handle {
 	--size: 2rem;
-	box-sizing: content-box;
-	display: flex;
-	justify-content: center;
+	box-sizing: content-box !important;
+	display: flex !important;
+	justify-content: center !important;
 	color: white;
 	background: var(--black) !important;
 	align-items: center;
-	font-size: var(--size);
-	width: var(--size);
-	height: var(--size);
+	font-size: var(--size) !important;
+	width: var(--size) !important;
+	height: var(--size) !important;
 	border: 3px solid black !important;
 	margin: 0 calc(var(--size) * -1) !important;
 	& > * {
-		pointer-events: none;
+		pointer-events: none !important;
 	}
 }
