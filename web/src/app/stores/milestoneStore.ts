@@ -9,8 +9,10 @@ import milestoneService from '../services/milestoneService';
 export interface MilestoneStore {
 	milestones: Milestone[];
 	selectedMilestone: Milestone | null;
-	loading: boolean;
+	isEditing: boolean;
+	isLoading: boolean;
 	updatePosition(milestoneId: number, posX: number, posY: number): Promise<void>;
+	setIsEditing(value: boolean): void;
 	getAll(roadmap: Roadmap): Promise<void>;
 	get(id: number): Promise<void>;
 	addMilestone(milestone: MilestoneFormValues): Promise<void>;
@@ -21,18 +23,27 @@ export interface MilestoneStore {
 export class DefaultMilestoneStore implements MilestoneStore {
 	private _milestones: Milestone[] = [];
 	private _selectedMilestone: Milestone | null = null;
-	private _loading = false;
+	private _isLoading = false;
+	private _isEditing = false;
 
 	public constructor () {
 		makeAutoObservable(this);
 	}
 
-	public get loading (): boolean {
-		return this._loading;
+	public get isEditing (): boolean {
+		return this._isEditing;
 	}
 
-	public set loading (value: boolean) {
-		this._loading = value;
+	public set isEditing (value: boolean) {
+		this._isEditing = value;
+	}
+
+	public get isLoading (): boolean {
+		return this._isLoading;
+	}
+
+	public set isLoading (value: boolean) {
+		this._isLoading = value;
 	}
 
 	public get milestones (): Milestone[] {
@@ -51,16 +62,20 @@ export class DefaultMilestoneStore implements MilestoneStore {
 		this._selectedMilestone = value;
 	}
 
+	public setIsEditing = (value: boolean): void => {
+		this.isEditing = value;
+	};
+
 	public getAll = async (roadmap: Roadmap): Promise<void> => {
 		try {
-			this.loading = true;
+			this.isLoading = true;
 			const { data } = await milestoneService.getAll(roadmap.id);
 			this.setMilestones(data);
 		} catch (error) {
 			console.debug(error);
 			throw error;
 		} finally {
-			this.loading = false;
+			this.isLoading = false;
 		}
 	};
 
@@ -68,11 +83,11 @@ export class DefaultMilestoneStore implements MilestoneStore {
 		const milestone: Milestone | undefined = this.milestones.find((x) => x.id === id);
 		if (milestone) {
 			this.selectedMilestone = milestone;
-			this.loading = false;
+			this.isLoading = false;
 			return;
 		}
 		try {
-			this.loading = true;
+			this.isLoading = true;
 			const { data } = await milestoneService.get(id);
 			const newMilestone: Milestone = this.dtoToMilestone(data);
 			this.milestones.push(newMilestone);
@@ -81,7 +96,7 @@ export class DefaultMilestoneStore implements MilestoneStore {
 			browserHistory.push(routes.user.dashboard);
 			throw error;
 		} finally {
-			this.loading = false;
+			this.isLoading = false;
 		}
 	};
 

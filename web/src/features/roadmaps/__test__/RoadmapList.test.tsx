@@ -1,8 +1,8 @@
 import { render } from '@testing-library/react';
-import { Router } from 'react-router';
-import { browserHistory } from '../../../App';
+import React from 'react';
 import defaultDict from '../../../app/dictionaries/defaultDict';
-import { store, StoreProvider } from '../../../app/stores/store';
+import { store } from '../../../app/stores/store';
+import { WithStoresAndRouter } from '../../../setupTests';
 import routes from '../../common/routing/routes';
 import RoadmapList from '../RoadmapList';
 
@@ -10,11 +10,9 @@ describe('<RoadmapList />', () => {
 	it('Should display message and a proposal with a link to add form when no roadmaps where found', () => {
 		store.roadmapStore.roadmaps = [];
 		const { getByText } = render(
-			<StoreProvider>
-				<Router history={browserHistory}>
-					<RoadmapList />
-				</Router>
-			</StoreProvider>
+			<WithStoresAndRouter>
+				<RoadmapList />
+			</WithStoresAndRouter>
 		);
 
 		expect(getByText(defaultDict.pages.roadmap.noRoadmaps)).toBeInTheDocument();

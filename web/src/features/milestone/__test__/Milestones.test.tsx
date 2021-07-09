@@ -1,27 +1,24 @@
 import { render } from '@testing-library/react';
 import React from 'react';
 import { ReactFlowProvider } from 'react-flow-renderer';
-import { Router } from 'react-router';
-import { browserHistory } from '../../../App';
 import defaultDict from '../../../app/dictionaries/defaultDict';
 import { Milestone } from '../../../app/models/milestone';
 import { Roadmap } from '../../../app/models/roadmap';
-import { store, StoreProvider } from '../../../app/stores/store';
-import MilestonesList from '../MilestonesList';
+import { store } from '../../../app/stores/store';
+import { WithStoresAndRouter } from '../../../setupTests';
+import Milestones from '../Milestones';
 
-describe('<MilestoneListItem />', () => {
+describe('<MilestoneCard />', () => {
 	it('Should display message when no milestones where found', () => {
 		store.milestoneStore.milestones = [];
 		const { getByText } = render(
-			<StoreProvider store={store}>
+			<WithStoresAndRouter>
 				<ReactFlowProvider>
-					<Router history={browserHistory}>
-						<div style={{ width: '1000px', height: '1000px' }}>
-							<MilestonesList />
-						</div>
-					</Router>
+					<div style={{ width: '1000px', height: '1000px' }}>
+						<Milestones />
+					</div>
 				</ReactFlowProvider>
-			</StoreProvider>
+			</WithStoresAndRouter>
 		);
 
 		expect(getByText(defaultDict.pages.milestone.noMilestones)).toBeInTheDocument();
@@ -56,15 +53,13 @@ describe('<MilestoneListItem />', () => {
 		];
 
 		const { getByText } = render(
-			<StoreProvider store={store}>
+			<WithStoresAndRouter>
 				<ReactFlowProvider>
-					<Router history={browserHistory}>
-						<div style={{ width: '1000px', height: '1000px' }}>
-							<MilestonesList />
-						</div>
-					</Router>
+					<div style={{ width: '1000px', height: '1000px' }}>
+						<Milestones />
+					</div>
 				</ReactFlowProvider>
-			</StoreProvider>
+			</WithStoresAndRouter>
 		);
 
 		expect(getByText(firstDescription)).toBeInTheDocument();

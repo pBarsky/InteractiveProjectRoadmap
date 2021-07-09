@@ -1,0 +1,35 @@
+.wrapper {
+	width: fit-content;
+	.select {
+		select {
+			width: 100%;
+			background-color: white;
+			color: var(--black);
+			border-radius: 5px;
+			border: 2px solid var(--black);
+			padding: 5px;
+		}
+		select:disabled {
+			color: var(--black);
+			appearance: none;
+			border: none;
+			font-weight: 500;
+			font-size: 1.1rem;
+			padding: 0;
+			opacity: 1;
+			float: left;
+			text-align: left;
+		}
+	}
+
+	.errorMessage {
+		font-size: 1rem;
+		margin: 0.5em;
+		font-weight: bold;
+		color: var(--errorRed);
+	}
+
+	.absolute {
+		position: absolute;
+	}
+}

@@ -1,0 +1,53 @@
+.wrapper {
+	--primaryColor: white;
+	position: relative;
+	width: 300px;
+	background: var(--primaryColor);
+	border-radius: 5px;
+	border: 3px solid var(--black);
+	& * {
+		pointer-events: all;
+	}
+
+	&:before {
+		--size: 14px;
+		content: '';
+		width: 0;
+		height: 0;
+		left: calc(50% - var(--size));
+		top: 100%;
+		position: absolute;
+		border-left: var(--size) solid transparent;
+		border-right: var(--size) solid transparent;
+
+		border-top: var(--size) solid var(--black);
+	}
+
+	&:after {
+		--size: 10px;
+		content: '';
+		width: 0;
+		height: 0;
+		left: calc(50% - var(--size));
+		position: absolute;
+		border-left: var(--size) solid transparent;
+		border-right: var(--size) solid transparent;
+
+		border-top: var(--size) solid var(--primaryColor);
+	}
+	&.done {
+		--primaryColor: var(--statusDone) !important;
+	}
+
+	&.new {
+		--primaryColor: var(--statusNew) !important;
+	}
+
+	&.inProgress {
+		--primaryColor: var(--statusInProgress) !important;
+	}
+
+	&.failing {
+		--primaryColor: var(--statusFailing) !important;
+	}
+}

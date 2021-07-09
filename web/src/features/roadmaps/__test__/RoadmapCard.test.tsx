@@ -2,12 +2,11 @@ import { render } from '@testing-library/react';
 import format from 'date-fns/format';
 import React from 'react';
 import { ReactFlowProvider } from 'react-flow-renderer';
-import { Router } from 'react-router-dom';
-import { browserHistory } from '../../../App';
 import constants from '../../../app/constants/constants';
 import defaultDict from '../../../app/dictionaries/defaultDict';
 import { Roadmap } from '../../../app/models/roadmap';
-import { store, StoreProvider } from '../../../app/stores/store';
+import { store } from '../../../app/stores/store';
+import { WithStoresAndRouter } from '../../../setupTests';
 import RoadmapCard from '../RoadmapCard';
 
 describe('<RoadmapCard/>', () => {
@@ -23,13 +22,11 @@ describe('<RoadmapCard/>', () => {
 		const testRoadmap: Roadmap = { ...defaultTestRoadmap };
 		store.roadmapStore.selectedRoadmap = testRoadmap;
 		const { getByDisplayValue } = render(
-			<StoreProvider store={store}>
+			<WithStoresAndRouter store={store}>
 				<ReactFlowProvider>
-					<Router history={browserHistory}>
-						<RoadmapCard />
-					</Router>
+					<RoadmapCard />
 				</ReactFlowProvider>
-			</StoreProvider>
+			</WithStoresAndRouter>
 		);
 
 		expect(getByDisplayValue(testRoadmap.description!)).toBeInTheDocument();
@@ -44,11 +41,11 @@ describe('<RoadmapCard/>', () => {
 
 	it('Should mark card when todays date is past endsOn date', () => {
 		const { getByText } = render(
-			<StoreProvider store={store}>
+			<WithStoresAndRouter store={store}>
 				<ReactFlowProvider>
 					<RoadmapCard testDate={new Date('2033-03-16T23:00')} />
 				</ReactFlowProvider>
-			</StoreProvider>
+			</WithStoresAndRouter>
 		);
 
 		expect(getByText(defaultDict.pages.roadmap.roadmapLate)).toBeInTheDocument();
@@ -63,11 +60,11 @@ describe('<RoadmapCard/>', () => {
 		store.roadmapStore.selectedRoadmap = testRoadmap;
 
 		const { getByAltText } = render(
-			<StoreProvider store={store}>
+			<WithStoresAndRouter store={store}>
 				<ReactFlowProvider>
 					<RoadmapCard />
 				</ReactFlowProvider>
-			</StoreProvider>
+			</WithStoresAndRouter>
 		);
 
 		const roadmapDict = defaultDict.pages.roadmap;

@@ -10,6 +10,8 @@ export const milestoneFormValuesSchema: SchemaOf<MilestoneFormValues> = object()
 		description: string()
 			.notRequired()
 			.max(2048, validationErrorMessages.description.max(2048)),
+		parentProjectId: number().required(),
+		status: number().required(),
 		endsOn: date().required(validationErrorMessages.endsOn.requiredMilestone)
 	})
 	.defined();

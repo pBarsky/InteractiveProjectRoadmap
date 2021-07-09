@@ -160,6 +160,7 @@ const pages = {
 	milestone: {
 		name: 'Nazwa: ',
 		endsOn: 'Kończy się: ',
+		to: 'Do',
 		status: 'Status: ',
 		noMilestones: 'Nie masz jeszcze żadnych milestone`ów dla tej roadmapy...'
 	}

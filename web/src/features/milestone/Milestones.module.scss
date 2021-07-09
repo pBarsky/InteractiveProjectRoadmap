@@ -1,0 +1,33 @@
+.map {
+	border: 1px solid var(--lightGray);
+
+	&::after {
+		content: '';
+		position: absolute;
+		background: var(--background-url);
+		background-size: var(--x-size) var(--y-size);
+		transform: translateX(var(--data-x)) translateY(var(--data-y)) scale(var(--data-scale));
+		width: var(--x-size);
+		height: var(--y-size);
+		transform-origin: 0 0;
+	}
+}
+
+.background {
+	position: absolute;
+	background-color: #e5e5f7;
+	opacity: 0.1;
+	background-image: linear-gradient(
+			#000000 2.4000000000000004px,
+			transparent 2.4000000000000004px
+		),
+		linear-gradient(90deg, #000000 2.4000000000000004px, transparent 2.4000000000000004px),
+		linear-gradient(#000000 1.2000000000000002px, transparent 1.2000000000000002px),
+		linear-gradient(90deg, #000000 1.2000000000000002px, #e5e5f7 1.2000000000000002px);
+	background-size: 60px 60px, 60px 60px, 12px 12px, 12px 12px;
+	background-position: -2.4000000000000004px -2.4000000000000004px,
+		-2.4000000000000004px -2.4000000000000004px, -1.2000000000000002px -1.2000000000000002px,
+		-1.2000000000000002px -1.2000000000000002px;
+	width: 100%;
+	height: 100%;
+}

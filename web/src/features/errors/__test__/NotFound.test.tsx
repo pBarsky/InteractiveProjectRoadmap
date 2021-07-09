@@ -1,10 +1,9 @@
 import { render } from '@testing-library/react';
 import React from 'react';
-import { Router } from 'react-router';
-import { browserHistory } from '../../../App';
 import defaultDict from '../../../app/dictionaries/defaultDict';
 import { User } from '../../../app/models/user';
-import { store, StoreProvider } from '../../../app/stores/store';
+import { store } from '../../../app/stores/store';
+import { WithStoresAndRouter } from '../../../setupTests';
 import NotFound from '../NotFound';
 
 describe('<NotFound />', () => {
@@ -18,11 +17,9 @@ describe('<NotFound />', () => {
 		const message = 'test message';
 		store.authStore.user = user;
 		const { getByText } = render(
-			<StoreProvider store={store}>
-				<Router history={browserHistory}>
-					<NotFound message={message} />
-				</Router>
-			</StoreProvider>
+			<WithStoresAndRouter store={store}>
+				<NotFound message={message} />
+			</WithStoresAndRouter>
 		);
 
 		expect(getByText(message)).toBeInTheDocument();
@@ -32,11 +29,9 @@ describe('<NotFound />', () => {
 		const message = 'test message';
 		store.authStore.user = null;
 		const { getByText } = render(
-			<StoreProvider store={store}>
-				<Router history={browserHistory}>
-					<NotFound message={message} />
-				</Router>
-			</StoreProvider>
+			<WithStoresAndRouter store={store}>
+				<NotFound message={message} />
+			</WithStoresAndRouter>
 		);
 
 		expect(getByText(defaultDict.forms.buttons.returnToHomepage.text)).toBeInTheDocument();
@@ -46,11 +41,9 @@ describe('<NotFound />', () => {
 		const message = 'test message';
 		store.authStore.user = user;
 		const { getByText } = render(
-			<StoreProvider store={store}>
-				<Router history={browserHistory}>
-					<NotFound message={message} />
-				</Router>
-			</StoreProvider>
+			<WithStoresAndRouter store={store}>
+				<NotFound message={message} />
+			</WithStoresAndRouter>
 		);
 
 		expect(getByText(defaultDict.forms.buttons.returnToDashboard.text)).toBeInTheDocument();

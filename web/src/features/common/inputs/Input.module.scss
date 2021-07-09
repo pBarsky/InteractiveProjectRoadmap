@@ -1,7 +1,6 @@
 .input {
 	width: 100%;
 	position: relative;
-
 	input {
 		width: 100%;
 		min-height: 2.5rem;
@@ -13,13 +12,11 @@
 
 	textarea {
 		width: 100%;
-		height: 10vh;
 		border: 1px solid var(--gray);
 		padding: 0.5em;
 		resize: none;
 		background-color: transparent;
 	}
-
 	.errorMessage {
 		font-size: 1rem;
 		margin: 0.5em;

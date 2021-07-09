@@ -1,19 +1,18 @@
 import { render } from '@testing-library/react';
-import { Router } from 'react-router';
+import React from 'react';
 import { browserHistory } from '../../../App';
 import defaultDict from '../../../app/dictionaries/defaultDict';
-import { store, StoreProvider } from '../../../app/stores/store';
+import { store } from '../../../app/stores/store';
+import { WithStoresAndRouter } from '../../../setupTests';
 import routes from '../../common/routing/routes';
 import Homepage from '../Homepage';
 
 describe('<Homepage />', () => {
 	it('Should render login button when user is not authenticated', () => {
 		const { getByRole } = render(
-			<StoreProvider>
-				<Router history={browserHistory}>
-					<Homepage />
-				</Router>
-			</StoreProvider>
+			<WithStoresAndRouter>
+				<Homepage />
+			</WithStoresAndRouter>
 		);
 
 		expect(
@@ -30,11 +29,9 @@ describe('<Homepage />', () => {
 		};
 
 		render(
-			<StoreProvider store={store}>
-				<Router history={browserHistory}>
-					<Homepage />
-				</Router>
-			</StoreProvider>
+			<WithStoresAndRouter store={store}>
+				<Homepage />
+			</WithStoresAndRouter>
 		);
 
 		expect(browserHistory.location.pathname).toBe(routes.user.dashboard);
