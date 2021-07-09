@@ -58,6 +58,7 @@ export class DefaultFlowStore implements FlowStore {
 			};
 			const connectionBackground: Edge<Milestone> = {
 				...connection,
+				id: `${connection.id}-2`,
 				style: { stroke: 'var(--black)', strokeWidth: '14px' },
 				animated: false
 			};
