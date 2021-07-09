@@ -10,6 +10,7 @@ export enum Status {
 export interface StatusSelectOption {
 	value: Status;
 	label: string;
+	backgroundColor?: string;
 }
 
 export interface Milestone {

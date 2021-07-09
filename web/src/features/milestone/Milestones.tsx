@@ -34,12 +34,10 @@ const generateStyles = (
 
 const Milestones = (): JSX.Element => {
 	const { flowStore, milestoneStore, roadmapStore } = useStore();
-	const { flowElements, addConnection: addEdge } = flowStore;
-	const { isLoading, isEditing } = milestoneStore;
+	const { flowElements, addConnection: addEdge, areNodesDraggableAndConnectable } = flowStore;
+	const { isLoading } = milestoneStore;
 	const { backgroundImageSize, selectedRoadmap } = roadmapStore;
 	const transformation = useStoreState((state) => state.transform);
-
-	const areNodesDraggableAndConnectable = !isEditing;
 
 	if (isLoading) {
 		return <Loader />;
@@ -146,6 +144,7 @@ const Milestones = (): JSX.Element => {
 				elementsSelectable={false}
 			>
 				<Controls />
+				<div className={styles.background} />
 			</ReactFlow>
 		</>
 	);

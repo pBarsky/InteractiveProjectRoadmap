@@ -1,7 +1,7 @@
 import format from 'date-fns/format';
 import { Formik, FormikHelpers } from 'formik';
 import { observer } from 'mobx-react-lite';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import constants from '../../app/constants/constants';
 import defaultDict from '../../app/dictionaries/defaultDict';
 import { Roadmap, RoadmapFormValues } from '../../app/models/roadmap';
@@ -21,11 +21,17 @@ interface RoadmapCardProps {
 }
 
 const RoadmapCard = ({ onSubmit, testDate }: RoadmapCardProps): JSX.Element => {
-	const { roadmapStore } = useStore();
+	const { roadmapStore, milestoneStore } = useStore();
+	const { setIsEditing: setIsMilestoneEditing } = milestoneStore;
 	const [isEditing, setIsEditing] = useState(false);
 	const toggleEdit = (): void => {
 		setIsEditing((oldState) => !oldState);
 	};
+
+	useEffect(() => {
+		setIsMilestoneEditing(false);
+	}, []);
+
 	const roadmap = roadmapStore.selectedRoadmap!;
 	const roadmapDict = defaultDict.pages.roadmap;
 

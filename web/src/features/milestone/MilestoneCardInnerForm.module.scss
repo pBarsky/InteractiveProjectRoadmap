@@ -32,12 +32,17 @@
 	align-items: center;
 	font-weight: bold;
 	font-size: 1.2em;
+
 	.date {
-		input {
+		input[type='date'] {
 			padding: 0 !important;
 			margin-left: 5px;
 			font-weight: bold;
+			&:disabled::-webkit-calendar-picker-indicator {
+				display: none;
+			}
 		}
+
 		label {
 			display: none !important;
 		}
@@ -48,7 +53,8 @@
 	font-size: 2em;
 	input {
 		font-weight: bold;
-		padding: 5px 0 !important;
+		padding: 0 !important;
+		padding-bottom: 5px !important;
 	}
 }
 
@@ -74,4 +80,7 @@
 
 .status {
 	font-weight: bold;
+	select {
+		background-color: transparent !important;
+	}
 }

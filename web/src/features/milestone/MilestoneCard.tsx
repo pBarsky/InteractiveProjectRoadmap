@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import React, { useState } from 'react';
 import constants from '../../app/constants/constants';
 import defaultDict from '../../app/dictionaries/defaultDict';
-import { Milestone, MilestoneFormValues } from '../../app/models/milestone';
+import { Milestone, MilestoneFormValues, Status } from '../../app/models/milestone';
 import { useStore } from '../../app/stores/store';
 import { milestoneFormValuesSchema } from '../../app/validationSchemas/milestoneSchemas';
 import styles from './MilestoneCard.module.scss';
@@ -48,8 +48,27 @@ const MilestoneCard = ({ onSubmit, milestone }: MilestoneCardProps): JSX.Element
 		await milestoneStore.deleteMilestone(milestone.id);
 	};
 
+	const statusClassName = ((): string => {
+		const { status, endsOn } = milestone;
+		const statusToStyleMap = {
+			[Status.Done]: styles.done,
+			[Status.InProgress]: styles.inProgress,
+			[Status.New]: styles.new
+		};
+
+		if (status === Status.Done) {
+			return statusToStyleMap[status];
+		}
+
+		if (endsOn && endsOn < new Date()) {
+			return styles.failing;
+		}
+
+		return statusToStyleMap[status];
+	})();
+
 	return (
-		<div className={`${styles.wrapper}`}>
+		<div className={`${styles.wrapper} ${statusClassName}`}>
 			<Formik
 				enableReinitialize
 				validationSchema={milestoneFormValuesSchema}

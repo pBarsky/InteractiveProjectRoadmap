@@ -80,6 +80,7 @@ const RoadmapCardInnerForm = ({
 							type='textarea'
 							name={inputs.description.name}
 							id={`${inputs.description.name}RoadmapCard`}
+							textareaCharactersInARow={80}
 							disabled={!isEditing}
 							value={truncatedDescription()}
 						/>

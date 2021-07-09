@@ -6,11 +6,13 @@ import styles from './Input.module.scss';
 
 interface InputProps {
 	icon?: IconProp;
+	textareaCharactersInARow?: number;
 	errorMessageAbsolutePosition?: boolean;
 }
 
 const Input = ({
 	icon,
+	textareaCharactersInARow = 40,
 	errorMessageAbsolutePosition,
 	...props
 }: InputProps & FieldHookConfig<string>): JSX.Element => {
@@ -25,7 +27,7 @@ const Input = ({
 
 	const rowsNumber = (): number => {
 		const value = (props.value ?? field.value) as string;
-		return Math.floor(value.length / 40);
+		return Math.floor(value.length / textareaCharactersInARow);
 	};
 
 	return (

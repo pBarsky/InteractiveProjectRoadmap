@@ -13,6 +13,7 @@ interface Option {
 interface FieldProps {
 	label: string;
 	inputClassName?: string;
+	textareaCharactersInARow?: number;
 	icon?: IconProp;
 	errorMessageAbsolutePosition?: boolean;
 	options?: Option[];

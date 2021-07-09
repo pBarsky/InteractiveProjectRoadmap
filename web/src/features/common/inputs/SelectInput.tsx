@@ -17,11 +17,16 @@ const SelectInput = ({
 	const [field, meta] = useField(props);
 
 	return (
-		<div className={styles.input}>
-			<div className={className}>
+		<div className={styles.wrapper}>
+			<div className={[className ?? '', styles.select].filter((x) => !!x).join(' ')}>
 				<select {...field} disabled={props.disabled} id={props.id}>
 					{options.map((x) => (
-						<option key={`${x.value}${x.label}`} value={x.value} label={x.label} />
+						<option
+							key={`${x.value}${x.label}`}
+							value={x.value}
+							label={x.label}
+							style={{ backgroundColor: x.backgroundColor ?? 'inherit' }}
+						/>
 					))}
 				</select>
 			</div>

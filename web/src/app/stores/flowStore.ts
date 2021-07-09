@@ -8,6 +8,7 @@ export type Element = FlowElement<Milestone | Edge<Milestone>>;
 export interface FlowStore {
 	selectedElementId?: number;
 	flowElements: Element[];
+	areNodesDraggableAndConnectable: boolean;
 	addConnection(sourceId: number, targetId: number): void;
 	removeConnection(sourceId: number): void;
 	updateConnection(sourceId: number, targetId: number): void;
@@ -18,6 +19,10 @@ export class DefaultFlowStore implements FlowStore {
 
 	public constructor () {
 		makeAutoObservable(this);
+	}
+
+	public get areNodesDraggableAndConnectable (): boolean {
+		return !milestoneStore.isEditing;
 	}
 
 	public get selectedElementId (): number | undefined {
@@ -46,8 +51,18 @@ export class DefaultFlowStore implements FlowStore {
 				sourceHandle: null,
 				targetHandle: null,
 				animated: true,
-				style: { stroke: '#fff', strokeWidth: '7px' }
+				style: {
+					stroke: 'white',
+					strokeWidth: '14px'
+				}
 			};
+			const connectionBackground: Edge<Milestone> = {
+				...connection,
+				style: { stroke: 'var(--black)', strokeWidth: '14px' },
+				animated: false
+			};
+
+			ret.push(connectionBackground);
 			ret.push(connection);
 		});
 		return ret;
