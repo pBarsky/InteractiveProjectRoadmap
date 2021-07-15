@@ -1,21 +1,39 @@
-import { faArrowCircleRight } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
 import { FlowElement, Handle, Position } from 'react-flow-renderer';
-import { Milestone } from '../../app/models/milestone';
+import { HandleId, Milestone } from '../../app/models/milestone';
 import MilestoneCard from './MilestoneCard';
 import styles from './MilestoneFlowNode.module.scss';
 
 const MilestoneFlowNode = (data: FlowElement<Milestone>): JSX.Element => {
+	const milestoneFlowElement = data.data;
 	return (
 		<>
-			<Handle type='target' position={Position.Left} className={styles.handle}>
-				<FontAwesomeIcon icon={faArrowCircleRight} />
-			</Handle>
-			<MilestoneCard milestone={data.data!} />
-			<Handle type='source' position={Position.Right} className={styles.handle}>
-				<FontAwesomeIcon icon={faArrowCircleRight} />
-			</Handle>
+			<Handle
+				type='target'
+				position={Position.Left}
+				className={styles.handle}
+				id={HandleId.Left.toString()}
+			/>
+			<Handle
+				type='source'
+				position={Position.Left}
+				className={styles.handle}
+				id={HandleId.Left.toString()}
+			/>
+
+			<MilestoneCard milestone={milestoneFlowElement!} />
+			<Handle
+				type='target'
+				position={Position.Right}
+				className={styles.handle}
+				id={HandleId.Right.toString()}
+			/>
+			<Handle
+				type='source'
+				position={Position.Right}
+				className={styles.handle}
+				id={HandleId.Right.toString()}
+			/>
 		</>
 	);
 };

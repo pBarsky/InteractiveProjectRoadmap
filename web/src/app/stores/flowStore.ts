@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx';
-import { Edge, FlowElement } from 'react-flow-renderer';
-import { Milestone } from '../models/milestone';
+import { Connection, Edge, FlowElement } from 'react-flow-renderer';
+import { HandleId, Milestone } from '../models/milestone';
 import milestoneStore from './milestoneStore';
 
 export type Element = FlowElement<Milestone | Edge<Milestone>>;
@@ -8,10 +8,14 @@ export type Element = FlowElement<Milestone | Edge<Milestone>>;
 export interface FlowStore {
 	selectedElementId?: number;
 	flowElements: Element[];
+	flowConnections: Edge<Milestone>[];
 	areNodesDraggableAndConnectable: boolean;
-	addConnection(sourceId: number, targetId: number): void;
-	removeConnection(sourceId: number): void;
-	updateConnection(sourceId: number, targetId: number): void;
+	addConnection(edge: Edge<Milestone> | Connection): boolean;
+	removeConnection(sourceId: number): boolean;
+	updateConnection(
+		oldEdge: Edge<Milestone> | Connection,
+		edge: Edge<Milestone> | Connection
+	): boolean;
 }
 
 export class DefaultFlowStore implements FlowStore {
@@ -33,6 +37,38 @@ export class DefaultFlowStore implements FlowStore {
 		this._selectedElementId = value;
 	}
 
+	public get flowConnections (): Edge<Milestone>[] {
+		const connections: Edge<Milestone>[] = [];
+
+		milestoneStore.milestones
+			.filter((m) => m.connectedToId)
+			.forEach((m) => {
+				const connection: Edge<Milestone> = {
+					id: `${m.id}-${m.connectedToId}-${m.connectedToSourceHandleId}-${m.connectedToTargetHandleId}`,
+					source: m.id.toString(),
+					target: m.connectedToId!.toString(),
+					sourceHandle: m.connectedToSourceHandleId?.toString(),
+					targetHandle: m.connectedToTargetHandleId?.toString(),
+					animated: true,
+					style: {
+						stroke: 'white',
+						strokeWidth: '5px'
+					}
+				};
+
+				const connectionBackground: Edge<Milestone> = {
+					...connection,
+					id: `${connection.id}-2`,
+					style: { stroke: 'var(--black)', strokeWidth: '5px' },
+					animated: false
+				};
+
+				connections.push(connectionBackground);
+				connections.push(connection);
+			});
+		return connections;
+	}
+
 	public get flowElements (): Element[] {
 		const ret: Element[] = milestoneStore.milestones.map((milestone) => ({
 			id: `${milestone.id}`,
@@ -40,63 +76,123 @@ export class DefaultFlowStore implements FlowStore {
 			type: 'milestone',
 			position: { x: milestone.posX, y: milestone.posY }
 		}));
-		milestoneStore.milestones.forEach((m) => {
-			if (!m.connectedToId) {
-				return;
-			}
-			const connection: Edge<Milestone> = {
-				id: `${m.id}-${m.connectedToId}`,
-				source: m.id.toString(),
-				target: m.connectedToId.toString(),
-				sourceHandle: null,
-				targetHandle: null,
-				animated: true,
-				style: {
-					stroke: 'white',
-					strokeWidth: '14px'
-				}
-			};
-			const connectionBackground: Edge<Milestone> = {
-				...connection,
-				id: `${connection.id}-2`,
-				style: { stroke: 'var(--black)', strokeWidth: '14px' },
-				animated: false
-			};
-
-			ret.push(connectionBackground);
-			ret.push(connection);
-		});
+		ret.push(...this.flowConnections);
 		return ret;
 	}
 
-	public addConnection = (sourceId: number, targetId: number): void => {
-		if (!this.checkConnection(sourceId, targetId)) {
-			return;
+	public addConnection = (edge: Edge<Milestone> | Connection): boolean => {
+		if (!this.checkMilestones(edge)) {
+			console.debug('costam niezgodne');
+			return false;
 		}
+
+		const { source, target, sourceHandle, targetHandle } = edge;
+
+		const sourceId = parseInt(source!);
+		const targetId = parseInt(target!);
+		const sourceHandleId: HandleId = parseInt(sourceHandle!);
+		const targetHandleId: HandleId = parseInt(targetHandle!);
+		console.log(sourceHandleId, targetHandleId);
+
 		const milestone = this.getMilestone(sourceId)!;
-		milestone.connectedToId = targetId;
-		milestoneStore.updateMilestone(milestone);
+		const targetMilestone = this.getMilestone(targetId)!;
+		const milestoneTargetingThisMilestone = milestoneStore.milestones.find(
+			(m) => m.connectedToId === milestone.id
+		);
+
+		const isMilestoneAlreadyConnected = milestone.isAlreadyConnectedWith(
+			targetMilestone,
+			milestoneTargetingThisMilestone,
+			sourceHandleId
+		);
+
+		if (isMilestoneAlreadyConnected) {
+			console.debug('juz polaczone');
+			return false;
+		}
+
+		if (targetMilestone.connectedToSourceHandleId === targetHandleId) {
+			console.debug('juz wychodzi z tego konca');
+			return false;
+		}
+
+		const milestoneTargetingTargetedMilestone = milestoneStore.milestones.find(
+			(m) => m.connectedToId === targetMilestone.id
+		);
+
+		if (
+			milestone.canTargetConnectWithSelf(
+				targetMilestone,
+				milestoneTargetingTargetedMilestone,
+				sourceHandleId,
+				targetHandleId
+			)
+		) {
+			this.connectMilestoneToTarget(
+				targetMilestone,
+				milestone,
+				targetHandleId,
+				sourceHandleId
+			);
+			return true;
+		}
+
+		if (!milestoneTargetingTargetedMilestone) {
+			console.debug('src -> target');
+			this.connectMilestoneToTarget(
+				milestone,
+				targetMilestone,
+				sourceHandleId,
+				targetHandleId
+			);
+			return true;
+		}
+		return false;
 	};
 
-	public removeConnection (sourceId: number): void {
+	public removeConnection (sourceId: number): boolean {
 		const milestone = this.getMilestone(sourceId);
 		if (!milestone) {
 			console.error('Bad operation. Cannot remove connection of a non existing milestone');
-			return;
+			return false;
 		}
+
 		if (!milestone.connectedToId) {
-			return;
+			return false;
 		}
+
 		milestone.connectedToId = null;
+		milestone.connectedToSourceHandleId = null;
+		milestone.connectedToTargetHandleId = null;
 		milestoneStore.updateMilestone(milestone);
+		console.debug('usuwanko');
+		return true;
 	}
 
-	public updateConnection (sourceId: number, targetId: number): void {
-		if (!this.checkConnection(sourceId, targetId)) {
-			return;
+	public updateConnection (
+		oldEdge: Edge<Milestone> | Connection,
+		edge: Edge<Milestone> | Connection
+	): boolean {
+		if (!oldEdge.source) {
+			return false;
 		}
-		const milestone = this.getMilestone(sourceId)!;
-		milestone.connectedToId = targetId;
+		this.removeConnection(parseInt(oldEdge.source));
+		if (!this.addConnection(edge)) {
+			this.addConnection(oldEdge);
+			return false;
+		}
+		return true;
+	}
+
+	private connectMilestoneToTarget (
+		milestone: Milestone,
+		target: Milestone,
+		sourceHandleId: HandleId,
+		targetHandleId: HandleId
+	): void {
+		milestone.connectedToId = target.id;
+		milestone.connectedToSourceHandleId = sourceHandleId;
+		milestone.connectedToTargetHandleId = targetHandleId;
 		milestoneStore.updateMilestone(milestone);
 	}
 
@@ -105,17 +201,32 @@ export class DefaultFlowStore implements FlowStore {
 		return milestone;
 	};
 
-	private checkConnection = (sourceId: number, targetId: number): boolean => {
+	private checkMilestones = ({
+		source,
+		target,
+		sourceHandle,
+		targetHandle
+	}: Edge<Milestone> | Connection): boolean => {
+		if (!source || !target || !sourceHandle || !targetHandle) {
+			return false;
+		}
+
+		const sourceId = parseInt(source);
+		const targetId = parseInt(target);
+
 		const milestone = this.getMilestone(sourceId);
+
 		if (!milestone) {
 			console.error('Bad operation. Cannot add connection from a non existing milestone');
 			return false;
 		}
+
 		const targetMilestone = this.getMilestone(targetId);
 		if (!targetMilestone) {
 			console.error('Bad operation. Cannot add connection to a non existing milestone');
 			return false;
 		}
+
 		return true;
 	};
 }

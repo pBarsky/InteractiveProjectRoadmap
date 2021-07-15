@@ -32,12 +32,12 @@ const MilestoneCard = ({ onSubmit, milestone }: MilestoneCardProps): JSX.Element
 		{ setErrors }: FormikHelpers<MilestoneFormValues>
 	): Promise<void> => {
 		try {
-			const updatedMilestone: Milestone = {
+			const updatedMilestone = new Milestone({
 				...milestone,
 				...values,
 				status: Number(values.status),
 				endsOn: values.endsOn ? new Date(values.endsOn) : null
-			};
+			});
 			await milestoneStore.updateMilestone(updatedMilestone);
 		} catch {
 			setErrors({ description: defaultDict.errors.milestones.failedEdit });

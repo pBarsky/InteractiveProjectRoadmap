@@ -25,9 +25,17 @@ namespace Roadmap.Domain.Models
         public Status Status { get; set; } = Status.ToBeStarted;
 
         public int PosX { get; set; }
-        public int PosY { get; set; }
-        public int? ConnectedToId { get; set; }
-        public Milestone ConnectedTo { get; set; }
 
+        public int PosY { get; set; }
+
+        public int? ConnectedToId { get; set; }
+
+        [EnumDataType(typeof(HandleId))]
+        public HandleId? ConnectedToSourceHandleId { get; set; }
+
+        [EnumDataType(typeof(HandleId))]
+        public HandleId? ConnectedToTargetHandleId { get; set; }
+
+        public Milestone ConnectedTo { get; set; }
     }
 }

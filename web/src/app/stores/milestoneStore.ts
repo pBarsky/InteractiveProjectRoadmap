@@ -107,11 +107,11 @@ export class DefaultMilestoneStore implements MilestoneStore {
 	public addMilestone = async (values: MilestoneFormValues): Promise<void> => {
 		try {
 			const { data: id } = await milestoneService.add(values);
-			const milestone: Milestone = {
+			const milestone: Milestone = new Milestone({
 				...values,
 				id: id,
 				endsOn: new Date(values.endsOn)
-			};
+			});
 			runInAction(() => {
 				this.milestones.push(milestone);
 			});
@@ -128,7 +128,7 @@ export class DefaultMilestoneStore implements MilestoneStore {
 				throw new Error(defaultDict.errors.milestones.failedEdit);
 			}
 			this.setMilestone(values);
-			this.selectedMilestone = { ...values };
+			this.selectedMilestone = new Milestone({ ...values });
 		} catch (error) {
 			console.debug(error);
 			throw error;
@@ -164,7 +164,7 @@ export class DefaultMilestoneStore implements MilestoneStore {
 			return;
 		}
 		const newMilestones = [...this.milestones];
-		newMilestones[index] = { ...milestone };
+		newMilestones[index] = new Milestone({ ...milestone });
 		this.setMilestones(newMilestones);
 	};
 
@@ -176,7 +176,14 @@ export class DefaultMilestoneStore implements MilestoneStore {
 			}
 			const connectedMilestone = this.milestones.find((x) => x.connectedToId === id);
 			if (connectedMilestone) {
-				this.setMilestone({ ...connectedMilestone, connectedToId: null });
+				this.setMilestone(
+					new Milestone({
+						...connectedMilestone,
+						connectedToId: null,
+						connectedToSourceHandleId: null,
+						connectedToTargetHandleId: null
+					})
+				);
 			}
 			this.selectedMilestone = null;
 			this.setMilestones(this.milestones.filter((x) => x.id !== id));
@@ -187,10 +194,10 @@ export class DefaultMilestoneStore implements MilestoneStore {
 	};
 
 	private dtoToMilestone: (dto: Milestone) => Milestone = (dto: Milestone) => {
-		return {
+		return new Milestone({
 			...dto,
 			endsOn: this.adjustTimezone(dto.endsOn)!
-		};
+		});
 	};
 
 	private adjustTimezone = (date: Date | null): Date | null => {

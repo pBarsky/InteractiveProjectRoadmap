@@ -2,6 +2,7 @@ import { observer } from 'mobx-react-lite';
 import React from 'react';
 import ReactFlow, {
 	Connection,
+	ConnectionMode,
 	Controls,
 	Edge,
 	Node,
@@ -14,6 +15,7 @@ import { Milestone } from '../../app/models/milestone';
 import { BackgroundSize } from '../../app/stores/roadmapStore';
 import { useStore } from '../../app/stores/store';
 import Loader from '../common/Loader';
+import ConnectionLine from '../flow/ConnectionLine';
 import MilestoneFlowNode from './MilestoneFlowNode';
 import styles from './Milestones.module.scss';
 
@@ -43,26 +45,15 @@ const Milestones = (): JSX.Element => {
 		return <Loader />;
 	}
 
-	const onConnect = ({ source, target }: Edge<Milestone> | Connection): void => {
-		if (!target || !source) {
-			return;
-		}
-		const sourceId = parseInt(source);
-		const targetId = parseInt(target);
-		addEdge(sourceId, targetId);
+	const onConnect = (edge: Edge<Milestone> | Connection): void => {
+		addEdge(edge);
 	};
 
 	const onEdgeUpdate = (
-		_oldEdge: Edge<Milestone> | Connection,
-		{ source, target }: Edge<Milestone> | Connection
+		oldEdge: Edge<Milestone> | Connection,
+		edge: Edge<Milestone> | Connection
 	): void => {
-		if (!target || !source) {
-			return;
-		}
-		const sourceId = parseInt(source);
-		const targetId = parseInt(target);
-
-		flowStore.updateConnection(sourceId, targetId);
+		flowStore.updateConnection(oldEdge, edge);
 	};
 
 	const removeEdge = ({ source }: Edge<Milestone> | Connection): void => {
@@ -131,10 +122,11 @@ const Milestones = (): JSX.Element => {
 				nodeTypes={nodeTypes}
 				className={styles.map}
 				onConnect={onConnect}
+				connectionLineComponent={ConnectionLine}
 				nodesDraggable={areNodesDraggableAndConnectable}
 				nodesConnectable={areNodesDraggableAndConnectable}
 				onEdgeUpdate={onEdgeUpdate}
-				panOnScroll
+				zoomOnScroll={false}
 				onConnectStart={onConnectStart}
 				onConnectStop={onConnectStop}
 				onEdgeDoubleClick={(_, edge): void => removeEdge(edge)}
@@ -142,6 +134,7 @@ const Milestones = (): JSX.Element => {
 				onEdgeUpdateEnd={onEdgeUpdateEnd}
 				edgeUpdaterRadius={10}
 				elementsSelectable={false}
+				connectionMode={ConnectionMode.Loose}
 			>
 				<Controls />
 				<div className={styles.background} />
