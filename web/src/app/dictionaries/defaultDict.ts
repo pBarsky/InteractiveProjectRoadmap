@@ -11,7 +11,8 @@ const common = {
 		[Status.InProgress]: 'W trakcie',
 		[Status.Done]: 'Zakończony'
 	},
-	loading: 'Ładowanie...'
+	loading: 'Ładowanie...',
+	editmodeTooltip: 'Aby móc ponownie przesuwać i łączyć milestony, zakończ edycję'
 };
 
 const errors = {

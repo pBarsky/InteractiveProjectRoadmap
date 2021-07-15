@@ -53,6 +53,7 @@ const MilestoneCardInnerForm = ({
 
 	return (
 		<>
+			{isEditing && <div className={styles.tooltip}>{defaultDict.common.editmodeTooltip}</div>}
 			<Form className={`${styles.form} ${isEditing ? styles.editing : ''}`}>
 				<div className={styles.dateWrapper}>
 					{defaultDict.pages.milestone.to}

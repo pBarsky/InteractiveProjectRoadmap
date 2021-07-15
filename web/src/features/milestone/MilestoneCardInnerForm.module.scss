@@ -32,7 +32,6 @@
 	align-items: center;
 	font-weight: bold;
 	font-size: 1.2em;
-
 	.date {
 		input[type='date'] {
 			padding: 0 !important;
@@ -42,7 +41,6 @@
 				display: none;
 			}
 		}
-
 		label {
 			display: none !important;
 		}
@@ -83,4 +81,18 @@
 	select {
 		background-color: transparent !important;
 	}
+}
+
+.tooltip {
+	border-radius: 5px;
+	word-wrap: break-word;
+	padding: 6px;
+	color: white;
+	font-weight: bold;
+	background: var(--black);
+	font-size: 1em;
+	text-align: center;
+	z-index: 100;
+	transform: translateY(-115%);
+	position: absolute;
 }
