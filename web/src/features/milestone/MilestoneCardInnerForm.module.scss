@@ -1,86 +1,99 @@
 .form {
-	display: flex;
-	flex-direction: column;
-	width: 100%;
-	padding: 10px 20px;
-	input {
-		border: none;
-		&:disabled {
-			color: var(--black);
-		}
-	}
-	textarea {
-		padding: 0;
-		border: none;
-		padding-bottom: 0.25em;
-		&:focus {
-			border-bottom: 1px solid var(--gray);
-		}
-		&:disabled {
-			color: var(--black);
-		}
-	}
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 10px 20px;
+    input {
+        border: none;
+        &:disabled {
+            color: var(--black);
+        }
+    }
+    textarea {
+        padding: 0;
+        border: none;
+        padding-bottom: 0.25em;
+        &:focus {
+            border-bottom: 1px solid var(--gray);
+        }
+        &:disabled {
+            color: var(--black);
+        }
+    }
 }
 
 .field {
-	margin: 0;
+    margin: 0;
 }
 
 .dateWrapper {
-	display: flex;
-	justify-content: flex-end;
-	align-items: center;
-	font-weight: bold;
-	font-size: 1.2em;
-
-	.date {
-		input[type='date'] {
-			padding: 0 !important;
-			margin-left: 5px;
-			font-weight: bold;
-			&:disabled::-webkit-calendar-picker-indicator {
-				display: none;
-			}
-		}
-
-		label {
-			display: none !important;
-		}
-	}
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1.2em;
+    .date {
+        input[type='date'] {
+            padding: 0 !important;
+            margin-left: 5px;
+            font-weight: bold;
+            &:disabled::-webkit-calendar-picker-indicator {
+                display: none;
+            }
+        }
+        label {
+            display: none !important;
+        }
+    }
 }
 
 .name {
-	font-size: 2em;
-	input {
-		font-weight: bold;
-		padding: 0 !important;
-		padding-bottom: 5px !important;
-	}
+    font-size: 2em;
+    input {
+        font-weight: bold;
+        padding: 0 !important;
+        padding-bottom: 5px !important;
+    }
 }
 
 .description {
-	margin-top: 1rem;
-	textarea {
-		padding: 0 !important;
-	}
+    margin-top: 1rem;
+    textarea {
+        padding: 0 !important;
+    }
 }
 
 .form.editing {
-	label {
-		display: inline-block;
-	}
-	input,
-	textarea {
-		border-bottom: 1px solid var(--gray);
-	}
-	.field:not(.date) {
-		margin-bottom: 10px;
-	}
+    label {
+        display: inline-block;
+    }
+    input,
+    textarea {
+        border-bottom: 1px solid var(--gray);
+    }
+    .field:not(.date) {
+        margin-bottom: 10px;
+    }
 }
 
 .status {
-	font-weight: bold;
-	select {
-		background-color: transparent !important;
-	}
+    font-weight: bold;
+    select {
+        background-color: transparent !important;
+    }
+}
+
+.tooltip {
+    border-radius: 4px;
+    word-wrap: break-word;
+    padding: 6px;
+    color: white;
+    font-weight: bold;
+    background: black;
+    font-size: 14px;
+    font-family: sans-serif;
+    text-align: center;
+    z-index: 100;
+    top: -50px;
+    position: absolute;
 }
