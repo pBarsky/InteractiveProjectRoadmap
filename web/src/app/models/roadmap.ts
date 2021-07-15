@@ -10,6 +10,14 @@ export interface Roadmap {
 	endsOn: Date | null;
 }
 
+export class DefaultRoadmap implements Roadmap {
+	public id = 0;
+	public name = '';
+	public description: string | null = null;
+	public startsOn: Date = new Date();
+	public imageUrl?: string;
+	public endsOn: Date | null = null;
+}
 export interface RoadmapFormValues {
 	name: string;
 	description: string | null;

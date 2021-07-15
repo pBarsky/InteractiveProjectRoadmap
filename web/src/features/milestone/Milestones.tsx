@@ -14,20 +14,21 @@ import defaultDict from '../../app/dictionaries/defaultDict';
 import { Milestone } from '../../app/models/milestone';
 import { BackgroundSize } from '../../app/stores/roadmapStore';
 import { useStore } from '../../app/stores/store';
+import MilestonesMapContextMenu from '../common/contextMenu/MilestonesMapContextMenu';
 import Loader from '../common/Loader';
 import ConnectionLine from '../flow/ConnectionLine';
 import MilestoneFlowNode from './MilestoneFlowNode';
 import styles from './Milestones.module.scss';
 
 const generateStyles = (
-	transformation: Transform,
+	[x, y, scale]: Transform,
 	backgroundImageSize: BackgroundSize,
 	imageUrl?: string
 ): React.CSSProperties => {
 	return {
-		'--data-x': `${transformation[0]}px`,
-		'--data-y': `${transformation[1]}px`,
-		'--data-scale': transformation[2],
+		'--data-x': `${x}px`,
+		'--data-y': `${y}px`,
+		'--data-scale': scale,
 		'--x-size': `${backgroundImageSize[0]}px`,
 		'--y-size': `${backgroundImageSize[1]}px`,
 		'--background-url': `url(${imageUrl || ''})`
@@ -35,11 +36,17 @@ const generateStyles = (
 };
 
 const Milestones = (): JSX.Element => {
-	const { flowStore, milestoneStore, roadmapStore } = useStore();
-	const { flowElements, addConnection: addEdge, areNodesDraggableAndConnectable } = flowStore;
+	const { flowStore, milestoneStore, roadmapStore, commonStore } = useStore();
+	const {
+		flowElements,
+		addConnection: addEdge,
+		areNodesDraggableAndConnectable,
+		SetClickOnPaneLocation
+	} = flowStore;
 	const { isLoading } = milestoneStore;
 	const { backgroundImageSize, selectedRoadmap } = roadmapStore;
 	const transformation = useStoreState((state) => state.transform);
+	const { setContextMenuLocation, setIsContextMenuVisible } = commonStore;
 
 	if (isLoading) {
 		return <Loader />;
@@ -105,40 +112,55 @@ const Milestones = (): JSX.Element => {
 		flowStore.removeConnection(flowStore.selectedElementId);
 	};
 
+	const onPaneContextMenu = (event: React.MouseEvent<Element, MouseEvent>): void => {
+		event.preventDefault();
+		const [paneX, paneY, paneScale] = transformation;
+		const target = event.target as Element;
+		const { x, y } = target.getBoundingClientRect();
+		const { pageX, pageY, clientY } = event;
+		const milestoneX = (pageX - x - paneX) / paneScale;
+		const milestoneY = (clientY - y - paneY) / paneScale;
+		setContextMenuLocation({ xOffset: pageX, yOffset: pageY });
+		SetClickOnPaneLocation({ x: milestoneX, y: milestoneY });
+		setIsContextMenuVisible(true);
+	};
+
 	return (
 		<>
 			{milestoneStore.milestones.length === 0 && (
 				<h2>{defaultDict.pages.milestone.noMilestones}</h2>
 			)}
 			<ReactFlow
+				className={styles.map}
+				connectionLineComponent={ConnectionLine}
+				connectionMode={ConnectionMode.Loose}
+				edgeUpdaterRadius={10}
 				elements={flowElements}
+				elementsSelectable={false}
+				minZoom={0}
+				nodesDraggable={areNodesDraggableAndConnectable}
+				nodesConnectable={areNodesDraggableAndConnectable}
+				nodeTypes={nodeTypes}
+				onConnect={onConnect}
+				onConnectStart={onConnectStart}
+				onConnectStop={onConnectStop}
+				onEdgeDoubleClick={(_, edge): void => removeEdge(edge)}
+				onEdgeUpdate={onEdgeUpdate}
+				onEdgeUpdateEnd={onEdgeUpdateEnd}
+				onNodeDragStop={moveMilestone}
+				onPaneContextMenu={onPaneContextMenu}
 				style={generateStyles(
 					transformation,
 					backgroundImageSize,
 					selectedRoadmap?.imageUrl
 				)}
-				minZoom={0}
-				onNodeDragStop={moveMilestone}
-				nodeTypes={nodeTypes}
-				className={styles.map}
-				onConnect={onConnect}
-				connectionLineComponent={ConnectionLine}
-				nodesDraggable={areNodesDraggableAndConnectable}
-				nodesConnectable={areNodesDraggableAndConnectable}
-				onEdgeUpdate={onEdgeUpdate}
-				zoomOnScroll={false}
-				onConnectStart={onConnectStart}
-				onConnectStop={onConnectStop}
-				onEdgeDoubleClick={(_, edge): void => removeEdge(edge)}
 				zoomOnDoubleClick={false}
-				onEdgeUpdateEnd={onEdgeUpdateEnd}
-				edgeUpdaterRadius={10}
-				elementsSelectable={false}
-				connectionMode={ConnectionMode.Loose}
+				zoomOnScroll={false}
 			>
 				<Controls />
 				<div className={styles.background} />
 			</ReactFlow>
+			<MilestonesMapContextMenu />
 		</>
 	);
 };
