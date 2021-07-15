@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Roadmap.Domain.Migrations;
 using Roadmap.Domain.Models;
 using Roadmap.Domain.Repositories.Interfaces;
 using Roadmap.Services.Mapper;
@@ -166,11 +165,7 @@ namespace Roadmap.Services.Milestones
 
             var milestonePointingToThis = await GetSourceConnectedToMilestone(destMilestone);
 
-            if (!destMilestone.IsAnotherPointingToMilestoneProperly(milestonePointingToThis))
-            {
-                return false;
-            }
-            return true;
+            return destMilestone.IsAnotherPointingToMilestoneProperly(milestonePointingToThis);
         }
 
         private async Task<Milestone> GetSourceConnectedToMilestone(Milestone milestone)

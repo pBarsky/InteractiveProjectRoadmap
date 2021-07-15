@@ -100,13 +100,13 @@ export class DefaultFlowStore implements FlowStore {
 			(m) => m.connectedToId === milestone.id
 		);
 
-		if (
-			milestone.isAlreadyConnectedWith(
-				targetMilestone,
-				milestoneTargetingThisMilestone,
-				sourceHandleId
-			)
-		) {
+		const isMilestoneAlreadyConnected = milestone.isAlreadyConnectedWith(
+			targetMilestone,
+			milestoneTargetingThisMilestone,
+			sourceHandleId
+		);
+
+		if (isMilestoneAlreadyConnected) {
 			console.debug('juz polaczone');
 			return false;
 		}
