@@ -12,7 +12,7 @@ const common = {
 		[Status.Done]: 'Zakończony'
 	},
 	loading: 'Ładowanie...',
-	tooltip: 'Aby móc ponownie przesuwać i łączyć milestony, zakończ edycję'
+	editmodeTooltip: 'Aby móc ponownie przesuwać i łączyć milestony, zakończ edycję'
 };
 
 const errors = {
