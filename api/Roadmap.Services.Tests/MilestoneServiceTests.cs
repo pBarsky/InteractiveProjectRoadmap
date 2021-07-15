@@ -75,6 +75,29 @@ namespace Roadmap.Services.Tests
         }
 
         [Fact]
+        public async void AddAsync_0_ConnectedMilestoneHandleIsOccupied()
+        {
+            // Arrange
+            const string userId = "1";
+            var milestone = new Milestone { Id = 1, ParentProjectId = 1, ConnectedToId = 2, ConnectedToSourceHandleId = HandleId.Left, ConnectedToTargetHandleId = HandleId.Right };
+            var connectedMilestone = new Milestone { Id = 2, ParentProjectId = 1, ConnectedToSourceHandleId = HandleId.Left, ConnectedToTargetHandleId = HandleId.Right };
+
+            _milestoneRepository.Setup(x => x.AddAsync(It.IsAny<Milestone>())).ReturnsAsync(1);
+            _milestoneRepository.Setup(x => x.GetAsync(milestone.Id)).ReturnsAsync(new Milestone { Id = 1 });
+            _milestoneRepository.Setup(x => x.GetAsync(connectedMilestone.Id))
+                .ReturnsAsync((Milestone)null);
+            _projectRepository.Setup(x => x.GetAsync(It.IsAny<int>()))
+                .ReturnsAsync(new Project { Id = 1, UserId = userId });
+            // Act
+            var result = await _milestoneService.AddAsync(milestone,
+                new AppUser { Id = userId });
+
+            // Assert
+            result.Should().Be(0);
+        }
+
+
+        [Fact]
         public async void AddAsync_CreatedMilestoneId_OnSuccess()
         {
             // Arrange
@@ -306,6 +329,26 @@ namespace Roadmap.Services.Tests
             result.Should().BeFalse();
         }
 
+        [Fact]
+        public async void UpdateAsync_False_ConnectedMilestoneHandleIsOccupied()
+        {
+            const string userId = "1";
+            var parentProject = new Project { UserId = userId };
+            var milestone = new Milestone { Id = 1, ParentProject = parentProject, ConnectedToId = 2, ConnectedToSourceHandleId = HandleId.Left, ConnectedToTargetHandleId = HandleId.Left };
+            var milestone2 = new Milestone { Id = 2, ParentProject = parentProject, ConnectedToSourceHandleId = HandleId.Left, ConnectedToTargetHandleId = HandleId.Right };
+
+            _milestoneRepository.Setup(x => x.AddAsync(It.IsAny<Milestone>())).ReturnsAsync(1);
+            _milestoneRepository.Setup(x => x.GetAsync(milestone.Id)).ReturnsAsync(milestone);
+            _milestoneRepository.Setup(x => x.FindAsync(It.IsAny<Expression<Func<Milestone, bool>>>())).ReturnsAsync(new List<Milestone>() { milestone2 });
+            _milestoneRepository.Setup(x => x.UpdateAsync(It.IsAny<Milestone>())).ReturnsAsync(false);
+            _projectRepository.Setup(x => x.GetAsync(It.IsAny<int>()))
+                .ReturnsAsync(parentProject);
+            // Act
+            var result = await _milestoneService.UpdateAsync(milestone, new AppUser { Id = userId });
+
+            // Assert
+            result.Should().BeFalse();
+        }
 
         [Fact]
         public async void UpdateAsync_True_UserIsNotOwnerOfMilestonesParentProject()

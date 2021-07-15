@@ -176,7 +176,14 @@ export class DefaultMilestoneStore implements MilestoneStore {
 			}
 			const connectedMilestone = this.milestones.find((x) => x.connectedToId === id);
 			if (connectedMilestone) {
-				this.setMilestone(new Milestone({ ...connectedMilestone, connectedToId: null }));
+				this.setMilestone(
+					new Milestone({
+						...connectedMilestone,
+						connectedToId: null,
+						connectedToSourceHandleId: null,
+						connectedToTargetHandleId: null
+					})
+				);
 			}
 			this.selectedMilestone = null;
 			this.setMilestones(this.milestones.filter((x) => x.id !== id));

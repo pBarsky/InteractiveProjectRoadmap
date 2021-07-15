@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using Roadmap.Domain.Models;
 
 namespace Roadmap.API.DTOs
@@ -19,5 +20,11 @@ namespace Roadmap.API.DTOs
         public int PosX { get; set; }
         public int PosY { get; set; }
         public int? ConnectedToId { get; set; }
+
+        [EnumDataType(typeof(HandleId))]
+        public HandleId? ConnectedToSourceHandleId { get; set; }
+
+        [EnumDataType(typeof(HandleId))]
+        public HandleId? ConnectedToTargetHandleId { get; set; }
     }
 }

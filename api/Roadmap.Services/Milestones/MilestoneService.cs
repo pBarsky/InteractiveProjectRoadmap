@@ -29,16 +29,31 @@ namespace Roadmap.Services.Milestones
                 return 0;
             }
 
+
+            if (milestone.IsConnectedToSelf())
+            {
+                return 0;
+            }
+
+            _mapper.Map(milestone, milestone);
+
+
+            if (milestone.ConnectedToId == null)
+            {
+                return await _milestoneRepository.AddAsync(milestone);
+            }
+
+            if (!await ValidateConnections(milestone))
+            {
+                return 0;
+            }
+
+
             var project = await _projectRepository.GetAsync(milestone.ParentProjectId);
 
             if (project.UserId != user.Id)
             {
                 return 0;
-            }
-
-            if (milestone.ConnectedToId == null)
-            {
-                return await _milestoneRepository.AddAsync(milestone);
             }
 
             var connectedMilestone = await GetConnectedMilestone(milestone);
@@ -93,6 +108,9 @@ namespace Roadmap.Services.Milestones
             }
 
             connectedMilestone.ConnectedToId = null;
+            connectedMilestone.ConnectedToSourceHandleId = null;
+            connectedMilestone.ConnectedToTargetHandleId = null;
+
             var updatedConnectedMilestone = await _milestoneRepository.UpdateAsync(connectedMilestone);
             if (!updatedConnectedMilestone)
             {
@@ -106,7 +124,13 @@ namespace Roadmap.Services.Milestones
         public async Task<bool> UpdateAsync(Milestone srcMilestone, AppUser user)
         {
             var destMilestone = await _milestoneRepository.GetAsync(srcMilestone.Id);
-            if (destMilestone == null || destMilestone.ParentProject.UserId != user.Id)
+
+            if (destMilestone == null || destMilestone.ParentProject.UserId != user.Id || destMilestone.ParentProjectId != srcMilestone.ParentProjectId)
+            {
+                return false;
+            }
+
+            if (srcMilestone.IsConnectedToSelf())
             {
                 return false;
             }
@@ -119,13 +143,34 @@ namespace Roadmap.Services.Milestones
                 return await _milestoneRepository.UpdateAsync(destMilestone);
             }
 
-            var connectedMilestone = await GetConnectedMilestone(destMilestone);
-            if (connectedMilestone == null)
+            if (!(await ValidateConnections(destMilestone))) {
+                return false;
+            } 
+
+            return await _milestoneRepository.UpdateAsync(destMilestone);
+        }
+
+        private async Task<bool> ValidateConnections(Milestone destMilestone)
+        {
+            if (!destMilestone.IsProperlyConnectedToAny())
             {
                 return false;
             }
 
-            return await _milestoneRepository.UpdateAsync(destMilestone);
+            var connectedToMilestone = await GetConnectedMilestone(destMilestone);
+
+            if (!destMilestone.IsProperlyConnectedToTarget(connectedToMilestone))
+            {
+                return false;
+            }
+
+            var milestonePointingToThis = await GetSourceConnectedToMilestone(destMilestone);
+
+            if (!destMilestone.IsAnotherPointingToMilestoneProperly(milestonePointingToThis))
+            {
+                return false;
+            }
+            return true;
         }
 
         private async Task<Milestone> GetSourceConnectedToMilestone(Milestone milestone)

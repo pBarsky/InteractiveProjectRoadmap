@@ -164,7 +164,6 @@ export class DefaultFlowStore implements FlowStore {
 		milestone.connectedToId = null;
 		milestone.connectedToSourceHandleId = null;
 		milestone.connectedToTargetHandleId = null;
-
 		milestoneStore.updateMilestone(milestone);
 		console.debug('usuwanko');
 		return true;
