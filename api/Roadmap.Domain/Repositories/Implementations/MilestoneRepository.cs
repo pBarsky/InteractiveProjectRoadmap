@@ -47,7 +47,8 @@ namespace Roadmap.Domain.Repositories.Implementations
 
         public async Task<Milestone> GetAsync(int id)
         {
-            return await _context.Milestones.Include(x => x.ParentProject).FirstOrDefaultAsync(x => x.Id == id);
+            return await _context.Milestones.Include(m => m.ParentProject).Include(m => m.CheckList)
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<IEnumerable<Milestone>> ListAsync()

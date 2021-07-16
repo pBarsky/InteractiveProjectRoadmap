@@ -122,6 +122,11 @@ namespace Roadmap.Services.Milestones
 
         public async Task<bool> UpdateAsync(Milestone srcMilestone, AppUser user)
         {
+            if (srcMilestone == null)
+            {
+                return false;
+            }
+
             var destMilestone = await _milestoneRepository.GetAsync(srcMilestone.Id);
 
             if (destMilestone == null || destMilestone.ParentProject.UserId != user.Id || destMilestone.ParentProjectId != srcMilestone.ParentProjectId)

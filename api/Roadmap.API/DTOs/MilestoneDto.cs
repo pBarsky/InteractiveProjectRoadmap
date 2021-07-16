@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Roadmap.Domain.Models;
 
@@ -26,5 +27,7 @@ namespace Roadmap.API.DTOs
 
         [EnumDataType(typeof(HandleId))]
         public HandleId? ConnectedToTargetHandleId { get; set; }
+
+        public IList<TodoDto> CheckList { get; set; } = new List<TodoDto>();
     }
 }
