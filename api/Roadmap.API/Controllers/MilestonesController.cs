@@ -34,6 +34,12 @@ namespace Roadmap.API.Controllers
         public async Task<ActionResult<MilestoneDto>> Get(int id)
         {
             var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Unauthorized("User was not found");
+            }
+
+
             var milestone = await _milestoneService.GetAsync(id, user);
 
             if (milestone == null)
@@ -49,8 +55,13 @@ namespace Roadmap.API.Controllers
         public async Task<ActionResult<IEnumerable<MilestoneDto>>> GetAllOfProject(int id)
         {
             var user = await _userManager.GetUserAsync(User);
-            var project = await _projectService.GetAsync(id, user);
+            if (user == null)
+            {
+                return Unauthorized("User was not found");
+            }
 
+
+            var project = await _projectService.GetAsync(id, user);
             if (project == null)
             {
                 return BadRequest("No roadmap found.");
@@ -76,6 +87,7 @@ namespace Roadmap.API.Controllers
                 return Unauthorized("User was not found");
             }
 
+
             var mappedMilestoneDto = _mapper.Map<Milestone>(milestoneDto);
             var id = await _milestoneService.AddAsync(mappedMilestoneDto, user);
 
@@ -91,6 +103,12 @@ namespace Roadmap.API.Controllers
         public async Task<ActionResult<bool>> Put(MilestoneDto milestoneDto)
         {
             var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Unauthorized("User was not found");
+            }
+
+
             var milestone = _mapper.Map<Milestone>(milestoneDto);
             var result = await _milestoneService.UpdateAsync(milestone, user);
 
@@ -106,6 +124,12 @@ namespace Roadmap.API.Controllers
         public async Task<ActionResult<bool>> Delete(int id)
         {
             var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Unauthorized("User was not found");
+            }
+
+
             var result = await _milestoneService.DeleteAsync(id, user);
 
             if (result)

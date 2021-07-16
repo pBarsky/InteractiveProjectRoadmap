@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Roadmap.Domain.Models
@@ -37,5 +38,7 @@ namespace Roadmap.Domain.Models
         public HandleId? ConnectedToTargetHandleId { get; set; }
 
         public Milestone ConnectedTo { get; set; }
+
+        public IList<Todo> CheckList { get; set; } = new List<Todo>();
     }
 }

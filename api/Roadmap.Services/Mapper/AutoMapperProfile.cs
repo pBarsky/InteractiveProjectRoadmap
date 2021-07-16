@@ -17,6 +17,10 @@ namespace Roadmap.Services.Mapper
                 .ForMember(x => x.ParentProject, opt => opt.Ignore())
                 .ForMember(x => x.ParentProjectId, opt => opt.Ignore())
                 .ForMember(x => x.Id, opt => opt.Ignore());
+
+            CreateMap<Todo, Todo>().ForMember(x => x.Id, opt => opt.Ignore())
+                .ForMember(x => x.ParentMilestoneId, opt => opt.Ignore())
+                .ForMember(x => x.ParentMilestone, opt => opt.Ignore());
         }
     }
 }

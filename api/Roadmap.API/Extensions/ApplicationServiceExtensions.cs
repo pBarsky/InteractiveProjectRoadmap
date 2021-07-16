@@ -1,4 +1,3 @@
-using System.Reflection;
 using Azure.Storage.Blobs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -11,6 +10,7 @@ using Roadmap.Domain.Repositories.Interfaces;
 using Roadmap.Services.Images;
 using Roadmap.Services.Milestones;
 using Roadmap.Services.Projects;
+using Roadmap.Services.Todos;
 using Roadmap.Services.Token;
 
 namespace Roadmap.API.Extensions
@@ -25,11 +25,13 @@ namespace Roadmap.API.Extensions
                 opt.UseSqlServer(config.GetConnectionString("DefaultConnection"));
             });
 
-            services.AddScoped<ITokenService, TokenService>();
-            services.AddScoped<IProjectService, ProjectService>();
-            services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<IMilestoneRepository, MilestoneRepository>();
+            services.AddScoped<IProjectRepository, ProjectRepository>();
+            services.AddScoped<IProjectService, ProjectService>();
             services.AddScoped<IMilestoneService, MilestoneService>();
+            services.AddScoped<ITodoRepository, TodoRepository>();
+            services.AddScoped<ITodoService, TodoService>();
+            services.AddScoped<ITokenService, TokenService>();
             services.AddSingleton(x => new BlobServiceClient(
                 config.GetConnectionString("AzureBlobStorageConnection")));
             services.AddSingleton<IImageService, ImageService>();

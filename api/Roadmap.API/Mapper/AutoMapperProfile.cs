@@ -1,5 +1,4 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using Roadmap.API.DTOs;
 using Roadmap.Domain.Models;
 using Roadmap.Services.Images;
@@ -27,6 +26,8 @@ namespace Roadmap.API.Mapper
                 .ForMember(x => x.EndsOn,
                     opt => opt.MapFrom(src => src.EndsOn.HasValue ? src.EndsOn.Value.ToUniversalTime() : src.EndsOn))
                 .ReverseMap();
+
+            CreateMap<Todo, TodoDto>().ReverseMap();
         }
     }
 }
