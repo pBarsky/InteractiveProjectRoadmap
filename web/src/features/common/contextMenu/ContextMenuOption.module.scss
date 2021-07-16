@@ -1,0 +1,19 @@
+.option {
+	background-color: inherit;
+	margin: 5px 0;
+	padding: 10px 5px;
+	cursor: pointer;
+
+	&:hover {
+		border-radius: 5px;
+		filter: brightness(0.95);
+	}
+
+	&:last-child {
+		margin-bottom: 0;
+	}
+
+	&:first-child {
+		margin-top: 0;
+	}
+}

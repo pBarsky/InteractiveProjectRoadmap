@@ -5,13 +5,17 @@ import milestoneStore from './milestoneStore';
 
 export type Element = FlowElement<Milestone | Edge<Milestone>>;
 
+type Location = { x: number; y: number };
+
 export interface FlowStore {
-	selectedElementId?: number;
-	flowElements: Element[];
-	flowConnections: Edge<Milestone>[];
 	areNodesDraggableAndConnectable: boolean;
+	clickOnPaneLocation: Location;
+	flowConnections: Edge<Milestone>[];
+	flowElements: Element[];
+	selectedElementId?: number;
 	addConnection(edge: Edge<Milestone> | Connection): boolean;
 	removeConnection(sourceId: number): boolean;
+	SetClickOnPaneLocation(value: Location): void;
 	updateConnection(
 		oldEdge: Edge<Milestone> | Connection,
 		edge: Edge<Milestone> | Connection
@@ -20,9 +24,18 @@ export interface FlowStore {
 
 export class DefaultFlowStore implements FlowStore {
 	private _selectedElementId: number | undefined;
+	private _clickOnPaneLocation: Location = { x: 0, y: 0 };
 
 	public constructor () {
 		makeAutoObservable(this);
+	}
+
+	public get clickOnPaneLocation (): Location {
+		return this._clickOnPaneLocation;
+	}
+
+	public set clickOnPaneLocation (value: Location) {
+		this._clickOnPaneLocation = { ...value };
 	}
 
 	public get areNodesDraggableAndConnectable (): boolean {
@@ -36,6 +49,10 @@ export class DefaultFlowStore implements FlowStore {
 	public set selectedElementId (value: number | undefined) {
 		this._selectedElementId = value;
 	}
+
+	public SetClickOnPaneLocation = (value: Location): void => {
+		this.clickOnPaneLocation = { x: Math.round(value.x), y: Math.round(value.y) };
+	};
 
 	public get flowConnections (): Edge<Milestone>[] {
 		const connections: Edge<Milestone>[] = [];

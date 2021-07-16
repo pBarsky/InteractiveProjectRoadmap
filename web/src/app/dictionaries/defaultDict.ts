@@ -158,6 +158,12 @@ const pages = {
 		roadmapImageAltText: '(Tło roadmapy)',
 		milestonesHeader: 'Milestony'
 	},
+	flowPane: {
+		defaultNewMilestoneName: 'Nowy',
+		contextMenu: {
+			addMilestone: "Dodaj milestone'a"
+		}
+	},
 	milestone: {
 		name: 'Nazwa: ',
 		endsOn: 'Kończy się: ',
